@@ -5,59 +5,41 @@ order: 1
 
 # Introduction
 
-Welcome to your new documentation site, powered by **Zephyrus Leaf**.
+Zephyrus Leaf is a static site generator built on the [Zephyrus PHP Framework](https://github.com/ophelios-studio/zephyrus). It turns your Markdown content and Latte templates into a fast, deployable static site with one command.
 
-## What is Leaf?
-
-Leaf is a static content site template built on the [Zephyrus](https://github.com/dadajuice/zephyrus2) PHP framework. It gives you:
+## What you get
 
 - **Markdown-powered pages** with front matter, GFM tables, and syntax highlighting
-- **Live-reload** during development — edit a file, see changes instantly
-- **One-command static builds** — run `composer build` to generate a `dist/` folder ready for GitHub Pages
-- **Full-text search** — client-side fuzzy search across all your pages
-- **Dark theme** — a clean, professional design out of the box
+- **Live-reload** during development -- edit a file, see changes instantly
+- **One-command static builds** -- run `composer build` to generate a `dist/` folder
+- **Full-text search** -- client-side fuzzy search across all your pages
+- **Multi-locale support** -- build in multiple languages with the default locale at root
+- **SEO out of the box** -- automatic sitemap.xml, robots.txt, and hreflang tags
+- **Light and dark themes** -- system-preference aware with a toggle
+- **Built on Zephyrus** -- the full framework is available if you need controllers, middleware, or custom logic
+
+## Architecture
+
+Leaf has two packages:
+
+| Package | Type | Purpose |
+|---------|------|---------|
+| `zephyrus-framework/leaf-core` | Library | Static builder, content parser, SEO generators, Kernel |
+| `zephyrus-framework/leaf` | Template | Views, controllers, config, assets, sample content |
+
+When you create a project from the template, you get a working documentation site. The core library handles the build pipeline. When the core is updated, all projects benefit via `composer update`.
 
 ## Quick start
 
-Edit this file at `content/getting-started/introduction.md` to start writing your own docs.
-
-### Adding pages
-
-Create a new `.md` file in any section folder under `content/`:
-
-```
-content/
-  getting-started/
-    introduction.md    <- you are here
-    installation.md    <- add more pages
-  guides/
-    deployment.md
+```bash
+composer create-project zephyrus-framework/leaf my-docs
+cd my-docs
+composer dev
 ```
 
-Each file needs front matter with at least a `title` and `order`:
-
-```yaml
----
-title: Installation
-order: 2
----
-```
-
-### Adding sections
-
-Add new sections in `config.yml` under the `leaf.sections` key:
-
-```yaml
-leaf:
-  sections:
-    getting-started: "Getting Started"
-    guides: "Guides"
-```
-
-The order in the YAML file determines the sidebar order.
+Open `http://localhost:8080` and you'll see your documentation site with live-reload enabled.
 
 ## Next steps
 
-- Edit `config.yml` to set your project name, version, and GitHub URL
-- Add your logo to `public/assets/images/` and update `app/Views/partials/nav.latte`
-- Run `composer build` to generate the static site
+- [Installation](/getting-started/installation) -- detailed setup instructions
+- [Project Structure](/getting-started/project-structure) -- understand the file layout
