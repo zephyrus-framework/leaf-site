@@ -23,13 +23,6 @@ final class DocsController extends Controller
     ) {
     }
 
-    #[Get('/')]
-    public function index(): Response
-    {
-        $url = $this->contentLoader->getFirstPageUrl();
-        return Response::redirect($url);
-    }
-
     #[Get('/{section}/{slug}')]
     public function show(string $section, string $slug): Response
     {
