@@ -1,0 +1,37 @@
+application:
+  environment: !env APP_ENV, dev
+  debug: !env APP_DEBUG, true
+
+localization:
+  locale: "en"
+  supported_locales:
+    - "en"
+  locale_path: "locale"
+  timezone: "America/Montreal"
+
+render:
+  engine: "latte"
+  directory: "app/Views"
+  cache: "cache/latte"
+  mode: "always"
+
+leaf:
+  name: "Zephyrus Leaf"
+  version: "1.0.0"
+  description: "Build beautiful static sites with PHP. One-command builds, multi-locale, SEO, Markdown-powered docs."
+  github_url: "https://github.com/ophelios-studio/zephyrus-leaf-core"
+  content_path: "content"
+  sections:
+    getting-started: "Getting Started"
+    building-sites: "Building Sites"
+    content-system: "Content"
+    multi-locale: "Multi-Locale"
+    seo: "SEO"
+    configuration: "Configuration"
+    api-reference: "API Reference"
+  output_path: "dist"
+  base_url: ""
+  production_url: "https://leaf.ophelios.com"
+  author: "Ophelios"
+  author_url: "https://ophelios.com"
+  license: "MIT"
