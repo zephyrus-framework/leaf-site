@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="leaf-base-url" content="">
+
+<link rel="icon" type="image/png" href="/assets/favicon/favicon-96x96.png" sizes="96x96">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg">
+<link rel="shortcut icon" href="/assets/favicon/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Zephyrus Leaf">
+<link rel="manifest" href="/assets/favicon/site.webmanifest">
+<meta name="theme-color" content="#08080d">
+
+
+<title>Post-build Hooks · Zephyrus Leaf</title>
+<meta name="description" content="Run arbitrary scripts after leaf build, without ejecting to the Composer tier.">
+<meta name="author" content="Ophelios">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://leaf.ophelios.com/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Zephyrus Leaf">
+<meta property="og:title" content="Post-build Hooks · Zephyrus Leaf">
+<meta property="og:description" content="Run arbitrary scripts after leaf build, without ejecting to the Composer tier.">
+<meta property="og:url" content="https://leaf.ophelios.com/">
+<meta property="og:image" content="https://leaf.ophelios.com/assets/images/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Zephyrus Leaf: static sites, quietly crafted.">
+<meta property="og:locale" content="en">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Post-build Hooks · Zephyrus Leaf">
+<meta name="twitter:description" content="Run arbitrary scripts after leaf build, without ejecting to the Composer tier.">
+<meta name="twitter:image" content="https://leaf.ophelios.com/assets/images/og-image.png">
+<meta name="twitter:image:alt" content="Zephyrus Leaf: static sites, quietly crafted.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+    theme: {
+        extend: {
+            colors: {
+                deep: 'var(--bg-deep)',
+                surface: 'var(--bg-surface)',
+                elevated: 'var(--bg-elevated)',
+                border: 'var(--border)',
+                'border-accent': 'var(--border-accent)',
+                body: 'var(--text)',
+                bright: 'var(--text-bright)',
+                muted: 'var(--text-muted)',
+                accent: 'var(--accent)',
+                'accent-light': 'var(--accent-light)',
+                'accent-glow': 'var(--accent-glow)',
+            },
+            fontFamily: {
+                body: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+            },
+        },
+    },
+}
+</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<link rel="stylesheet" href="/assets/css/app.css">
+<script src="/assets/js/theme.js"></script>
+</head>
+<body class="bg-deep text-body antialiased font-body">
+<header class="site-nav">
+    <div class="nav-container">
+        <div class="nav-left">
+            <button class="nav-toggle" onclick="toggleNav()" type="button" aria-label="Toggle menu">
+                <svg class="nav-toggle-open" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+                <svg class="nav-toggle-close" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" style="display:none"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            </button>
+            <a href="/" class="nav-logo nav-logo-text">
+                <img src="/assets/images/logo.png" alt="" class="nav-logo-img" width="32" height="30" aria-hidden="true">
+                <span>Zephyrus Leaf</span>
+            </a>
+        </div>
+        <nav class="nav-links">
+            <button class="search-trigger" onclick="openSearch()" type="button">
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                <span>Search</span>
+                <kbd>Ctrl+K</kbd>
+            </button>
+            <a href="https://github.com/ophelios-studio/zephyrus-leaf-core" class="nav-link" target="_blank" rel="noopener">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+                GitHub
+            </a>
+            <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle theme">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            </button>
+            <span class="version-badge">1.0.0</span>
+        </nav>
+    </div>
+</header>
+
+    <div class="docs-layout">
+        <div class="sidebar-overlay" onclick="closeSidebar()"></div>
+<aside class="docs-sidebar">
+    <nav class="sidebar-nav">
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Getting Started</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/getting-started/introduction"
+                       class="sidebar-link">
+                        Introduction
+                    </a>
+                </li>
+                <li>
+                    <a href="/getting-started/installation"
+                       class="sidebar-link">
+                        Installation
+                    </a>
+                </li>
+                <li>
+                    <a href="/getting-started/project-structure"
+                       class="sidebar-link">
+                        Project Structure
+                    </a>
+                </li>
+                <li>
+                    <a href="/getting-started/cli-reference"
+                       class="sidebar-link">
+                        CLI Reference
+                    </a>
+                </li>
+                <li>
+                    <a href="/getting-started/claude-skills"
+                       class="sidebar-link">
+                        Claude Code Skills
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Building Sites</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/building-sites/build-command"
+                       class="sidebar-link">
+                        BuildCommand
+                    </a>
+                </li>
+                <li>
+                    <a href="/building-sites/static-builder"
+                       class="sidebar-link">
+                        StaticSiteBuilder
+                    </a>
+                </li>
+                <li>
+                    <a href="/building-sites/hooks"
+                       class="sidebar-link active">
+                        Post-build Hooks
+                    </a>
+                </li>
+                <li>
+                    <a href="/building-sites/deployment"
+                       class="sidebar-link">
+                        Deployment
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Content</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/content-system/pages"
+                       class="sidebar-link">
+                        Pages
+                    </a>
+                </li>
+                <li>
+                    <a href="/content-system/sections"
+                       class="sidebar-link">
+                        Sections
+                    </a>
+                </li>
+                <li>
+                    <a href="/content-system/search"
+                       class="sidebar-link">
+                        Search
+                    </a>
+                </li>
+                <li>
+                    <a href="/content-system/custom-pages"
+                       class="sidebar-link">
+                        Custom Pages
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Multi-Locale</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/multi-locale/setup"
+                       class="sidebar-link">
+                        Setup
+                    </a>
+                </li>
+                <li>
+                    <a href="/multi-locale/templates"
+                       class="sidebar-link">
+                        Templates &amp; Links
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">SEO</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/seo/sitemap-robots"
+                       class="sidebar-link">
+                        Sitemap &amp; Robots
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Configuration</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/configuration/reference"
+                       class="sidebar-link">
+                        Reference
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">API Reference</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/api-reference/classes"
+                       class="sidebar-link">
+                        Core Classes
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="sidebar-footer">
+        <div class="sidebar-mobile-links">
+            <a href="https://github.com/ophelios-studio/zephyrus-leaf-core" class="sidebar-footer-link" target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <div class="sidebar-copyright">
+            &copy; 2026 Ophelios
+        </div>
+        <div class="sidebar-powered">
+            Powered by <a href="https://github.com/dadajuice/zephyrus-leaf" target="_blank" rel="noopener">Zephyrus Leaf</a>
+        </div>
+    </div>
+</aside>
+        <main class="docs-main">
+<article class="docs-content">
+    <div class="prose">
+        <h1>Post-build Hooks</h1>
+<p>Sometimes <code>leaf build</code> needs to be followed by a step that doesn't belong inside the PHP pipeline: regenerate an OG social card, compress images, upload <code>dist/</code> to a CDN, write a deploy manifest. Config-declared hooks let you do this without ejecting.</p>
+<h2 id="declare-hooks-in-configyml"><a href="#declare-hooks-in-configyml" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Declare hooks in <code>config.yml</code></h2>
+<pre><code class="language-yaml">leaf:
+  post_build:
+    - &quot;./scripts/generate-og-image.sh&quot;
+    - [&quot;./scripts/optimize-images.sh&quot;, &quot;--jpeg-quality=85&quot;]
+    - &quot;./scripts/deploy.sh&quot;
+</code></pre>
+<p>Each entry is either:</p>
+<ul>
+<li>A <strong>string</strong> — path to an executable with no args.</li>
+<li>An <strong>array of strings</strong> — first element is the executable, the rest are argv.</li>
+</ul>
+<h2 id="how-it-runs"><a href="#how-it-runs" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>How it runs</h2>
+<p>Hooks execute <strong>after</strong> <code>leaf build</code> succeeds and <code>dist/</code> has been published into your project root. At that point:</p>
+<ul>
+<li><code>cwd</code> is your real project root (not a build tempdir), so hooks can read or write anything in the project.</li>
+<li><code>dist/</code> contains the freshly built HTML, CSS, JS, <code>sitemap.xml</code>, etc.</li>
+<li>Hook stdout and stderr stream live to your terminal.</li>
+<li>Hooks run <strong>sequentially, in YAML order</strong>. A non-zero exit aborts the chain and fails the overall <code>leaf build</code>.</li>
+<li>No shell interpretation: <code>&quot;./scripts/x.sh &amp;&amp; ./y.sh&quot;</code> won't do what you expect. Write a wrapper script if you need shell logic.</li>
+</ul>
+<h2 id="what-hooks-are-good-for"><a href="#what-hooks-are-good-for" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>What hooks are good for</h2>
+<ul>
+<li>Regenerating derived assets (OG cards, favicons, image variants)</li>
+<li>Running a linter, link-checker, or accessibility audit against <code>dist/</code></li>
+<li>Uploading <code>dist/</code> to S3, Cloudflare R2, or another CDN</li>
+<li>Writing a deploy manifest or invalidating a cache</li>
+<li>Sending a Slack ping when the build finishes</li>
+</ul>
+<h2 id="what-hooks-are-not-good-for"><a href="#what-hooks-are-not-good-for" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>What hooks are <em>not</em> good for</h2>
+<ul>
+<li><strong>Modifying content that the build renders.</strong> That happens before the hook. Put that logic in your Markdown or templates instead.</li>
+<li><strong>Replacing the build itself.</strong> If you need fundamentally different behaviour, eject to the Composer tier.</li>
+<li><strong>Long-running daemons.</strong> Hooks are expected to exit.</li>
+</ul>
+<h2 id="example-the-og-image-generator"><a href="#example-the-og-image-generator" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Example: the OG image generator</h2>
+<p><code>leaf.ophelios.com</code> regenerates its social card on every build:</p>
+<pre><code class="language-yaml">leaf:
+  post_build:
+    - &quot;./scripts/generate-og-image.sh&quot;
+</code></pre>
+<p><code>scripts/generate-og-image.sh</code> launches headless Chrome against an HTML template and writes <code>public/assets/images/og-image.png</code>. Since it runs post-build, the generated file is not yet copied into <code>dist/</code> — the next build picks it up. For regeneration-on-every-build that lands in <code>dist/</code> immediately, point the script's output at <code>dist/</code> directly.</p>
+<h2 id="integration-with-leaf-dev"><a href="#integration-with-leaf-dev" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Integration with <code>leaf dev</code></h2>
+<p><code>leaf dev</code> runs the same pipeline on every file change. Hooks fire after each successful rebuild. If that's too aggressive (for a slow OG regenerator, say), gate it with a check inside the hook script:</p>
+<pre><code class="language-bash">#!/usr/bin/env bash
+# Only regenerate OG if the template source has changed.
+if [ resources/og-templates/site.html -nt public/assets/images/og-image.png ]; then
+    ./scripts/render-og.sh
+fi
+</code></pre>
+<h2 id="composer-tier"><a href="#composer-tier" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Composer tier</h2>
+<p>On the Composer tier, the same <code>post_build</code> config is read by <code>BuildCommand</code> and hooks run identically. You <em>also</em> still have <code>$command-&gt;onPostBuild(fn (...)) =&gt; ...)</code> available in <code>bin/build.php</code> for PHP-level callbacks that need access to the <code>StaticBuildResult</code> object (pages built, errors, build duration).</p>
+<p>Use the right tool:</p>
+<ul>
+<li><strong><code>post_build</code> in config</strong> for language-agnostic shell scripts.</li>
+<li><strong><code>onPostBuild</code> in <code>bin/build.php</code></strong> for PHP callbacks that need the build result or the framework.</li>
+</ul>
+<h2 id="exit-codes"><a href="#exit-codes" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Exit codes</h2>
+<p>A failing hook propagates to <code>leaf build</code>. Exit 0 = build succeeded; anything non-zero = build failed and subsequent hooks are skipped.</p>
+
+    </div>
+
+    <nav class="docs-pagination">
+        <a href="/building-sites/static-builder" class="pagination-link pagination-prev">
+            <span class="pagination-label">&larr; Previous</span>
+            <span class="pagination-title">StaticSiteBuilder</span>
+        </a>
+
+        <a href="/building-sites/deployment" class="pagination-link pagination-next">
+            <span class="pagination-label">Next &rarr;</span>
+            <span class="pagination-title">Deployment</span>
+        </a>
+    </nav>
+</article>
+        </main>
+<aside class="docs-toc">
+    <div class="toc-wrapper">
+        <h4 class="toc-title">On this page</h4>
+        <ul class="toc-links">
+            <li class="toc-item">
+                <a href="#declare-hooks-in-configyml" class="toc-link">Declare hooks in config.yml</a>
+            </li>
+            <li class="toc-item">
+                <a href="#how-it-runs" class="toc-link">How it runs</a>
+            </li>
+            <li class="toc-item">
+                <a href="#what-hooks-are-good-for" class="toc-link">What hooks are good for</a>
+            </li>
+            <li class="toc-item">
+                <a href="#what-hooks-are-not-good-for" class="toc-link">What hooks are not good for</a>
+            </li>
+            <li class="toc-item">
+                <a href="#example-the-og-image-generator" class="toc-link">Example: the OG image generator</a>
+            </li>
+            <li class="toc-item">
+                <a href="#integration-with-leaf-dev" class="toc-link">Integration with leaf dev</a>
+            </li>
+            <li class="toc-item">
+                <a href="#composer-tier" class="toc-link">Composer tier</a>
+            </li>
+            <li class="toc-item">
+                <a href="#exit-codes" class="toc-link">Exit codes</a>
+            </li>
+        </ul>
+    </div>
+</aside>
+    </div>
+
+<div class="search-overlay" id="search-overlay">
+    <div class="search-dialog" role="dialog" aria-label="Search documentation">
+        <div class="search-input-wrapper">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+            </svg>
+            <input type="text" class="search-input" id="search-input" placeholder="Search documentation..." autocomplete="off" autofocus>
+            <kbd style="font-size: 0.625rem; padding: 0.125rem 0.375rem; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 0.25rem; color: var(--text-muted); font-family: var(--font-mono); cursor: pointer;" onclick="closeSearch()">Esc</kbd>
+        </div>
+        <div class="search-results" id="search-results">
+            <div class="search-empty">Type to search the documentation...</div>
+        </div>
+        <div class="search-footer">
+            <span>Navigate with <kbd>&uarr;</kbd> <kbd>&darr;</kbd> keys</span>
+            <span>Press <kbd>Enter</kbd> to select</span>
+        </div>
+    </div>
+</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup-templating.min.js"></script>
+    <script src="/assets/js/copy-code.js"></script>
+    <script src="/assets/js/sidebar.js"></script>
+    <script src="/assets/js/search.js"></script>
+</body>
+</html>

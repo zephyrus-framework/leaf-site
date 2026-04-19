@@ -51,6 +51,22 @@
         ]
     },
     {
+        "title": "Post-build Hooks",
+        "section": "building-sites",
+        "url": "\/building-sites\/hooks",
+        "excerpt": "Post-build Hooks Sometimes leaf build needs to be followed by a step that doesn't belong inside the PHP pipeline: regenerate an OG social card, compress images, upload dist\/ to a CDN, write a deploy manifest. Config-declared hooks let you do this without ejecting. #Declare hooks in config.yml leaf: ...",
+        "headings": [
+            "Declare hooks in config.yml",
+            "How it runs",
+            "What hooks are good for",
+            "What hooks are not good for",
+            "Example: the OG image generator",
+            "Integration with leaf dev",
+            "Composer tier",
+            "Exit codes"
+        ]
+    },
+    {
         "title": "StaticSiteBuilder",
         "section": "building-sites",
         "url": "\/building-sites\/static-builder",
