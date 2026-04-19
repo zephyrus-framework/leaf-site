@@ -15,7 +15,7 @@
 
 
 <title>Setup · Zephyrus Leaf</title>
-<meta name="description" content="Multi-Locale Setup Leaf supports building your site in multiple languages. The default locale is served at the root URL, and other locales get their own subd...">
+<meta name="description" content="Multi-Locale Setup Leaf supports building your site in multiple languages. The default locale is served at the root URL; other locales get their own subdirec...">
 <meta name="author" content="Ophelios">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://leaf.ophelios.com/">
@@ -23,7 +23,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Zephyrus Leaf">
 <meta property="og:title" content="Setup · Zephyrus Leaf">
-<meta property="og:description" content="Multi-Locale Setup Leaf supports building your site in multiple languages. The default locale is served at the root URL, and other locales get their own subd...">
+<meta property="og:description" content="Multi-Locale Setup Leaf supports building your site in multiple languages. The default locale is served at the root URL; other locales get their own subdirec...">
 <meta property="og:url" content="https://leaf.ophelios.com/">
 <meta property="og:image" content="https://leaf.ophelios.com/assets/images/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -33,7 +33,7 @@
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Setup · Zephyrus Leaf">
-<meta name="twitter:description" content="Multi-Locale Setup Leaf supports building your site in multiple languages. The default locale is served at the root URL, and other locales get their own subd...">
+<meta name="twitter:description" content="Multi-Locale Setup Leaf supports building your site in multiple languages. The default locale is served at the root URL; other locales get their own subdirec...">
 <meta name="twitter:image" content="https://leaf.ophelios.com/assets/images/og-image.png">
 <meta name="twitter:image:alt" content="Zephyrus Leaf: static sites, quietly crafted.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -252,11 +252,13 @@ tailwind.config = {
 <article class="docs-content">
     <div class="prose">
         <h1>Multi-Locale Setup</h1>
-<p>Leaf supports building your site in multiple languages. The default locale is served at the root URL, and other locales get their own subdirectory.</p>
-<h2 id="configuration"><a href="#configuration" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Configuration</h2>
-<p>Enable multi-locale in <code>config.yml</code>:</p>
+<p>Leaf supports building your site in multiple languages. The default locale is served at the root URL; other locales get their own subdirectory (<code>dist/fr/</code>, <code>dist/ar/</code>, etc.).</p>
+<p><strong>Scope:</strong> Leaf's multi-locale is <strong>string-level</strong>, not content-level. Template strings (nav labels, buttons, hero copy) translate via JSON files. Markdown pages under <code>content/</code> are built once per locale using the same files; the translation happens through <code>localize()</code> calls inside your templates.</p>
+<p>If you need per-language Markdown content, the common pattern is to gate sections in <code>config.yml</code> per locale and use branch logic in templates, or keep two separate Leaf sites under a shared domain. See the &quot;Per-locale content&quot; section below.</p>
+<h2 id="enable-multi-locale"><a href="#enable-multi-locale" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Enable multi-locale</h2>
+<p>Edit <code>config.yml</code>:</p>
 <pre><code class="language-yaml">localization:
-  locale: &quot;en&quot;                # Default locale (builds to root)
+  locale: &quot;en&quot;                # Default locale (builds to dist/)
   supported_locales:
     - &quot;en&quot;
     - &quot;fr&quot;
@@ -264,17 +266,20 @@ tailwind.config = {
   locale_path: &quot;locale&quot;       # Directory containing translation files
   timezone: &quot;America/Montreal&quot;
 </code></pre>
+<p>When <code>supported_locales</code> has more than one entry, <code>leaf build</code> (or <code>composer build</code>) switches to multi-locale mode automatically.</p>
 <h2 id="translation-files"><a href="#translation-files" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Translation files</h2>
-<p>Create JSON files for each locale:</p>
+<p><code>leaf init</code> scaffolds a <code>locale/</code> directory with an English starter:</p>
 <pre><code>locale/
   en/
-    strings.json
-  fr/
-    strings.json
-  ar/
-    strings.json
+    general.json
 </code></pre>
-<p>Example <code>locale/en/strings.json</code>:</p>
+<p>Add directories for every locale you declared:</p>
+<pre><code>locale/
+  en/general.json
+  fr/general.json
+  ar/general.json
+</code></pre>
+<p>Example <code>locale/en/general.json</code>:</p>
 <pre><code class="language-json">{
   &quot;nav&quot;: {
     &quot;home&quot;: &quot;Home&quot;,
@@ -286,7 +291,7 @@ tailwind.config = {
   }
 }
 </code></pre>
-<p>And <code>locale/fr/strings.json</code>:</p>
+<p>And <code>locale/fr/general.json</code>:</p>
 <pre><code class="language-json">{
   &quot;nav&quot;: {
     &quot;home&quot;: &quot;Accueil&quot;,
@@ -298,12 +303,14 @@ tailwind.config = {
   }
 }
 </code></pre>
+<p>File names other than <code>general.json</code> work too — the loader merges every JSON file in a locale directory into one namespace.</p>
 <h2 id="using-translations-in-templates"><a href="#using-translations-in-templates" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Using translations in templates</h2>
-<p>In Latte templates, use the <code>localize()</code> function:</p>
+<p>Drop <code>templates/</code> overrides that call <code>localize()</code>:</p>
 <pre><code class="language-latte">&lt;h1&gt;{localize('hero.title')}&lt;/h1&gt;
 &lt;p&gt;{localize('hero.subtitle')}&lt;/p&gt;
 </code></pre>
-<p>The <code>i18n()</code> function is an alias for <code>localize()</code>.</p>
+<p>The <code>i18n()</code> function is an alias.</p>
+<p>Missing keys fall back to the key itself, so an untranslated page still renders without crashing.</p>
 <h2 id="url-structure"><a href="#url-structure" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>URL structure</h2>
 <p>With English as the default locale:</p>
 <table>
@@ -332,7 +339,7 @@ tailwind.config = {
 </tr>
 </tbody>
 </table>
-<p>The default locale has <strong>no URL prefix</strong>. This gives cleaner URLs for your primary language and better SEO.</p>
+<p>The default locale has no URL prefix. This gives cleaner URLs for your primary language and better SEO.</p>
 <h2 id="template-variables"><a href="#template-variables" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Template variables</h2>
 <p>The <code>TranslationLatteExtension</code> injects these variables into every template:</p>
 <table>
@@ -347,7 +354,7 @@ tailwind.config = {
 <tr>
 <td><code>$currentLocale</code></td>
 <td>string</td>
-<td>Active locale code (&quot;en&quot;, &quot;fr&quot;, etc.)</td>
+<td>Active locale code (<code>en</code>, <code>fr</code>, etc.)</td>
 </tr>
 <tr>
 <td><code>$defaultLocale</code></td>
@@ -361,6 +368,27 @@ tailwind.config = {
 </tr>
 </tbody>
 </table>
+<p>Use them to render language switchers:</p>
+<pre><code class="language-latte">&lt;select onchange=&quot;location = this.value&quot;&gt;
+  {foreach $supportedLocales as $code}
+    &lt;option value=&quot;{$code === $defaultLocale ? '/' : '/' . $code . '/'}&quot;
+            {if $code === $currentLocale}selected{/if}&gt;{$code}&lt;/option&gt;
+  {/foreach}
+&lt;/select&gt;
+</code></pre>
+<h2 id="binary-cli-vs-composer"><a href="#binary-cli-vs-composer" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Binary CLI vs Composer</h2>
+<p>Both paths build multi-locale identically. <code>leaf build</code> reads <code>config.yml</code> and your <code>locale/</code> directory, then produces the per-locale subdirectories under <code>dist/</code>. Same for <code>composer build</code>.</p>
+<p>If you started from <code>leaf init</code> and removed the scaffolded <code>locale/</code> dir, recreate it:</p>
+<pre><code class="language-bash">mkdir -p locale/en
+echo '{}' &gt; locale/en/general.json
+</code></pre>
+<h2 id="per-locale-content-advanced"><a href="#per-locale-content-advanced" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Per-locale content (advanced)</h2>
+<p>If you need translated Markdown pages (not just template strings), Leaf doesn't offer a built-in mechanism today. Two workable patterns:</p>
+<ol>
+<li><strong>Branch on locale in the template.</strong> Keep one Markdown file; gate sections with <code>{if $currentLocale === 'fr'}...{/if}</code>. Fine for small amounts of translated prose.</li>
+<li><strong>Sibling project per locale.</strong> Run two Leaf sites (one per language) and front them with a shared domain + path rewrite at the CDN layer. Each site is monolingual under the hood.</li>
+</ol>
+<p>Native per-locale content is on the roadmap. Open an issue if you need it.</p>
 
     </div>
 
@@ -382,7 +410,7 @@ tailwind.config = {
         <h4 class="toc-title">On this page</h4>
         <ul class="toc-links">
             <li class="toc-item">
-                <a href="#configuration" class="toc-link">Configuration</a>
+                <a href="#enable-multi-locale" class="toc-link">Enable multi-locale</a>
             </li>
             <li class="toc-item">
                 <a href="#translation-files" class="toc-link">Translation files</a>
@@ -395,6 +423,12 @@ tailwind.config = {
             </li>
             <li class="toc-item">
                 <a href="#template-variables" class="toc-link">Template variables</a>
+            </li>
+            <li class="toc-item">
+                <a href="#binary-cli-vs-composer" class="toc-link">Binary CLI vs Composer</a>
+            </li>
+            <li class="toc-item">
+                <a href="#per-locale-content-advanced" class="toc-link">Per-locale content (advanced)</a>
             </li>
         </ul>
     </div>

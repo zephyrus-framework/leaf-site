@@ -206,13 +206,15 @@
         "title": "Setup",
         "section": "multi-locale",
         "url": "\/multi-locale\/setup",
-        "excerpt": "Multi-Locale Setup Leaf supports building your site in multiple languages. The default locale is served at the root URL, and other locales get their own subdirectory. #Configuration Enable multi-locale in config.yml: localization: locale: &quot;en&quot; # Default locale (builds to root) supported_lo...",
+        "excerpt": "Multi-Locale Setup Leaf supports building your site in multiple languages. The default locale is served at the root URL; other locales get their own subdirectory (dist\/fr\/, dist\/ar\/, etc.). Scope: Leaf's multi-locale is string-level, not content-level. Template strings (nav labels, buttons, hero cop...",
         "headings": [
-            "Configuration",
+            "Enable multi-locale",
             "Translation files",
             "Using translations in templates",
             "URL structure",
-            "Template variables"
+            "Template variables",
+            "Binary CLI vs Composer",
+            "Per-locale content (advanced)"
         ]
     },
     {
