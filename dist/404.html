@@ -4,12 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="leaf-base-url" content="">
+<link rel="icon" type="image/png" href="/assets/favicon/favicon-96x96.png" sizes="96x96">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg">
+<link rel="shortcut icon" href="/assets/favicon/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Zephyrus Leaf">
+<link rel="manifest" href="/assets/favicon/site.webmanifest">
 <meta name="robots" content="index, follow">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Page Not Found — My Project">
-<meta property="og:site_name" content="My Project">
+<meta property="og:title" content="Page Not Found · Zephyrus Leaf">
+<meta property="og:site_name" content="Zephyrus Leaf">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Page Not Found — My Project">
+<meta name="twitter:title" content="Page Not Found · Zephyrus Leaf">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -19,17 +25,17 @@ tailwind.config = {
     theme: {
         extend: {
             colors: {
-                deep: '#08080d',
-                surface: '#11111a',
-                elevated: '#1a1a27',
-                border: '#1e1e2e',
-                'border-accent': 'rgba(139, 92, 246, 0.3)',
-                body: '#d4d4d8',
-                bright: '#fafafa',
-                muted: '#52525b',
-                accent: '#8b5cf6',
-                'accent-light': '#a78bfa',
-                'accent-glow': 'rgba(139, 92, 246, 0.15)',
+                deep: 'var(--bg-deep)',
+                surface: 'var(--bg-surface)',
+                elevated: 'var(--bg-elevated)',
+                border: 'var(--border)',
+                'border-accent': 'var(--border-accent)',
+                body: 'var(--text)',
+                bright: 'var(--text-bright)',
+                muted: 'var(--text-muted)',
+                accent: 'var(--accent)',
+                'accent-light': 'var(--accent-light)',
+                'accent-glow': 'var(--accent-glow)',
             },
             fontFamily: {
                 body: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
@@ -41,7 +47,9 @@ tailwind.config = {
 </script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
 <link rel="stylesheet" href="/assets/css/app.css">
-    <title>Page Not Found</title>
+<script src="/assets/js/theme.js"></script>
+    <title>Page Not Found -- Build beautiful static sites</title>
+    <link rel="stylesheet" href="/assets/css/landing.css">
 <style>
     .error-container { min-height: calc(100vh - 4rem - 200px); display: flex; align-items: center; justify-content: center; }
     .error-code { font-size: 8rem; font-weight: 800; line-height: 1; background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
@@ -54,26 +62,7 @@ tailwind.config = {
     .error-link-secondary:hover { border-color: var(--border-accent); color: var(--text-bright); }
 </style>
 </head>
-<body class="bg-deep text-body antialiased font-body">
-<header class="site-nav">
-    <div class="nav-container">
-        <div class="nav-left">
-            <button class="nav-toggle" onclick="toggleNav()" type="button" aria-label="Toggle menu">
-                <svg class="nav-toggle-open" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
-                <svg class="nav-toggle-close" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" style="display:none"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-            </button>
-            <a href="/" class="nav-logo nav-logo-text">
-                <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8 6 L24 6 L16 16 L24 26 L8 26 L16 16 Z" fill="currentColor" opacity="0.9"></path>
-                </svg>
-                <span>My Project</span>
-            </a>
-        </div>
-        <nav class="nav-links">
-            <span class="version-badge">1.0.0</span>
-        </nav>
-    </div>
-</header>
+<body>
 <div class="error-container">
     <div class="text-center">
         <div class="error-code">404</div>
@@ -87,18 +76,12 @@ tailwind.config = {
         </div>
     </div>
 </div>
-<footer class="site-footer">
-    <div class="max-w-7xl mx-auto px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted">
-        <div class="flex items-center gap-6">
-            <span>MIT License</span>
-        </div>
-    </div>
-</footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup-templating.min.js"></script>
+    <script src="/assets/js/landing.js"></script>
 </body>
 </html>

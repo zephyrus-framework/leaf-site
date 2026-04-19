@@ -1,15 +1,211 @@
 [
     {
+        "title": "Core Classes",
+        "section": "api-reference",
+        "url": "\/api-reference\/classes",
+        "excerpt": "Core Classes Complete API reference for all classes in zephyrus-framework\/leaf-core. #Leaf\\Kernel Abstract application bootstrap. Extend this in your Application class. abstract class Kernel { \/\/ Override for dependency injection protected function createController(string $class): object; \/\/ Overrid...",
+        "headings": [
+            "Leaf\\Kernel",
+            "Leaf\\BuildCommand",
+            "Leaf\\StaticSiteBuilder",
+            "Leaf\\StaticBuildResult",
+            "Leaf\\Content\\ContentLoader",
+            "Leaf\\Content\\MarkdownParser",
+            "Leaf\\Content\\ParsedMarkdown",
+            "Leaf\\Seo\\SitemapGenerator",
+            "Leaf\\Seo\\RobotsGenerator",
+            "Leaf\\DevRouter",
+            "Leaf\\Config\\LeafConfig",
+            "Leaf\\Localization\\TranslationLatteExtension"
+        ]
+    },
+    {
+        "title": "BuildCommand",
+        "section": "building-sites",
+        "url": "\/building-sites\/build-command",
+        "excerpt": "BuildCommand Leaf\\BuildCommand is the standard build pipeline. It handles everything from rendering pages to generating SEO files. #Basic usage \/\/ bin\/build.php define('ROOT_DIR', dirname(__DIR__)); require ROOT_DIR . '\/vendor\/autoload.php'; use App\\Models\\Core\\Application; use Leaf\\BuildCommand; $a...",
+        "headings": [
+            "Basic usage",
+            "What the pipeline does",
+            "Adding custom paths",
+            "Excluding paths",
+            "Post-build hooks",
+            "Build output"
+        ]
+    },
+    {
+        "title": "Deployment",
+        "section": "building-sites",
+        "url": "\/building-sites\/deployment",
+        "excerpt": "Deployment After running composer build, the dist\/ directory contains a fully static site ready for deployment. #Supported platforms The output works with any static hosting provider: Netlify -- connect your repo, set build command to composer build, publish directory to dist\/ Vercel -- same approac...",
+        "headings": [
+            "Supported platforms",
+            "Committing dist\/",
+            "Production URL",
+            "Custom domain",
+            "404 handling"
+        ]
+    },
+    {
+        "title": "StaticSiteBuilder",
+        "section": "building-sites",
+        "url": "\/building-sites\/static-builder",
+        "excerpt": "StaticSiteBuilder Leaf\\StaticSiteBuilder is the lower-level class that renders routes into static HTML. Most projects use BuildCommand which wraps this class, but you can use it directly for full control. #Direct usage use Leaf\\StaticSiteBuilder; [$application, $router] = $app-&gt;buildForStaticGene...",
+        "headings": [
+            "Direct usage",
+            "Multi-locale builds",
+            "StaticBuildResult",
+            "Asset handling"
+        ]
+    },
+    {
+        "title": "Reference",
+        "section": "configuration",
+        "url": "\/configuration\/reference",
+        "excerpt": "Configuration Reference All configuration lives in config.yml at the project root. #Full example application: environment: !env APP_ENV, dev debug: !env APP_DEBUG, true localization: locale: &quot;en&quot; supported_locales: - &quot;en&quot; - &quot;fr&quot; locale_path: &quot;locale&quot; timezone:...",
+        "headings": [
+            "Full example",
+            "Leaf section fields",
+            "Environment variables",
+            "Localization section",
+            "Render section",
+            "Template globals"
+        ]
+    },
+    {
+        "title": "Pages",
+        "section": "content-system",
+        "url": "\/content-system\/pages",
+        "excerpt": "Pages Documentation pages are Markdown files with YAML front matter. They live in the content\/ directory, organized into sections. #File structure content\/ getting-started\/ introduction.md # \/getting-started\/introduction installation.md # \/getting-started\/installation guides\/ deployment.md # \/guides...",
+        "headings": [
+            "File structure",
+            "Front matter",
+            "Markdown features",
+            "Basic formatting",
+            "Code blocks",
+            "Tables",
+            "Heading permalinks",
+            "Images",
+            "Inline code"
+        ]
+    },
+    {
+        "title": "Search",
+        "section": "content-system",
+        "url": "\/content-system\/search",
+        "excerpt": "Search Leaf includes a full-text search system that works entirely client-side. No server or external service required. #How it works During the build, SearchIndexBuilder scans all Markdown files and generates a search.json file The search modal loads this JSON on first open Searches run locally in ...",
+        "headings": [
+            "How it works",
+            "Using search",
+            "Search index",
+            "Scoring",
+            "Keyboard shortcuts"
+        ]
+    },
+    {
+        "title": "Sections",
+        "section": "content-system",
+        "url": "\/content-system\/sections",
+        "excerpt": "Sections Sections are directories under content\/ that group related pages. They appear as groups in the sidebar navigation. #Defining sections Register sections in config.yml to control their order and display names: leaf: sections: getting-started: &quot;Getting Started&quot; guides: &quot;Guides&q...",
+        "headings": [
+            "Defining sections",
+            "Section order",
+            "Page order within sections",
+            "Navigation",
+            "Adding a new section"
+        ]
+    },
+    {
+        "title": "Claude Code Skills",
+        "section": "getting-started",
+        "url": "\/getting-started\/claude-skills",
+        "excerpt": "Claude Code Skills If you use Claude Code, you can install skills that give Claude deep knowledge of both Zephyrus and Leaf. This helps Claude assist you with building Leaf projects without guessing APIs or conventions. #Installation Clone the skills into your Claude Code skills directory: git clone...",
+        "headings": [
+            "Installation",
+            "What the skills know",
+            "Zephyrus skill",
+            "Leaf skill",
+            "Updating",
+            "Per-project installation"
+        ]
+    },
+    {
+        "title": "Installation",
+        "section": "getting-started",
+        "url": "\/getting-started\/installation",
+        "excerpt": "Installation #Requirements PHP 8.4+ with intl and mbstring extensions Composer 2.x Node.js (optional, only for OG image generation) #Create a new project composer create-project zephyrus-framework\/leaf my-docs cd my-docs This gives you a ready-to-use documentation site with sample content, dark\/ligh...",
+        "headings": [
+            "Requirements",
+            "Create a new project",
+            "Development server",
+            "Build for production",
+            "Using in an existing project"
+        ]
+    },
+    {
         "title": "Introduction",
         "section": "getting-started",
         "url": "\/getting-started\/introduction",
-        "excerpt": "Introduction Welcome to your new documentation site, powered by Zephyrus Leaf. #What is Leaf? Leaf is a static content site template built on the Zephyrus PHP framework. It gives you: Markdown-powered pages with front matter, GFM tables, and syntax highlighting Live-reload during development — edit ...",
+        "excerpt": "Introduction Zephyrus Leaf is a static site generator built on the Zephyrus PHP Framework. It turns your Markdown content and Latte templates into a fast, deployable static site with one command. #What you get Markdown-powered pages with front matter, GFM tables, and syntax highlighting Live-reload ...",
         "headings": [
-            "What is Leaf?",
+            "What you get",
+            "Architecture",
             "Quick start",
-            "Adding pages",
-            "Adding sections",
             "Next steps"
+        ]
+    },
+    {
+        "title": "Project Structure",
+        "section": "getting-started",
+        "url": "\/getting-started\/project-structure",
+        "excerpt": "Project Structure A Leaf project follows a clear convention: my-docs\/ app\/ Controllers\/ DocsController.php # Routes and page rendering Models\/Core\/ Application.php # Extends Leaf\\Kernel Views\/ layouts\/docs.latte # HTML wrapper for docs pages docs\/page.latte # Individual doc page template partials\/ #...",
+        "headings": [
+            "Key files",
+            "config.yml",
+            "app\/Models\/Core\/Application.php",
+            "bin\/build.php",
+            "content\/",
+            "dist\/"
+        ]
+    },
+    {
+        "title": "Setup",
+        "section": "multi-locale",
+        "url": "\/multi-locale\/setup",
+        "excerpt": "Multi-Locale Setup Leaf supports building your site in multiple languages. The default locale is served at the root URL, and other locales get their own subdirectory. #Configuration Enable multi-locale in config.yml: localization: locale: &quot;en&quot; # Default locale (builds to root) supported_lo...",
+        "headings": [
+            "Configuration",
+            "Translation files",
+            "Using translations in templates",
+            "URL structure",
+            "Template variables"
+        ]
+    },
+    {
+        "title": "Templates & Links",
+        "section": "multi-locale",
+        "url": "\/multi-locale\/templates",
+        "excerpt": "Locale-Aware Templates When building a multi-locale site, templates need to handle locale-aware URLs and language switching. #Locale-aware links The default locale has no URL prefix. Other locales use \/{locale}\/: {var $dl = $defaultLocale ?? 'en'} {var $localePrefix = ($currentLocale ?? $dl) === $dl...",
+        "headings": [
+            "Locale-aware links",
+            "Language switcher",
+            "Path preservation on language switch",
+            "Canonical and hreflang tags"
+        ]
+    },
+    {
+        "title": "Sitemap & Robots",
+        "section": "seo",
+        "url": "\/seo\/sitemap-robots",
+        "excerpt": "Sitemap &amp; Robots Leaf automatically generates sitemap.xml and robots.txt when a production_url is configured. #Enable SEO generation Set the production URL in config.yml: leaf: production_url: &quot;https:\/\/docs.example.com&quot; On the next build, the pipeline generates: dist\/sitemap.xml -- XML...",
+        "headings": [
+            "Enable SEO generation",
+            "Sitemap format",
+            "Single-locale",
+            "Multi-locale",
+            "Robots.txt",
+            "Submitting to search engines",
+            "Custom generation"
         ]
     }
 ]

@@ -4,15 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="leaf-base-url" content="">
-<meta name="description" content="Introduction Welcome to your new documentation site, powered by Zephyrus Leaf. #What is Leaf? Leaf is a static content site template built on the Zephyrus PH...">
+<link rel="icon" type="image/png" href="/assets/favicon/favicon-96x96.png" sizes="96x96">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg">
+<link rel="shortcut icon" href="/assets/favicon/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Zephyrus Leaf">
+<link rel="manifest" href="/assets/favicon/site.webmanifest">
+<meta name="description" content="Introduction Zephyrus Leaf is a static site generator built on the Zephyrus PHP Framework. It turns your Markdown content and Latte templates into a fast, de...">
 <meta name="robots" content="index, follow">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Introduction — My Project">
-<meta property="og:description" content="Introduction Welcome to your new documentation site, powered by Zephyrus Leaf. #What is Leaf? Leaf is a static content site template built on the Zephyrus PH...">
-<meta property="og:site_name" content="My Project">
+<meta property="og:title" content="Introduction · Zephyrus Leaf">
+<meta property="og:description" content="Introduction Zephyrus Leaf is a static site generator built on the Zephyrus PHP Framework. It turns your Markdown content and Latte templates into a fast, de...">
+<meta property="og:site_name" content="Zephyrus Leaf">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Introduction — My Project">
-<meta name="twitter:description" content="Introduction Welcome to your new documentation site, powered by Zephyrus Leaf. #What is Leaf? Leaf is a static content site template built on the Zephyrus PH...">
+<meta name="twitter:title" content="Introduction · Zephyrus Leaf">
+<meta name="twitter:description" content="Introduction Zephyrus Leaf is a static site generator built on the Zephyrus PHP Framework. It turns your Markdown content and Latte templates into a fast, de...">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -22,17 +28,17 @@ tailwind.config = {
     theme: {
         extend: {
             colors: {
-                deep: '#08080d',
-                surface: '#11111a',
-                elevated: '#1a1a27',
-                border: '#1e1e2e',
-                'border-accent': 'rgba(139, 92, 246, 0.3)',
-                body: '#d4d4d8',
-                bright: '#fafafa',
-                muted: '#52525b',
-                accent: '#8b5cf6',
-                'accent-light': '#a78bfa',
-                'accent-glow': 'rgba(139, 92, 246, 0.15)',
+                deep: 'var(--bg-deep)',
+                surface: 'var(--bg-surface)',
+                elevated: 'var(--bg-elevated)',
+                border: 'var(--border)',
+                'border-accent': 'var(--border-accent)',
+                body: 'var(--text)',
+                bright: 'var(--text-bright)',
+                muted: 'var(--text-muted)',
+                accent: 'var(--accent)',
+                'accent-light': 'var(--accent-light)',
+                'accent-glow': 'var(--accent-glow)',
             },
             fontFamily: {
                 body: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
@@ -44,7 +50,8 @@ tailwind.config = {
 </script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
 <link rel="stylesheet" href="/assets/css/app.css">
-    <title>Introduction — My Project</title>
+<script src="/assets/js/theme.js"></script>
+    <title>Introduction · Zephyrus Leaf</title>
 </head>
 <body class="bg-deep text-body antialiased font-body">
 <header class="site-nav">
@@ -55,10 +62,8 @@ tailwind.config = {
                 <svg class="nav-toggle-close" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" style="display:none"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
             </button>
             <a href="/" class="nav-logo nav-logo-text">
-                <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8 6 L24 6 L16 16 L24 26 L8 26 L16 16 Z" fill="currentColor" opacity="0.9"></path>
-                </svg>
-                <span>My Project</span>
+                <img src="/assets/images/logo.png" alt="" class="nav-logo-img" width="32" height="30" aria-hidden="true">
+                <span>Zephyrus Leaf</span>
             </a>
         </div>
         <nav class="nav-links">
@@ -66,6 +71,13 @@ tailwind.config = {
                 <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
                 <span>Search</span>
                 <kbd>Ctrl+K</kbd>
+            </button>
+            <a href="https://github.com/ophelios-studio/zephyrus-leaf-core" class="nav-link" target="_blank" rel="noopener">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+                GitHub
+            </a>
+            <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle theme">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
             </button>
             <span class="version-badge">1.0.0</span>
         </nav>
@@ -85,14 +97,129 @@ tailwind.config = {
                         Introduction
                     </a>
                 </li>
+                <li>
+                    <a href="/getting-started/installation"
+                       class="sidebar-link">
+                        Installation
+                    </a>
+                </li>
+                <li>
+                    <a href="/getting-started/project-structure"
+                       class="sidebar-link">
+                        Project Structure
+                    </a>
+                </li>
+                <li>
+                    <a href="/getting-started/claude-skills"
+                       class="sidebar-link">
+                        Claude Code Skills
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Building Sites</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/building-sites/build-command"
+                       class="sidebar-link">
+                        BuildCommand
+                    </a>
+                </li>
+                <li>
+                    <a href="/building-sites/static-builder"
+                       class="sidebar-link">
+                        StaticSiteBuilder
+                    </a>
+                </li>
+                <li>
+                    <a href="/building-sites/deployment"
+                       class="sidebar-link">
+                        Deployment
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Content</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/content-system/pages"
+                       class="sidebar-link">
+                        Pages
+                    </a>
+                </li>
+                <li>
+                    <a href="/content-system/sections"
+                       class="sidebar-link">
+                        Sections
+                    </a>
+                </li>
+                <li>
+                    <a href="/content-system/search"
+                       class="sidebar-link">
+                        Search
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Multi-Locale</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/multi-locale/setup"
+                       class="sidebar-link">
+                        Setup
+                    </a>
+                </li>
+                <li>
+                    <a href="/multi-locale/templates"
+                       class="sidebar-link">
+                        Templates &amp; Links
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">SEO</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/seo/sitemap-robots"
+                       class="sidebar-link">
+                        Sitemap &amp; Robots
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">Configuration</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/configuration/reference"
+                       class="sidebar-link">
+                        Reference
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-group">
+            <h3 class="sidebar-group-title">API Reference</h3>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="/api-reference/classes"
+                       class="sidebar-link">
+                        Core Classes
+                    </a>
+                </li>
             </ul>
         </div>
     </nav>
     <div class="sidebar-footer">
         <div class="sidebar-mobile-links">
+            <a href="https://github.com/ophelios-studio/zephyrus-leaf-core" class="sidebar-footer-link" target="_blank" rel="noopener">GitHub</a>
         </div>
         <div class="sidebar-copyright">
-            &copy; 2026 
+            &copy; 2026 Ophelios
         </div>
         <div class="sidebar-powered">
             Powered by <a href="https://github.com/dadajuice/zephyrus-leaf" target="_blank" rel="noopener">Zephyrus Leaf</a>
@@ -103,50 +230,64 @@ tailwind.config = {
 <article class="docs-content">
     <div class="prose">
         <h1>Introduction</h1>
-<p>Welcome to your new documentation site, powered by <strong>Zephyrus Leaf</strong>.</p>
-<h2 id="what-is-leaf"><a href="#what-is-leaf" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>What is Leaf?</h2>
-<p>Leaf is a static content site template built on the <a href="https://github.com/dadajuice/zephyrus2">Zephyrus</a> PHP framework. It gives you:</p>
+<p>Zephyrus Leaf is a static site generator built on the <a href="https://github.com/ophelios-studio/zephyrus">Zephyrus PHP Framework</a>. It turns your Markdown content and Latte templates into a fast, deployable static site with one command.</p>
+<h2 id="what-you-get"><a href="#what-you-get" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>What you get</h2>
 <ul>
 <li><strong>Markdown-powered pages</strong> with front matter, GFM tables, and syntax highlighting</li>
-<li><strong>Live-reload</strong> during development — edit a file, see changes instantly</li>
-<li><strong>One-command static builds</strong> — run <code>composer build</code> to generate a <code>dist/</code> folder ready for GitHub Pages</li>
-<li><strong>Full-text search</strong> — client-side fuzzy search across all your pages</li>
-<li><strong>Dark theme</strong> — a clean, professional design out of the box</li>
+<li><strong>Live-reload</strong> during development -- edit a file, see changes instantly</li>
+<li><strong>One-command static builds</strong> -- run <code>composer build</code> to generate a <code>dist/</code> folder</li>
+<li><strong>Full-text search</strong> -- client-side fuzzy search across all your pages</li>
+<li><strong>Multi-locale support</strong> -- build in multiple languages with the default locale at root</li>
+<li><strong>SEO out of the box</strong> -- automatic sitemap.xml, robots.txt, and hreflang tags</li>
+<li><strong>Light and dark themes</strong> -- system-preference aware with a toggle</li>
+<li><strong>Built on Zephyrus</strong> -- the full framework is available if you need controllers, middleware, or custom logic</li>
 </ul>
+<h2 id="architecture"><a href="#architecture" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Architecture</h2>
+<p>Leaf has two packages:</p>
+<table>
+<thead>
+<tr>
+<th>Package</th>
+<th>Type</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>zephyrus-framework/leaf-core</code></td>
+<td>Library</td>
+<td>Static builder, content parser, SEO generators, Kernel</td>
+</tr>
+<tr>
+<td><code>zephyrus-framework/leaf</code></td>
+<td>Template</td>
+<td>Views, controllers, config, assets, sample content</td>
+</tr>
+</tbody>
+</table>
+<p>When you create a project from the template, you get a working documentation site. The core library handles the build pipeline. When the core is updated, all projects benefit via <code>composer update</code>.</p>
 <h2 id="quick-start"><a href="#quick-start" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Quick start</h2>
-<p>Edit this file at <code>content/getting-started/introduction.md</code> to start writing your own docs.</p>
-<h3 id="adding-pages"><a href="#adding-pages" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Adding pages</h3>
-<p>Create a new <code>.md</code> file in any section folder under <code>content/</code>:</p>
-<pre><code>content/
-  getting-started/
-    introduction.md    &lt;- you are here
-    installation.md    &lt;- add more pages
-  guides/
-    deployment.md
+<pre><code class="language-bash">composer create-project zephyrus-framework/leaf my-docs
+cd my-docs
+composer dev
 </code></pre>
-<p>Each file needs front matter with at least a <code>title</code> and <code>order</code>:</p>
-<pre><code class="language-yaml">---
-title: Installation
-order: 2
----
-</code></pre>
-<h3 id="adding-sections"><a href="#adding-sections" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Adding sections</h3>
-<p>Add new sections in <code>config.yml</code> under the <code>leaf.sections</code> key:</p>
-<pre><code class="language-yaml">leaf:
-  sections:
-    getting-started: &quot;Getting Started&quot;
-    guides: &quot;Guides&quot;
-</code></pre>
-<p>The order in the YAML file determines the sidebar order.</p>
+<p>Open <code>http://localhost:8080</code> and you'll see your documentation site with live-reload enabled.</p>
 <h2 id="next-steps"><a href="#next-steps" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Next steps</h2>
 <ul>
-<li>Edit <code>config.yml</code> to set your project name, version, and GitHub URL</li>
-<li>Add your logo to <code>public/assets/images/</code> and update <code>app/Views/partials/nav.latte</code></li>
-<li>Run <code>composer build</code> to generate the static site</li>
+<li><a href="/getting-started/installation">Installation</a> -- detailed setup instructions</li>
+<li><a href="/getting-started/project-structure">Project Structure</a> -- understand the file layout</li>
 </ul>
 
     </div>
 
+    <nav class="docs-pagination">
+        <div></div>
+
+        <a href="/getting-started/installation" class="pagination-link pagination-next">
+            <span class="pagination-label">Next &rarr;</span>
+            <span class="pagination-title">Installation</span>
+        </a>
+    </nav>
 </article>
         </main>
 <aside class="docs-toc">
@@ -154,16 +295,13 @@ order: 2
         <h4 class="toc-title">On this page</h4>
         <ul class="toc-links">
             <li class="toc-item">
-                <a href="#what-is-leaf" class="toc-link">What is Leaf?</a>
+                <a href="#what-you-get" class="toc-link">What you get</a>
+            </li>
+            <li class="toc-item">
+                <a href="#architecture" class="toc-link">Architecture</a>
             </li>
             <li class="toc-item">
                 <a href="#quick-start" class="toc-link">Quick start</a>
-            </li>
-            <li class="toc-item toc-item-sub">
-                <a href="#adding-pages" class="toc-link">Adding pages</a>
-            </li>
-            <li class="toc-item toc-item-sub">
-                <a href="#adding-sections" class="toc-link">Adding sections</a>
             </li>
             <li class="toc-item">
                 <a href="#next-steps" class="toc-link">Next steps</a>
