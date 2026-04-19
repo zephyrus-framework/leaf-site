@@ -1,183 +1,127 @@
-# Zephyrus Leaf
+# leaf.ophelios.com
 
-A static documentation site generator powered by [Zephyrus](https://github.com/zephyrus-framework/core). Write your docs in Markdown, develop with live-reload, and build to static HTML with a single command.
+The landing and documentation site for [Zephyrus Leaf](https://github.com/ophelios-studio/zephyrus-leaf-cli), published at [leaf.ophelios.com](https://leaf.ophelios.com).
 
-## Features
+This repo also serves the install script at [leaf.ophelios.com/install.sh](https://leaf.ophelios.com/install.sh), which is how users install the `leaf` CLI.
 
-- **Markdown content** -- YAML frontmatter, GFM tables, fenced code blocks, heading permalinks
-- **Automatic navigation** -- Sidebar and table of contents generated from your content structure
-- **Full-text search** -- Client-side fuzzy search across all pages, no server required
-- **Syntax highlighting** -- Prism.js with support for PHP, JavaScript, TypeScript, Bash, YAML, JSON, SQL, and Solidity
-- **Dark theme** -- Electric violet on deep black. Single theme, no toggle needed
-- **One-command build** -- `composer build` generates a `dist/` folder ready for GitHub Pages, Netlify, or any static host
-- **Live-reload** -- Edit a file, see changes instantly during development
-- **Mobile responsive** -- Hamburger menu with slide-in sidebar drawer on small screens
+## Dogfooding
+
+This site is itself a Binary CLI tier Leaf project. It has no `app/`, `bin/`, `vendor/`, or `composer.json`. Everything user-authored lives in `content/`, `templates/`, `public/`, and `config.yml`. The site rebuilds with the same `leaf` CLI it teaches people to install.
 
 ## Requirements
 
-- PHP 8.4+
-- Composer
-- `ext-intl` and `ext-mbstring`
+- The `leaf` CLI. Install with:
+  ```sh
+  curl -fsSL https://leaf.ophelios.com/install.sh | sh
+  ```
+- System PHP 8.4+ with `intl`, `mbstring`, `sodium`, `pdo` extensions (the `leaf` binary shells out to it until FrankenPHP static link lands).
+- Google Chrome (only for regenerating the OG social card via `scripts/generate-og-image.sh`).
 
-## Quick Start
-
-```bash
-# Clone or create a new project
-composer create-project dadajuice/zephyrus-leaf my-docs
-
-cd my-docs
-
-# Start the dev server with live-reload
-composer dev
-```
-
-Open [http://localhost:8080](http://localhost:8080) in your browser.
-
-## Project Structure
+## Layout
 
 ```
-my-docs/
-├── config.yml              # Site identity, sections, and build settings
-├── content/                # Markdown documentation pages
-│   └── getting-started/
-│       └── introduction.md
-├── app/
-│   ├── Controllers/        # Route handlers
-│   ├── Models/Core/        # Application bootstrap
-│   └── Views/              # Latte templates
-│       ├── docs/page.latte
-│       ├── layouts/
-│       └── partials/       # Nav, sidebar, footer, search, TOC
+.
+├── content/                         # Markdown docs, organized by section
+├── templates/                       # Overrides for the bundled theme
+│   ├── landing.latte                # Custom landing with binary/composer tabs
+│   ├── layouts/docs.latte           # Custom docs wrapper
+│   ├── layouts/landing.latte        # Custom landing wrapper
+│   ├── partials/head.latte          # SEO meta + OG tags
+│   └── partials/nav.latte           # Site nav (brand, theme toggle)
 ├── public/
-│   ├── assets/
-│   │   ├── css/app.css     # Full theme CSS
-│   │   ├── js/             # Copy-code, sidebar, search scripts
-│   │   └── images/         # Your logo and assets
-│   └── index.php
-├── src/                    # Leaf library classes
-├── bin/
-│   ├── router.php          # Dev server entry point
-│   └── build.php           # Static site builder
-└── dist/                   # Built static output (after composer build)
+│   ├── assets/css/                  # app.css (docs) + landing.css
+│   ├── assets/js/                   # landing.js + search/sidebar/theme/copy-code
+│   ├── assets/images/               # logo, hero, screenshots, og-image
+│   ├── assets/favicon/              # favicon + PWA manifest
+│   └── install.sh                   # served at leaf.ophelios.com/install.sh
+├── resources/og-templates/site.html # source for the OG social card
+├── scripts/generate-og-image.sh     # renders the OG card via headless Chrome
+├── config.yml                       # site identity, sections, production URL
+└── dist/                            # build output (committed; DO serves this)
 ```
 
-## Writing Content
+## Commands
 
-### Pages
+```sh
+leaf dev                              # live preview at http://localhost:8080
+leaf build                            # rebuild dist/
+scripts/generate-og-image.sh          # regenerate the OG social card
+```
 
-Create Markdown files in `content/{section}/{page}.md`. Each file needs YAML frontmatter:
+That's the whole workflow. No `composer install`, no PHP server to run manually.
+
+## Writing content
+
+Pages live under `content/{section}/{slug}.md`. Each file needs YAML front matter:
 
 ```yaml
 ---
 title: Installation
 order: 2
+description: Optional; used in meta description and OG tags
 ---
-
-# Installation
-
-Your content here...
 ```
 
-The `title` appears in the sidebar. The `order` controls the sort order within a section (lower numbers come first).
+- `title` — sidebar label and `<title>` tag
+- `order` — position in the sidebar (lower = higher)
+- `description` — auto-generated from the content if omitted
 
-### Sections
-
-Define sections and their display names in `config.yml`:
+Sections (the top-level folders under `content/`) are defined in `config.yml`:
 
 ```yaml
 leaf:
   sections:
     getting-started: "Getting Started"
-    guides: "Guides"
+    building-sites: "Building Sites"
+    content-system: "Content"
+    multi-locale: "Multi-locale"
+    seo: "SEO"
+    configuration: "Configuration"
     api-reference: "API Reference"
 ```
 
-The order in the YAML file determines the sidebar order. Create a matching directory under `content/` for each section.
+The YAML order drives the sidebar order.
 
-### Cross-references
+## Customizing the theme
 
-Link between pages using absolute paths:
+Drop any file under `templates/` at the same relative path as the bundled view to override it. Examples:
 
-```markdown
-See the [Installation](/getting-started/installation) guide.
-```
+- `templates/partials/nav.latte` — overrides the site nav
+- `templates/layouts/docs.latte` — overrides the docs page wrapper
+- `templates/landing.latte` — overrides the home page
 
-## Configuration
+The `leaf` binary merges your templates on top of the bundled theme at build time. You can use `.latte`, `.php`, or `.html` (HTML is passed through, no interpolation).
 
-All site settings live in the `leaf:` section of `config.yml`:
+Styles live in `public/assets/css/`:
 
-```yaml
-leaf:
-  name: "My Project"             # Displayed in the navbar
-  version: "1.0.0"               # Version badge in the navbar
-  description: "A short tagline" # Used in meta tags
-  github_url: ""                 # GitHub link in the navbar (leave empty to hide)
-  content_path: "content"        # Where markdown files live
-  sections:                      # Sidebar sections (order matters)
-    getting-started: "Getting Started"
-  output_path: "dist"            # Static build output directory
-  base_url: ""                   # Base URL for production (e.g. "/docs")
-  author: "Your Name"            # Displayed in the sidebar footer
-  author_url: ""                 # Author link
-  license: "MIT"                 # License badge in the footer
-```
-
-## Customization
-
-### Logo
-
-Replace the default SVG icon in `app/Views/partials/nav.latte` with your own logo. For an image logo, use:
-
-```html
-<a href="/" class="nav-logo">
-    <img src="/assets/images/your-logo.svg" alt="My Project" class="nav-logo-img">
-</a>
-```
-
-### Theme
-
-The design system is defined as CSS custom properties in `public/assets/css/app.css`:
-
-| Token | Default | Usage |
-|---|---|---|
-| `--bg-deep` | `#08080d` | Page background |
-| `--bg-surface` | `#11111a` | Sidebar, cards, code blocks |
-| `--bg-elevated` | `#1a1a27` | Hover states |
-| `--accent` | `#8b5cf6` | Primary accent (violet) |
-| `--accent-light` | `#a78bfa` | Hover accent |
-| `--text` | `#d4d4d8` | Body text |
-| `--text-bright` | `#fafafa` | Headings |
-| `--font-body` | Inter | Body font |
-| `--font-mono` | JetBrains Mono | Code font |
-
-### Syntax Highlighting
-
-Additional Prism.js languages can be added in `app/Views/layouts/docs.latte`:
-
-```html
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-rust.min.js"></script>
-```
-
-## Commands
-
-```bash
-composer dev     # Start dev server with live-reload (localhost:8080)
-composer build   # Generate static HTML to dist/
-composer test    # Run tests
-```
+- `app.css` — docs shell, sidebar, TOC, page content
+- `landing.css` — landing-page-only tokens and components (scoped to `.landing`)
 
 ## Deployment
 
-After running `composer build`, the `dist/` directory contains a fully self-contained static site. Deploy it to any static hosting:
+`dist/` is committed to `main`. DigitalOcean's App Platform auto-deploys on push. The site is served as pure static files; no runtime PHP in production.
 
-**GitHub Pages** -- Push `dist/` to a `gh-pages` branch or configure GitHub Pages to serve from `dist/` on `main`.
+Before committing, rebuild:
 
-**Netlify / Vercel** -- Point the build output directory to `dist/`.
+```sh
+leaf build
+git add dist/ <your other changes>
+git commit -m "feat: <change>"
+git push
+```
 
-**Manual** -- Upload the contents of `dist/` to any web server.
+## OG image
 
-The build also generates a `404.html` at the root of `dist/` for GitHub Pages compatibility.
+`scripts/generate-og-image.sh` launches headless Chrome against `resources/og-templates/site.html` and writes the 1200×630 PNG to `public/assets/images/og-image.png`. Run it whenever the landing copy, logo, or hero changes. The generated file is committed; no runtime generation.
+
+## Related repos
+
+| Repo | Purpose |
+|------|---------|
+| [`zephyrus-leaf-cli`](https://github.com/ophelios-studio/zephyrus-leaf-cli) | The `leaf` Go binary that builds this site |
+| [`zephyrus-leaf`](https://github.com/ophelios-studio/zephyrus-leaf) | Composer template (scaffolds embedded in the CLI) |
+| [`zephyrus-leaf-core`](https://github.com/ophelios-studio/zephyrus-leaf-core) | PHP library powering both tiers |
 
 ## License
 
-MIT
+MIT.
