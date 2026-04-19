@@ -23,18 +23,20 @@
             </div>
         </div>
     </header>
+    <div class="landing-nav-spacer"></div>
 
     {* ═══════════════════════ HERO ═══════════════════════ *}
     <section class="hero-section">
         <div class="hero-bg">
             <img src="/assets/images/hero-light.jpg" alt="" class="hero-img hero-img-light">
             <img src="/assets/images/hero-dark.jpg" alt="" class="hero-img hero-img-dark">
+            <div class="hero-grid"></div>
             <div class="hero-fade"></div>
         </div>
         <div class="hero-content">
             <div class="hero-badge">Open Source Static Site Generator</div>
-            <h1 class="hero-title">Build beautiful<br>static sites.</h1>
-            <p class="hero-subtitle">Markdown-powered documentation, multi-locale support, SEO out of the box.<br>One command to build. Deploy anywhere.</p>
+            <h1 class="hero-title">Your docs,<br>built to last.</h1>
+            <p class="hero-subtitle">Static sites from Markdown. Multi-locale, SEO, search, and light/dark themes included. One command to build, deploy anywhere.</p>
             <div class="hero-actions">
                 <a href="/getting-started/installation" class="hero-btn hero-btn-primary">Get Started</a>
                 <div class="hero-install">
@@ -118,6 +120,7 @@
                     <span class="code-file-dot"></span>
                     <span class="code-file-name">bin/build.php</span>
                 </div>
+                {syntax off}
                 <pre class="language-php"><code class="language-php">$app = new Application();
 $command = new BuildCommand($app);
 
@@ -130,6 +133,7 @@ $command->onPostBuild(function ($result, $outputDir) {
 });
 
 exit($command->run());</code></pre>
+                {syntax latte}
             </div>
         </div>
     </section>
