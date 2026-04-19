@@ -46,9 +46,11 @@ Drop Latte/PHP/HTML files here to override the bundled defaults. The binary merg
 
 You can use any of the three formats. Pick what fits:
 
-- **Latte** for layouts, partials, blocks
+- **[Latte](https://latte.nette.org/)** for layouts, partials, blocks
 - **PHP** (`<?= $leafName ?>`) if you prefer raw PHP views
 - **HTML** if you want a static page without template variables (the binary copies it through)
+
+To add standalone URLs like `/about` or `/contact`, drop Latte files under `templates/pages/`. See [Custom Pages](/content-system/custom-pages).
 
 ### `config.yml`
 

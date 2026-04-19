@@ -183,6 +183,12 @@ tailwind.config = {
                         Search
                     </a>
                 </li>
+                <li>
+                    <a href="/content-system/custom-pages"
+                       class="sidebar-link">
+                        Custom Pages
+                    </a>
+                </li>
             </ul>
         </div>
         <div class="sidebar-group">
@@ -282,10 +288,11 @@ tailwind.config = {
 </ul>
 <p>You can use any of the three formats. Pick what fits:</p>
 <ul>
-<li><strong>Latte</strong> for layouts, partials, blocks</li>
+<li><strong><a href="https://latte.nette.org/">Latte</a></strong> for layouts, partials, blocks</li>
 <li><strong>PHP</strong> (<code>&lt;?= $leafName ?&gt;</code>) if you prefer raw PHP views</li>
 <li><strong>HTML</strong> if you want a static page without template variables (the binary copies it through)</li>
 </ul>
+<p>To add standalone URLs like <code>/about</code> or <code>/contact</code>, drop Latte files under <code>templates/pages/</code>. See <a href="/content-system/custom-pages">Custom Pages</a>.</p>
 <h3 id="configyml"><a href="#configyml" class="heading-permalink" aria-hidden="true" title="Permalink">#</a><code>config.yml</code></h3>
 <p>Site settings: name, version, sections, production URL. See <a href="/configuration/reference">Configuration Reference</a>.</p>
 <h3 id="dist"><a href="#dist" class="heading-permalink" aria-hidden="true" title="Permalink">#</a><code>dist/</code></h3>

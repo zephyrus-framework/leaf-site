@@ -5,7 +5,7 @@ order: 1
 
 # Introduction
 
-Zephyrus Leaf is a static site generator for documentation, landings, and blogs. You author Markdown (and optionally templates in Latte, PHP, or plain HTML). Leaf produces deployable static HTML in one command.
+Zephyrus Leaf is a static site generator for documentation, landings, and blogs. You author Markdown (and optionally templates in [Latte](https://latte.nette.org/), PHP, or plain HTML). Leaf produces deployable static HTML in one command.
 
 There are two ways to use Leaf. Both share the same core library.
 

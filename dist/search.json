@@ -77,6 +77,21 @@
         ]
     },
     {
+        "title": "Custom Pages",
+        "section": "content-system",
+        "url": "\/content-system\/custom-pages",
+        "excerpt": "Custom Pages Docs and blog posts live under content\/ as Markdown. When you need a standalone page at a specific URL (\/about, \/contact, \/pricing, whatever), drop a Latte file under templates\/pages\/ and Leaf will render it. templates\/ pages\/ about.latte → \/about\/ contact.latte → \/contact\/ pricing.latt...",
+        "headings": [
+            "A minimal page",
+            "Template variables",
+            "Naming rules",
+            "Layouts and partials",
+            "Binary CLI vs Composer",
+            "Using PHP or HTML instead of Latte",
+            "When to eject"
+        ]
+    },
+    {
         "title": "Pages",
         "section": "content-system",
         "url": "\/content-system\/pages",
