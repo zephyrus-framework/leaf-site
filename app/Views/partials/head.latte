@@ -1,21 +1,50 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="leaf-base-url" content="{$leafBaseUrl}">
+
+{* Favicons & PWA *}
 <link rel="icon" type="image/png" href="{$leafBaseUrl}/assets/favicon/favicon-96x96.png" sizes="96x96">
 <link rel="icon" type="image/svg+xml" href="{$leafBaseUrl}/assets/favicon/favicon.svg">
 <link rel="shortcut icon" href="{$leafBaseUrl}/assets/favicon/favicon.ico">
 <link rel="apple-touch-icon" sizes="180x180" href="{$leafBaseUrl}/assets/favicon/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-title" content="{$leafName ?? 'Leaf'}">
 <link rel="manifest" href="{$leafBaseUrl}/assets/favicon/site.webmanifest">
-<meta n:if="($pageDescription ?? '') !== ''" name="description" content="{$pageDescription}">
+<meta name="theme-color" content="#08080d">
+
+{* Core SEO *}
+{var $metaDesc = ($pageDescription ?? '') !== '' ? $pageDescription : ($leafDescription ?? '')}
+{var $pageTitle = $title ?? ''}
+{var $siteName = $leafName ?? ''}
+{var $metaTitle = ($pageTitle === '' || $pageTitle === $siteName) ? $siteName : ($pageTitle . ' · ' . $siteName)}
+{var $siteUrl = ($leafProductionUrl ?? '') !== '' ? $leafProductionUrl : $leafBaseUrl}
+{var $pagePath = $requestPath ?? '/'}
+{var $canonicalUrl = $siteUrl . ($pagePath === '/' ? '/' : rtrim($pagePath, '/') . '/')}
+{var $ogImageUrl = $siteUrl . '/assets/images/og-image.png'}
+
+<title>{$metaTitle}</title>
+<meta name="description" content="{$metaDesc}">
+<meta name="author" content="{$leafAuthor ?? ''}">
 <meta name="robots" content="index, follow">
-<meta property="og:type" content="article">
-<meta property="og:title" content="{$title ?? ''} · {$leafName ?? ''}">
-<meta n:if="($pageDescription ?? '') !== ''" property="og:description" content="{$pageDescription}">
+<link rel="canonical" href="{$canonicalUrl}">
+
+{* Open Graph *}
+<meta property="og:type" content="{($pagePath ?? '/') === '/' ? 'website' : 'article'}">
 <meta property="og:site_name" content="{$leafName ?? ''}">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="{$title ?? ''} · {$leafName ?? ''}">
-<meta n:if="($pageDescription ?? '') !== ''" name="twitter:description" content="{$pageDescription}">
+<meta property="og:title" content="{$metaTitle}">
+<meta property="og:description" content="{$metaDesc}">
+<meta property="og:url" content="{$canonicalUrl}">
+<meta property="og:image" content="{$ogImageUrl}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{$leafName ?? 'Zephyrus Leaf'}: static sites, quietly crafted.">
+<meta property="og:locale" content="{$currentLocale ?? 'en'}">
+
+{* Twitter / X *}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{$metaTitle}">
+<meta name="twitter:description" content="{$metaDesc}">
+<meta name="twitter:image" content="{$ogImageUrl}">
+<meta name="twitter:image:alt" content="{$leafName ?? 'Zephyrus Leaf'}: static sites, quietly crafted.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
