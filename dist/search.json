@@ -237,15 +237,18 @@
         "title": "Setup",
         "section": "multi-locale",
         "url": "\/multi-locale\/setup",
-        "excerpt": "Multi-Locale Setup Leaf supports building your site in multiple languages. The default locale is served at the root URL; other locales get their own subdirectory (dist\/fr\/, dist\/ar\/, etc.). Scope: Leaf's multi-locale is string-level, not content-level. Template strings (nav labels, buttons, hero cop...",
+        "excerpt": "Multi-Locale Setup Leaf builds your site in multiple languages. The default locale goes to the root URL; other locales get their own subdirectory (dist\/fr\/, dist\/ar\/, etc.). Two layers of translation work together: String-level — UI chrome (nav labels, button text, search placeholder) translated via...",
         "headings": [
             "Enable multi-locale",
-            "Translation files",
-            "Using translations in templates",
+            "String-level translations",
+            "Content-level translations",
             "URL structure",
             "Template variables",
-            "Binary CLI vs Composer",
-            "Per-locale content (advanced)"
+            "Language switcher",
+            "Hreflang and canonical",
+            "SEO and fallback marking",
+            "Sidebar differences across locales",
+            "Single-locale sites"
         ]
     },
     {
@@ -256,7 +259,7 @@
         "headings": [
             "Locale-aware links",
             "Language switcher",
-            "Path preservation on language switch",
+            "If you're rendering your own nav",
             "Canonical and hreflang tags"
         ]
     },

@@ -25,45 +25,34 @@ For French, they become `/fr/`, `/fr/blog`, `/fr/about`.
 
 ## Language switcher
 
-A typical language switcher in the nav:
+The bundled nav renders a language switcher **automatically** when `supported_locales` has more than one entry. It sits next to the theme toggle, uses a dropdown with each locale's code, and its hrefs are rewritten client-side so clicking a locale preserves the current path.
+
+Nothing required from you in the default case: drop `fr` (or any second locale) into your `supported_locales` and the switcher appears.
+
+### If you're rendering your own nav
+
+If your `templates/partials/nav.latte` is a full custom override and you removed the bundled switcher block, render it back yourself:
 
 ```latte
-{var $dl = $defaultLocale ?? 'en'}
-
-{foreach $supportedLocales as $loc}
-    {if $loc === $currentLocale}
-        <span class="current">{$loc|upper}</span>
-    {else}
-        <a href="{$loc === $dl ? '/' : '/' . $loc . '/'}"
-           class="lang-switch"
-           data-locale="{$loc}"
-           data-default="{$dl}">
-            {$loc|upper}
-        </a>
-    {/if}
-{/foreach}
+{if count($supportedLocales ?? []) > 1}
+<div class="lang-switcher" data-current="{$currentLocale}" data-default="{$defaultLocale}">
+    <button type="button" class="lang-switcher-button" onclick="toggleLangSwitcher(this)">
+        {$currentLocale|upper}
+    </button>
+    <ul class="lang-switcher-menu" hidden>
+        {foreach $supportedLocales as $loc}
+        <li>
+            <a class="lang-switcher-option{if $loc === $currentLocale} is-active{/if}"
+               data-locale="{$loc}"
+               href="{$loc === $defaultLocale ? '/' : '/' . $loc . '/'}">{$loc|upper}</a>
+        </li>
+        {/foreach}
+    </ul>
+</div>
+{/if}
 ```
 
-## Path preservation on language switch
-
-When switching languages, you typically want to stay on the same page. Add this JavaScript:
-
-```javascript
-var langSwitches = document.querySelectorAll('.lang-switch[data-locale]');
-if (langSwitches.length) {
-    var path = window.location.pathname;
-    var defaultLang = langSwitches[0].getAttribute('data-default') || 'en';
-    var stripped = path.replace(/^\/(en|fr|ar)(\/|$)/, '/');
-    langSwitches.forEach(function (link) {
-        var loc = link.getAttribute('data-locale');
-        if (loc === defaultLang) {
-            link.href = stripped === '/' ? '/' : stripped;
-        } else {
-            link.href = '/' + loc + (stripped === '/' ? '/' : stripped);
-        }
-    });
-}
-```
+The client-side helper at `/assets/js/lang-switcher.js` handles dropdown open/close, outside-click dismissal, and path preservation. It runs automatically as long as the script tag is included (the bundled layouts include it).
 
 ## Canonical and hreflang tags
 

@@ -277,39 +277,28 @@ tailwind.config = {
 <p>For the default locale (English), links become <code>/</code>, <code>/blog</code>, <code>/about</code>.
 For French, they become <code>/fr/</code>, <code>/fr/blog</code>, <code>/fr/about</code>.</p>
 <h2 id="language-switcher"><a href="#language-switcher" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Language switcher</h2>
-<p>A typical language switcher in the nav:</p>
-<pre><code class="language-latte">{var $dl = $defaultLocale ?? 'en'}
-
-{foreach $supportedLocales as $loc}
-    {if $loc === $currentLocale}
-        &lt;span class=&quot;current&quot;&gt;{$loc|upper}&lt;/span&gt;
-    {else}
-        &lt;a href=&quot;{$loc === $dl ? '/' : '/' . $loc . '/'}&quot;
-           class=&quot;lang-switch&quot;
-           data-locale=&quot;{$loc}&quot;
-           data-default=&quot;{$dl}&quot;&gt;
-            {$loc|upper}
-        &lt;/a&gt;
-    {/if}
-{/foreach}
+<p>The bundled nav renders a language switcher <strong>automatically</strong> when <code>supported_locales</code> has more than one entry. It sits next to the theme toggle, uses a dropdown with each locale's code, and its hrefs are rewritten client-side so clicking a locale preserves the current path.</p>
+<p>Nothing required from you in the default case: drop <code>fr</code> (or any second locale) into your <code>supported_locales</code> and the switcher appears.</p>
+<h3 id="if-youre-rendering-your-own-nav"><a href="#if-youre-rendering-your-own-nav" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>If you're rendering your own nav</h3>
+<p>If your <code>templates/partials/nav.latte</code> is a full custom override and you removed the bundled switcher block, render it back yourself:</p>
+<pre><code class="language-latte">{if count($supportedLocales ?? []) &gt; 1}
+&lt;div class=&quot;lang-switcher&quot; data-current=&quot;{$currentLocale}&quot; data-default=&quot;{$defaultLocale}&quot;&gt;
+    &lt;button type=&quot;button&quot; class=&quot;lang-switcher-button&quot; onclick=&quot;toggleLangSwitcher(this)&quot;&gt;
+        {$currentLocale|upper}
+    &lt;/button&gt;
+    &lt;ul class=&quot;lang-switcher-menu&quot; hidden&gt;
+        {foreach $supportedLocales as $loc}
+        &lt;li&gt;
+            &lt;a class=&quot;lang-switcher-option{if $loc === $currentLocale} is-active{/if}&quot;
+               data-locale=&quot;{$loc}&quot;
+               href=&quot;{$loc === $defaultLocale ? '/' : '/' . $loc . '/'}&quot;&gt;{$loc|upper}&lt;/a&gt;
+        &lt;/li&gt;
+        {/foreach}
+    &lt;/ul&gt;
+&lt;/div&gt;
+{/if}
 </code></pre>
-<h2 id="path-preservation-on-language-switch"><a href="#path-preservation-on-language-switch" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Path preservation on language switch</h2>
-<p>When switching languages, you typically want to stay on the same page. Add this JavaScript:</p>
-<pre><code class="language-javascript">var langSwitches = document.querySelectorAll('.lang-switch[data-locale]');
-if (langSwitches.length) {
-    var path = window.location.pathname;
-    var defaultLang = langSwitches[0].getAttribute('data-default') || 'en';
-    var stripped = path.replace(/^\/(en|fr|ar)(\/|$)/, '/');
-    langSwitches.forEach(function (link) {
-        var loc = link.getAttribute('data-locale');
-        if (loc === defaultLang) {
-            link.href = stripped === '/' ? '/' : stripped;
-        } else {
-            link.href = '/' + loc + (stripped === '/' ? '/' : stripped);
-        }
-    });
-}
-</code></pre>
+<p>The client-side helper at <code>/assets/js/lang-switcher.js</code> handles dropdown open/close, outside-click dismissal, and path preservation. It runs automatically as long as the script tag is included (the bundled layouts include it).</p>
 <h2 id="canonical-and-hreflang-tags"><a href="#canonical-and-hreflang-tags" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Canonical and hreflang tags</h2>
 <p>For SEO, each page should declare its canonical URL and alternate language versions. Pass <code>requestPath</code> from your controller:</p>
 <pre><code class="language-php">return $this-&gt;render('page', [
@@ -355,8 +344,8 @@ if (langSwitches.length) {
             <li class="toc-item">
                 <a href="#language-switcher" class="toc-link">Language switcher</a>
             </li>
-            <li class="toc-item">
-                <a href="#path-preservation-on-language-switch" class="toc-link">Path preservation on language switch</a>
+            <li class="toc-item toc-item-sub">
+                <a href="#if-youre-rendering-your-own-nav" class="toc-link">If you're rendering your own nav</a>
             </li>
             <li class="toc-item">
                 <a href="#canonical-and-hreflang-tags" class="toc-link">Canonical and hreflang tags</a>

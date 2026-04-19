@@ -5,11 +5,14 @@ order: 1
 
 # Multi-Locale Setup
 
-Leaf supports building your site in multiple languages. The default locale is served at the root URL; other locales get their own subdirectory (`dist/fr/`, `dist/ar/`, etc.).
+Leaf builds your site in multiple languages. The default locale goes to the root URL; other locales get their own subdirectory (`dist/fr/`, `dist/ar/`, etc.).
 
-**Scope:** Leaf's multi-locale is **string-level**, not content-level. Template strings (nav labels, buttons, hero copy) translate via JSON files. Markdown pages under `content/` are built once per locale using the same files; the translation happens through `localize()` calls inside your templates.
+Two layers of translation work together:
 
-If you need per-language Markdown content, the common pattern is to gate sections in `config.yml` per locale and use branch logic in templates, or keep two separate Leaf sites under a shared domain. See the "Per-locale content" section below.
+1. **String-level** — UI chrome (nav labels, button text, search placeholder) translated via JSON files and `{localize('key')}` in templates.
+2. **Content-level** — Markdown pages under `content/<locale>/...` that override the default-locale pages with translations. Untranslated pages fall back to the default.
+
+Both are enabled by the same config and work in both tiers (Binary CLI, Composer).
 
 ## Enable multi-locale
 
@@ -22,23 +25,22 @@ localization:
     - "en"
     - "fr"
     - "ar"
-  locale_path: "locale"       # Directory containing translation files
+  locale_path: "locale"       # Directory containing translation JSON files
   timezone: "America/Montreal"
 ```
 
-When `supported_locales` has more than one entry, `leaf build` (or `composer build`) switches to multi-locale mode automatically.
+With more than one entry in `supported_locales`, `leaf build` switches to multi-locale mode automatically: it iterates every locale, invoking the full pipeline once per locale, writing each into its own output subdirectory. A language switcher also appears in the nav automatically (no markup needed from you).
 
-## Translation files
+## String-level translations
 
 `leaf init` scaffolds a `locale/` directory with an English starter:
 
 ```
 locale/
-  en/
-    general.json
+  en/general.json
 ```
 
-Add directories for every locale you declared:
+Add a directory per locale:
 
 ```
 locale/
@@ -54,10 +56,6 @@ Example `locale/en/general.json`:
   "nav": {
     "home": "Home",
     "docs": "Documentation"
-  },
-  "hero": {
-    "title": "Build beautiful static sites",
-    "subtitle": "One command. Any language."
   }
 }
 ```
@@ -69,28 +67,52 @@ And `locale/fr/general.json`:
   "nav": {
     "home": "Accueil",
     "docs": "Documentation"
-  },
-  "hero": {
-    "title": "Construisez de beaux sites statiques",
-    "subtitle": "Une commande. N'importe quelle langue."
   }
 }
 ```
 
-File names other than `general.json` work too — the loader merges every JSON file in a locale directory into one namespace.
+Any file under a locale directory is merged into one namespace, so you can split long translation files however you like (`general.json`, `legal.json`, `marketing.json`).
 
-## Using translations in templates
-
-Drop `templates/` overrides that call `localize()`:
+Use them in templates:
 
 ```latte
-<h1>{localize('hero.title')}</h1>
-<p>{localize('hero.subtitle')}</p>
+<a href="/">{localize('nav.home')}</a>
+<a href="/docs">{localize('nav.docs')}</a>
 ```
 
-The `i18n()` function is an alias.
+`i18n()` is an alias for `localize()`. Missing keys fall back to the key itself, so the page still renders.
 
-Missing keys fall back to the key itself, so an untranslated page still renders without crashing.
+## Content-level translations
+
+Markdown pages live under `content/`. To translate them, drop a locale-scoped folder inside:
+
+```
+content/
+  getting-started/
+    intro.md              # default (English)
+    installation.md       # default only, not translated yet
+  fr/
+    getting-started/
+      intro.md            # French override
+  ar/
+    getting-started/
+      intro.md            # Arabic override
+    concepts/
+      overview.md         # Arabic-only section
+```
+
+Resolution rules per build:
+
+| URL | Source file |
+|-----|-------------|
+| `/getting-started/intro/` (en) | `content/getting-started/intro.md` |
+| `/fr/getting-started/intro/` | `content/fr/getting-started/intro.md` |
+| `/fr/getting-started/installation/` | falls back to `content/getting-started/installation.md` (not translated) |
+| `/ar/concepts/overview/` | `content/ar/concepts/overview.md` (Arabic-only section) |
+
+The default locale only sees files at the root of `content/` — it will not render locale-only pages (so `/concepts/overview/` is a 404 in English). Non-default locales see the union.
+
+The **search index** is generated per locale. `/search.json` only returns English/fallback entries; `/fr/search.json` returns the translated pages plus English fallbacks. Fuzzy search stays fast and locale-relevant.
 
 ## URL structure
 
@@ -102,11 +124,11 @@ With English as the default locale:
 | French | `https://example.com/fr/` | `dist/fr/` |
 | Arabic | `https://example.com/ar/` | `dist/ar/` |
 
-The default locale has no URL prefix. This gives cleaner URLs for your primary language and better SEO.
+The default locale has no URL prefix. Cleaner URLs for the primary language, better SEO, zero-click landing for most visitors.
 
 ## Template variables
 
-The `TranslationLatteExtension` injects these variables into every template:
+Every template receives:
 
 | Variable | Type | Description |
 |----------|------|-------------|
@@ -114,33 +136,26 @@ The `TranslationLatteExtension` injects these variables into every template:
 | `$defaultLocale` | string | Default locale from config |
 | `$supportedLocales` | array | All supported locale codes |
 
-Use them to render language switchers:
+Use them for language switchers, hreflang tags, and locale-prefixed links.
 
-```latte
-<select onchange="location = this.value">
-  {foreach $supportedLocales as $code}
-    <option value="{$code === $defaultLocale ? '/' : '/' . $code . '/'}"
-            {if $code === $currentLocale}selected{/if}>{$code}</option>
-  {/foreach}
-</select>
-```
+## Language switcher
 
-## Binary CLI vs Composer
+The bundled nav automatically renders a language switcher when `supported_locales` has more than one entry. It sits next to the theme toggle, shows the current locale code, and its dropdown links preserve the current path when switching (so clicking `FR` from `/guides/auth/` takes you to `/fr/guides/auth/`, not the French landing).
 
-Both paths build multi-locale identically. `leaf build` reads `config.yml` and your `locale/` directory, then produces the per-locale subdirectories under `dist/`. Same for `composer build`.
+If you customise the nav via `templates/partials/nav.latte`, copy the switcher block from the bundled template or render your own. The JavaScript helper is loaded automatically from `/assets/js/lang-switcher.js`.
 
-If you started from `leaf init` and removed the scaffolded `locale/` dir, recreate it:
+## Hreflang and canonical
 
-```bash
-mkdir -p locale/en
-echo '{}' > locale/en/general.json
-```
+When `production_url` is set, the build generates `sitemap.xml` with `xhtml:link` hreflang alternates for every page. For canonical and `<link rel="alternate" hreflang=...>` tags inside page templates, thread `$requestPath` through from controllers (Composer tier) or rely on the bundled head partial (both tiers).
 
-## Per-locale content (advanced)
+## SEO and fallback marking
 
-If you need translated Markdown pages (not just template strings), Leaf doesn't offer a built-in mechanism today. Two workable patterns:
+A page that falls back to the default locale gets the same markup as a translated page. If you want to mark partially-translated pages visually (a small "English" badge, say), check `$currentLocale` in the template and add a conditional banner — the loader doesn't attach metadata to fallback pages.
 
-1. **Branch on locale in the template.** Keep one Markdown file; gate sections with `{if $currentLocale === 'fr'}...{/if}`. Fine for small amounts of translated prose.
-2. **Sibling project per locale.** Run two Leaf sites (one per language) and front them with a shared domain + path rewrite at the CDN layer. Each site is monolingual under the hood.
+## Sidebar differences across locales
 
-Native per-locale content is on the roadmap. Open an issue if you need it.
+Because content-level translations can add locale-only sections, the sidebar can legitimately differ between locales. That's the point. The bundled sidebar renders what's available for the current locale (union of default + locale-scoped files). Configured section order from `config.yml` is respected; locale-only sections slot in at their configured position or alphabetically after configured sections.
+
+## Single-locale sites
+
+If you want one language, leave `supported_locales` at a single entry (or omit the section entirely). `leaf build` stays in single-locale mode: no subdirectories, no language switcher, no per-locale search index. Everything works as the lean static pipeline you'd expect.

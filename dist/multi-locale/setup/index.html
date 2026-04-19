@@ -15,7 +15,7 @@
 
 
 <title>Setup · Zephyrus Leaf</title>
-<meta name="description" content="Multi-Locale Setup Leaf supports building your site in multiple languages. The default locale is served at the root URL; other locales get their own subdirec...">
+<meta name="description" content="Multi-Locale Setup Leaf builds your site in multiple languages. The default locale goes to the root URL; other locales get their own subdirectory (dist/fr/, ...">
 <meta name="author" content="Ophelios">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://leaf.ophelios.com/">
@@ -23,7 +23,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Zephyrus Leaf">
 <meta property="og:title" content="Setup · Zephyrus Leaf">
-<meta property="og:description" content="Multi-Locale Setup Leaf supports building your site in multiple languages. The default locale is served at the root URL; other locales get their own subdirec...">
+<meta property="og:description" content="Multi-Locale Setup Leaf builds your site in multiple languages. The default locale goes to the root URL; other locales get their own subdirectory (dist/fr/, ...">
 <meta property="og:url" content="https://leaf.ophelios.com/">
 <meta property="og:image" content="https://leaf.ophelios.com/assets/images/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -33,7 +33,7 @@
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Setup · Zephyrus Leaf">
-<meta name="twitter:description" content="Multi-Locale Setup Leaf supports building your site in multiple languages. The default locale is served at the root URL; other locales get their own subdirec...">
+<meta name="twitter:description" content="Multi-Locale Setup Leaf builds your site in multiple languages. The default locale goes to the root URL; other locales get their own subdirectory (dist/fr/, ...">
 <meta name="twitter:image" content="https://leaf.ophelios.com/assets/images/og-image.png">
 <meta name="twitter:image:alt" content="Zephyrus Leaf: static sites, quietly crafted.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -264,9 +264,13 @@ tailwind.config = {
 <article class="docs-content">
     <div class="prose">
         <h1>Multi-Locale Setup</h1>
-<p>Leaf supports building your site in multiple languages. The default locale is served at the root URL; other locales get their own subdirectory (<code>dist/fr/</code>, <code>dist/ar/</code>, etc.).</p>
-<p><strong>Scope:</strong> Leaf's multi-locale is <strong>string-level</strong>, not content-level. Template strings (nav labels, buttons, hero copy) translate via JSON files. Markdown pages under <code>content/</code> are built once per locale using the same files; the translation happens through <code>localize()</code> calls inside your templates.</p>
-<p>If you need per-language Markdown content, the common pattern is to gate sections in <code>config.yml</code> per locale and use branch logic in templates, or keep two separate Leaf sites under a shared domain. See the &quot;Per-locale content&quot; section below.</p>
+<p>Leaf builds your site in multiple languages. The default locale goes to the root URL; other locales get their own subdirectory (<code>dist/fr/</code>, <code>dist/ar/</code>, etc.).</p>
+<p>Two layers of translation work together:</p>
+<ol>
+<li><strong>String-level</strong> — UI chrome (nav labels, button text, search placeholder) translated via JSON files and <code>{localize('key')}</code> in templates.</li>
+<li><strong>Content-level</strong> — Markdown pages under <code>content/&lt;locale&gt;/...</code> that override the default-locale pages with translations. Untranslated pages fall back to the default.</li>
+</ol>
+<p>Both are enabled by the same config and work in both tiers (Binary CLI, Composer).</p>
 <h2 id="enable-multi-locale"><a href="#enable-multi-locale" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Enable multi-locale</h2>
 <p>Edit <code>config.yml</code>:</p>
 <pre><code class="language-yaml">localization:
@@ -275,17 +279,16 @@ tailwind.config = {
     - &quot;en&quot;
     - &quot;fr&quot;
     - &quot;ar&quot;
-  locale_path: &quot;locale&quot;       # Directory containing translation files
+  locale_path: &quot;locale&quot;       # Directory containing translation JSON files
   timezone: &quot;America/Montreal&quot;
 </code></pre>
-<p>When <code>supported_locales</code> has more than one entry, <code>leaf build</code> (or <code>composer build</code>) switches to multi-locale mode automatically.</p>
-<h2 id="translation-files"><a href="#translation-files" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Translation files</h2>
+<p>With more than one entry in <code>supported_locales</code>, <code>leaf build</code> switches to multi-locale mode automatically: it iterates every locale, invoking the full pipeline once per locale, writing each into its own output subdirectory. A language switcher also appears in the nav automatically (no markup needed from you).</p>
+<h2 id="string-level-translations"><a href="#string-level-translations" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>String-level translations</h2>
 <p><code>leaf init</code> scaffolds a <code>locale/</code> directory with an English starter:</p>
 <pre><code>locale/
-  en/
-    general.json
+  en/general.json
 </code></pre>
-<p>Add directories for every locale you declared:</p>
+<p>Add a directory per locale:</p>
 <pre><code>locale/
   en/general.json
   fr/general.json
@@ -296,10 +299,6 @@ tailwind.config = {
   &quot;nav&quot;: {
     &quot;home&quot;: &quot;Home&quot;,
     &quot;docs&quot;: &quot;Documentation&quot;
-  },
-  &quot;hero&quot;: {
-    &quot;title&quot;: &quot;Build beautiful static sites&quot;,
-    &quot;subtitle&quot;: &quot;One command. Any language.&quot;
   }
 }
 </code></pre>
@@ -308,21 +307,59 @@ tailwind.config = {
   &quot;nav&quot;: {
     &quot;home&quot;: &quot;Accueil&quot;,
     &quot;docs&quot;: &quot;Documentation&quot;
-  },
-  &quot;hero&quot;: {
-    &quot;title&quot;: &quot;Construisez de beaux sites statiques&quot;,
-    &quot;subtitle&quot;: &quot;Une commande. N'importe quelle langue.&quot;
   }
 }
 </code></pre>
-<p>File names other than <code>general.json</code> work too — the loader merges every JSON file in a locale directory into one namespace.</p>
-<h2 id="using-translations-in-templates"><a href="#using-translations-in-templates" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Using translations in templates</h2>
-<p>Drop <code>templates/</code> overrides that call <code>localize()</code>:</p>
-<pre><code class="language-latte">&lt;h1&gt;{localize('hero.title')}&lt;/h1&gt;
-&lt;p&gt;{localize('hero.subtitle')}&lt;/p&gt;
+<p>Any file under a locale directory is merged into one namespace, so you can split long translation files however you like (<code>general.json</code>, <code>legal.json</code>, <code>marketing.json</code>).</p>
+<p>Use them in templates:</p>
+<pre><code class="language-latte">&lt;a href=&quot;/&quot;&gt;{localize('nav.home')}&lt;/a&gt;
+&lt;a href=&quot;/docs&quot;&gt;{localize('nav.docs')}&lt;/a&gt;
 </code></pre>
-<p>The <code>i18n()</code> function is an alias.</p>
-<p>Missing keys fall back to the key itself, so an untranslated page still renders without crashing.</p>
+<p><code>i18n()</code> is an alias for <code>localize()</code>. Missing keys fall back to the key itself, so the page still renders.</p>
+<h2 id="content-level-translations"><a href="#content-level-translations" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Content-level translations</h2>
+<p>Markdown pages live under <code>content/</code>. To translate them, drop a locale-scoped folder inside:</p>
+<pre><code>content/
+  getting-started/
+    intro.md              # default (English)
+    installation.md       # default only, not translated yet
+  fr/
+    getting-started/
+      intro.md            # French override
+  ar/
+    getting-started/
+      intro.md            # Arabic override
+    concepts/
+      overview.md         # Arabic-only section
+</code></pre>
+<p>Resolution rules per build:</p>
+<table>
+<thead>
+<tr>
+<th>URL</th>
+<th>Source file</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/getting-started/intro/</code> (en)</td>
+<td><code>content/getting-started/intro.md</code></td>
+</tr>
+<tr>
+<td><code>/fr/getting-started/intro/</code></td>
+<td><code>content/fr/getting-started/intro.md</code></td>
+</tr>
+<tr>
+<td><code>/fr/getting-started/installation/</code></td>
+<td>falls back to <code>content/getting-started/installation.md</code> (not translated)</td>
+</tr>
+<tr>
+<td><code>/ar/concepts/overview/</code></td>
+<td><code>content/ar/concepts/overview.md</code> (Arabic-only section)</td>
+</tr>
+</tbody>
+</table>
+<p>The default locale only sees files at the root of <code>content/</code> — it will not render locale-only pages (so <code>/concepts/overview/</code> is a 404 in English). Non-default locales see the union.</p>
+<p>The <strong>search index</strong> is generated per locale. <code>/search.json</code> only returns English/fallback entries; <code>/fr/search.json</code> returns the translated pages plus English fallbacks. Fuzzy search stays fast and locale-relevant.</p>
 <h2 id="url-structure"><a href="#url-structure" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>URL structure</h2>
 <p>With English as the default locale:</p>
 <table>
@@ -351,9 +388,9 @@ tailwind.config = {
 </tr>
 </tbody>
 </table>
-<p>The default locale has no URL prefix. This gives cleaner URLs for your primary language and better SEO.</p>
+<p>The default locale has no URL prefix. Cleaner URLs for the primary language, better SEO, zero-click landing for most visitors.</p>
 <h2 id="template-variables"><a href="#template-variables" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Template variables</h2>
-<p>The <code>TranslationLatteExtension</code> injects these variables into every template:</p>
+<p>Every template receives:</p>
 <table>
 <thead>
 <tr>
@@ -380,27 +417,18 @@ tailwind.config = {
 </tr>
 </tbody>
 </table>
-<p>Use them to render language switchers:</p>
-<pre><code class="language-latte">&lt;select onchange=&quot;location = this.value&quot;&gt;
-  {foreach $supportedLocales as $code}
-    &lt;option value=&quot;{$code === $defaultLocale ? '/' : '/' . $code . '/'}&quot;
-            {if $code === $currentLocale}selected{/if}&gt;{$code}&lt;/option&gt;
-  {/foreach}
-&lt;/select&gt;
-</code></pre>
-<h2 id="binary-cli-vs-composer"><a href="#binary-cli-vs-composer" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Binary CLI vs Composer</h2>
-<p>Both paths build multi-locale identically. <code>leaf build</code> reads <code>config.yml</code> and your <code>locale/</code> directory, then produces the per-locale subdirectories under <code>dist/</code>. Same for <code>composer build</code>.</p>
-<p>If you started from <code>leaf init</code> and removed the scaffolded <code>locale/</code> dir, recreate it:</p>
-<pre><code class="language-bash">mkdir -p locale/en
-echo '{}' &gt; locale/en/general.json
-</code></pre>
-<h2 id="per-locale-content-advanced"><a href="#per-locale-content-advanced" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Per-locale content (advanced)</h2>
-<p>If you need translated Markdown pages (not just template strings), Leaf doesn't offer a built-in mechanism today. Two workable patterns:</p>
-<ol>
-<li><strong>Branch on locale in the template.</strong> Keep one Markdown file; gate sections with <code>{if $currentLocale === 'fr'}...{/if}</code>. Fine for small amounts of translated prose.</li>
-<li><strong>Sibling project per locale.</strong> Run two Leaf sites (one per language) and front them with a shared domain + path rewrite at the CDN layer. Each site is monolingual under the hood.</li>
-</ol>
-<p>Native per-locale content is on the roadmap. Open an issue if you need it.</p>
+<p>Use them for language switchers, hreflang tags, and locale-prefixed links.</p>
+<h2 id="language-switcher"><a href="#language-switcher" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Language switcher</h2>
+<p>The bundled nav automatically renders a language switcher when <code>supported_locales</code> has more than one entry. It sits next to the theme toggle, shows the current locale code, and its dropdown links preserve the current path when switching (so clicking <code>FR</code> from <code>/guides/auth/</code> takes you to <code>/fr/guides/auth/</code>, not the French landing).</p>
+<p>If you customise the nav via <code>templates/partials/nav.latte</code>, copy the switcher block from the bundled template or render your own. The JavaScript helper is loaded automatically from <code>/assets/js/lang-switcher.js</code>.</p>
+<h2 id="hreflang-and-canonical"><a href="#hreflang-and-canonical" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Hreflang and canonical</h2>
+<p>When <code>production_url</code> is set, the build generates <code>sitemap.xml</code> with <code>xhtml:link</code> hreflang alternates for every page. For canonical and <code>&lt;link rel=&quot;alternate&quot; hreflang=...&gt;</code> tags inside page templates, thread <code>$requestPath</code> through from controllers (Composer tier) or rely on the bundled head partial (both tiers).</p>
+<h2 id="seo-and-fallback-marking"><a href="#seo-and-fallback-marking" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>SEO and fallback marking</h2>
+<p>A page that falls back to the default locale gets the same markup as a translated page. If you want to mark partially-translated pages visually (a small &quot;English&quot; badge, say), check <code>$currentLocale</code> in the template and add a conditional banner — the loader doesn't attach metadata to fallback pages.</p>
+<h2 id="sidebar-differences-across-locales"><a href="#sidebar-differences-across-locales" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Sidebar differences across locales</h2>
+<p>Because content-level translations can add locale-only sections, the sidebar can legitimately differ between locales. That's the point. The bundled sidebar renders what's available for the current locale (union of default + locale-scoped files). Configured section order from <code>config.yml</code> is respected; locale-only sections slot in at their configured position or alphabetically after configured sections.</p>
+<h2 id="single-locale-sites"><a href="#single-locale-sites" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Single-locale sites</h2>
+<p>If you want one language, leave <code>supported_locales</code> at a single entry (or omit the section entirely). <code>leaf build</code> stays in single-locale mode: no subdirectories, no language switcher, no per-locale search index. Everything works as the lean static pipeline you'd expect.</p>
 
     </div>
 
@@ -425,10 +453,10 @@ echo '{}' &gt; locale/en/general.json
                 <a href="#enable-multi-locale" class="toc-link">Enable multi-locale</a>
             </li>
             <li class="toc-item">
-                <a href="#translation-files" class="toc-link">Translation files</a>
+                <a href="#string-level-translations" class="toc-link">String-level translations</a>
             </li>
             <li class="toc-item">
-                <a href="#using-translations-in-templates" class="toc-link">Using translations in templates</a>
+                <a href="#content-level-translations" class="toc-link">Content-level translations</a>
             </li>
             <li class="toc-item">
                 <a href="#url-structure" class="toc-link">URL structure</a>
@@ -437,10 +465,19 @@ echo '{}' &gt; locale/en/general.json
                 <a href="#template-variables" class="toc-link">Template variables</a>
             </li>
             <li class="toc-item">
-                <a href="#binary-cli-vs-composer" class="toc-link">Binary CLI vs Composer</a>
+                <a href="#language-switcher" class="toc-link">Language switcher</a>
             </li>
             <li class="toc-item">
-                <a href="#per-locale-content-advanced" class="toc-link">Per-locale content (advanced)</a>
+                <a href="#hreflang-and-canonical" class="toc-link">Hreflang and canonical</a>
+            </li>
+            <li class="toc-item">
+                <a href="#seo-and-fallback-marking" class="toc-link">SEO and fallback marking</a>
+            </li>
+            <li class="toc-item">
+                <a href="#sidebar-differences-across-locales" class="toc-link">Sidebar differences across locales</a>
+            </li>
+            <li class="toc-item">
+                <a href="#single-locale-sites" class="toc-link">Single-locale sites</a>
             </li>
         </ul>
     </div>
