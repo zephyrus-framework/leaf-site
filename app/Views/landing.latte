@@ -66,13 +66,31 @@
                     Star on GitHub
                 </a>
             </div>
-            <div class="hero-install" data-copy="composer create-project zephyrus-framework/leaf my-docs">
-                <span class="hero-install-prompt">$</span>
-                <code>composer create-project zephyrus-framework/leaf my-docs</code>
-                <button type="button" class="hero-install-copy" aria-label="Copy command">
-                    <svg class="icon-copy" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                    <svg class="icon-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                </button>
+            <div class="hero-install-wrap">
+                <div class="hero-install-tabs" role="tablist" aria-label="Install method">
+                    <button type="button" class="hero-install-tab is-active" role="tab" aria-selected="true" data-tab="binary">Binary</button>
+                    <button type="button" class="hero-install-tab" role="tab" aria-selected="false" data-tab="composer">Composer</button>
+                </div>
+
+                <div class="hero-install" data-tab-pane="binary" data-copy="curl -fsSL https://leaf.ophelios.com/install.sh | sh">
+                    <span class="hero-install-prompt">$</span>
+                    <code>curl -fsSL https://leaf.ophelios.com/install.sh | sh</code>
+                    <button type="button" class="hero-install-copy" aria-label="Copy command">
+                        <svg class="icon-copy" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                        <svg class="icon-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    </button>
+                </div>
+
+                <div class="hero-install" data-tab-pane="composer" hidden data-copy="composer create-project zephyrus-framework/leaf my-docs">
+                    <span class="hero-install-prompt">$</span>
+                    <code>composer create-project zephyrus-framework/leaf my-docs</code>
+                    <button type="button" class="hero-install-copy" aria-label="Copy command">
+                        <svg class="icon-copy" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                        <svg class="icon-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    </button>
+                </div>
+
+                <p class="hero-install-hint"><span class="hero-install-hint-binary">One command, one binary, no PHP or Composer required.</span><span class="hero-install-hint-composer" hidden>For PHP devs who want to extend with controllers or Composer packages.</span></p>
             </div>
         </div>
 
@@ -329,9 +347,14 @@ exit($command-&gt;run());</code></pre>
                         <div class="step-line"></div>
                     </div>
                     <div class="step-body">
-                        <h3 class="step-title">Create your project</h3>
-                        <p class="step-desc">Scaffold a new Leaf site with Composer. Everything wires up on first run.</p>
-                        <pre class="step-code language-bash"><code class="language-bash">composer create-project zephyrus-framework/leaf my-docs</code></pre>
+                        <h3 class="step-title">Install and scaffold</h3>
+                        <p class="step-desc">Either path gives you a working site. Binary is zero-dependency. Composer is for PHP devs who want to extend.</p>
+                        <pre class="step-code language-bash" n:syntax="off"><code class="language-bash"># Binary, recommended
+curl -fsSL https://leaf.ophelios.com/install.sh | sh
+leaf init my-docs
+
+# Or: Composer, for full PHP project
+composer create-project zephyrus-framework/leaf my-docs</code></pre>
                     </div>
                 </li>
 
@@ -359,7 +382,7 @@ Your documentation starts here.</code></pre>
                     <div class="step-body">
                         <h3 class="step-title">Build &amp; deploy</h3>
                         <p class="step-desc">Render every page to static HTML in <code>dist/</code>. Push anywhere: Netlify, Vercel, GitHub Pages, or your own server.</p>
-                        <pre class="step-code language-bash"><code class="language-bash">composer build
+                        <pre class="step-code language-bash"><code class="language-bash">leaf build     # or composer build
 # dist/ is ready to deploy anywhere</code></pre>
                     </div>
                 </li>

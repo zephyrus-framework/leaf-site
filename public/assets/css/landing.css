@@ -387,6 +387,53 @@
     color: var(--text-bright);
 }
 
+/* Two-method install widget: tab strip + pill per method. */
+.hero-install-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 1.5rem auto 0;
+}
+.hero-install-tabs {
+    display: inline-flex;
+    padding: 0.25rem;
+    border-radius: 9999px;
+    background: color-mix(in srgb, var(--bg-surface) 70%, transparent);
+    border: 1px solid color-mix(in srgb, var(--text-bright) 8%, transparent);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+.hero-install-tab {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: var(--text-muted);
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    padding: 0.35rem 0.85rem;
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: background-color 0.2s var(--ease), color 0.2s var(--ease);
+}
+.hero-install-tab:hover {
+    color: var(--text-bright);
+}
+.hero-install-tab.is-active {
+    background: color-mix(in srgb, var(--text-bright) 14%, transparent);
+    color: var(--text-bright);
+}
+.hero-install-hint {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    opacity: 0.8;
+    margin: 0.2rem 0 0;
+    text-align: center;
+    max-width: 34rem;
+}
+
 /* Terminal-styled install copy block, sits below the hero actions */
 .hero-install {
     display: inline-flex;
@@ -440,6 +487,7 @@
     color: #fff;
 }
 .hero-install-copy .icon-check { display: none; }
+.hero-install[hidden] { display: none; }
 .hero-install.copied .hero-install-copy {
     background: #22c55e;
     color: #fff;
