@@ -42,31 +42,15 @@
   .bg-scrim {
     position: absolute;
     inset: 0;
+    /* Darker in the center where the title sits, lighter at the edges so the
+       full hero image stays visible. No separate fade layer at the bottom. */
     background:
-      radial-gradient(ellipse 60% 60% at center,
-        rgba(8, 8, 13, 0.55) 0%,
-        rgba(8, 8, 13, 0.78) 45%,
-        rgba(8, 8, 13, 0.88) 100%
+      radial-gradient(ellipse 70% 55% at center 42%,
+        rgba(8, 8, 13, 0.62) 0%,
+        rgba(8, 8, 13, 0.45) 55%,
+        rgba(8, 8, 13, 0.25) 100%
       );
     z-index: 1;
-  }
-
-  /* Soft bottom fade so the image melts into the page background
-     instead of hitting an abrupt dark block. */
-  .bg-bottom-fade {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 55%;
-    background: linear-gradient(to bottom,
-      transparent 0%,
-      rgba(8, 8, 13, 0.35) 40%,
-      rgba(8, 8, 13, 0.85) 85%,
-      #08080d 100%
-    );
-    z-index: 2;
-    pointer-events: none;
   }
 
   .bg-grid {
@@ -218,8 +202,8 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 3px;
-    background: linear-gradient(110deg, #c4b5fd 10%, #a78bfa 50%, #f4a880 90%);
+    height: 5px;
+    background: linear-gradient(90deg, #c4b5fd 0%, #a78bfa 50%, #f4a880 100%);
     z-index: 5;
   }
 </style>
@@ -227,7 +211,6 @@
 <body>
   <div class="bg-image"></div>
   <div class="bg-scrim"></div>
-  <div class="bg-bottom-fade"></div>
   <div class="bg-grid"></div>
   <div class="orb-accent"></div>
   <div class="orb-warm"></div>
