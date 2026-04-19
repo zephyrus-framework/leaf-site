@@ -23,10 +23,13 @@
         "title": "BuildCommand",
         "section": "building-sites",
         "url": "\/building-sites\/build-command",
-        "excerpt": "BuildCommand Leaf\\BuildCommand is the standard build pipeline. It handles everything from rendering pages to generating SEO files. #Basic usage \/\/ bin\/build.php define('ROOT_DIR', dirname(__DIR__)); require ROOT_DIR . '\/vendor\/autoload.php'; use App\\Models\\Core\\Application; use Leaf\\BuildCommand; $a...",
+        "excerpt": "BuildCommand Leaf\\BuildCommand is the build pipeline under the hood. It handles everything from rendering pages to generating SEO files. Both leaf build (binary CLI) and composer build (Composer template) call it. #Running a build #Binary CLI leaf build That's it. No PHP code to write, no bin\/build....",
         "headings": [
-            "Basic usage",
+            "Running a build",
+            "Binary CLI",
+            "Composer template",
             "What the pipeline does",
+            "Customizing (Composer path only)",
             "Adding custom paths",
             "Excluding paths",
             "Post-build hooks",
@@ -37,10 +40,11 @@
         "title": "Deployment",
         "section": "building-sites",
         "url": "\/building-sites\/deployment",
-        "excerpt": "Deployment After running composer build, the dist\/ directory contains a fully static site ready for deployment. #Supported platforms The output works with any static hosting provider: Netlify -- connect your repo, set build command to composer build, publish directory to dist\/ Vercel -- same approac...",
+        "excerpt": "Deployment After running leaf build (or composer build), the dist\/ directory contains a fully static site ready for deployment. #Supported platforms The output works with any static host: Netlify — connect your repo, set the build command and publish directory (dist\/) Vercel — same approach, or depl...",
         "headings": [
             "Supported platforms",
-            "Committing dist\/",
+            "Build commands per host",
+            "Committing dist\/ to git",
             "Production URL",
             "Custom domain",
             "404 handling"
@@ -130,27 +134,51 @@
         ]
     },
     {
+        "title": "CLI Reference",
+        "section": "getting-started",
+        "url": "\/getting-started\/cli-reference",
+        "excerpt": "CLI Reference The leaf binary has five subcommands. All work the same on macOS, Linux, and Windows. #leaf init &lt;name&gt; Scaffolds a new site in the &lt;name&gt; directory. leaf init my-docs Creates: my-docs\/ content\/ getting-started\/introduction.md public\/ assets\/css\/ assets\/js\/ assets\/images\/ c...",
+        "headings": [
+            "leaf init <name>",
+            "Flags",
+            "leaf dev",
+            "Flags",
+            "leaf build",
+            "Flags",
+            "leaf eject",
+            "Flags",
+            "leaf version",
+            "leaf help",
+            "Exit codes",
+            "Environment"
+        ]
+    },
+    {
         "title": "Installation",
         "section": "getting-started",
         "url": "\/getting-started\/installation",
-        "excerpt": "Installation #Requirements PHP 8.4+ with intl and mbstring extensions Composer 2.x Node.js (optional, only for OG image generation) #Create a new project composer create-project zephyrus-framework\/leaf my-docs cd my-docs This gives you a ready-to-use documentation site with sample content, dark\/ligh...",
+        "excerpt": "Installation Two ways to install Leaf. Pick one. #Binary CLI (recommended) One command on macOS or Linux: curl -fsSL https:\/\/leaf.ophelios.com\/install.sh | sh The script detects your OS\/arch, downloads the matching binary from the GitHub release, verifies the checksum, and installs to \/usr\/local\/bin...",
         "headings": [
+            "Binary CLI (recommended)",
+            "Manual download",
+            "Install options",
+            "Runtime requirement",
+            "Composer template",
             "Requirements",
-            "Create a new project",
-            "Development server",
-            "Build for production",
-            "Using in an existing project"
+            "Adding Leaf to an existing Zephyrus project",
+            "Switching paths: leaf eject"
         ]
     },
     {
         "title": "Introduction",
         "section": "getting-started",
         "url": "\/getting-started\/introduction",
-        "excerpt": "Introduction Zephyrus Leaf is a static site generator built on the Zephyrus PHP Framework. It turns your Markdown content and Latte templates into a fast, deployable static site with one command. #What you get Markdown-powered pages with front matter, GFM tables, and syntax highlighting Live-reload ...",
+        "excerpt": "Introduction Zephyrus Leaf is a static site generator for documentation, landings, and blogs. You author Markdown (and optionally templates in Latte, PHP, or plain HTML). Leaf produces deployable static HTML in one command. There are two ways to use Leaf. Both share the same core library. Path Who i...",
         "headings": [
             "What you get",
+            "Quick start (binary CLI, recommended)",
+            "Quick start (Composer)",
             "Architecture",
-            "Quick start",
             "Next steps"
         ]
     },
@@ -158,14 +186,20 @@
         "title": "Project Structure",
         "section": "getting-started",
         "url": "\/getting-started\/project-structure",
-        "excerpt": "Project Structure A Leaf project follows a clear convention: my-docs\/ app\/ Controllers\/ DocsController.php # Routes and page rendering Models\/Core\/ Application.php # Extends Leaf\\Kernel Views\/ layouts\/docs.latte # HTML wrapper for docs pages docs\/page.latte # Individual doc page template partials\/ #...",
+        "excerpt": "Project Structure What your project looks like depends on which path you picked. #Binary CLI leaf init creates a minimal tree. You only see content, assets, optional templates, and config. my-docs\/ content\/ getting-started\/ introduction.md public\/ assets\/ css\/app.css js\/ images\/ templates\/ # optiona...",
         "headings": [
-            "Key files",
+            "Binary CLI",
+            "content\/",
+            "public\/",
+            "templates\/ (optional)",
             "config.yml",
+            "dist\/",
+            "Composer template",
+            "Key files unique to the Composer path",
             "app\/Models\/Core\/Application.php",
             "bin\/build.php",
-            "content\/",
-            "dist\/"
+            "app\/Controllers\/",
+            "Which files are shared between the two paths?"
         ]
     },
     {

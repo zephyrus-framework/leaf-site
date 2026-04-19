@@ -15,7 +15,7 @@
 
 
 <title>Project Structure · Zephyrus Leaf</title>
-<meta name="description" content="Project Structure A Leaf project follows a clear convention: my-docs/ app/ Controllers/ DocsController.php # Routes and page rendering Models/Core/ Applicati...">
+<meta name="description" content="Project Structure What your project looks like depends on which path you picked. #Binary CLI leaf init creates a minimal tree. You only see content, assets, ...">
 <meta name="author" content="Ophelios">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://leaf.ophelios.com/">
@@ -23,7 +23,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Zephyrus Leaf">
 <meta property="og:title" content="Project Structure · Zephyrus Leaf">
-<meta property="og:description" content="Project Structure A Leaf project follows a clear convention: my-docs/ app/ Controllers/ DocsController.php # Routes and page rendering Models/Core/ Applicati...">
+<meta property="og:description" content="Project Structure What your project looks like depends on which path you picked. #Binary CLI leaf init creates a minimal tree. You only see content, assets, ...">
 <meta property="og:url" content="https://leaf.ophelios.com/">
 <meta property="og:image" content="https://leaf.ophelios.com/assets/images/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -33,7 +33,7 @@
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Project Structure · Zephyrus Leaf">
-<meta name="twitter:description" content="Project Structure A Leaf project follows a clear convention: my-docs/ app/ Controllers/ DocsController.php # Routes and page rendering Models/Core/ Applicati...">
+<meta name="twitter:description" content="Project Structure What your project looks like depends on which path you picked. #Binary CLI leaf init creates a minimal tree. You only see content, assets, ...">
 <meta name="twitter:image" content="https://leaf.ophelios.com/assets/images/og-image.png">
 <meta name="twitter:image:alt" content="Zephyrus Leaf: static sites, quietly crafted.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -123,6 +123,12 @@ tailwind.config = {
                     <a href="/getting-started/project-structure"
                        class="sidebar-link active">
                         Project Structure
+                    </a>
+                </li>
+                <li>
+                    <a href="/getting-started/cli-reference"
+                       class="sidebar-link">
+                        CLI Reference
                     </a>
                 </li>
                 <li>
@@ -246,39 +252,70 @@ tailwind.config = {
 <article class="docs-content">
     <div class="prose">
         <h1>Project Structure</h1>
-<p>A Leaf project follows a clear convention:</p>
+<p>What your project looks like depends on which path you picked.</p>
+<h2 id="binary-cli"><a href="#binary-cli" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Binary CLI</h2>
+<p><code>leaf init</code> creates a minimal tree. You only see content, assets, optional templates, and config.</p>
+<pre><code>my-docs/
+  content/
+    getting-started/
+      introduction.md
+  public/
+    assets/
+      css/app.css
+      js/
+      images/
+  templates/              # optional overrides (Latte, PHP, or HTML)
+  config.yml
+  dist/                   # build output (deploy this)
+</code></pre>
+<p>Everything else — the framework, controllers, the build pipeline, the vendor graph — lives inside the <code>leaf</code> binary.</p>
+<h3 id="content"><a href="#content" class="heading-permalink" aria-hidden="true" title="Permalink">#</a><code>content/</code></h3>
+<p>Your Markdown pages. Organized into sections (directories) with pages (<code>.md</code> files). Each file has <code>title</code> and <code>order</code> front matter.</p>
+<h3 id="public"><a href="#public" class="heading-permalink" aria-hidden="true" title="Permalink">#</a><code>public/</code></h3>
+<p>Static assets copied verbatim to <code>dist/</code>. Put your logo, custom CSS overrides, fonts, and images here.</p>
+<h3 id="templates-optional"><a href="#templates-optional" class="heading-permalink" aria-hidden="true" title="Permalink">#</a><code>templates/</code> (optional)</h3>
+<p>Drop Latte/PHP/HTML files here to override the bundled defaults. The binary merges your templates on top of the bundled theme at build time. Examples:</p>
+<ul>
+<li><code>templates/layouts/docs.latte</code> → overrides the bundled docs layout</li>
+<li><code>templates/partials/nav.latte</code> → overrides the bundled nav</li>
+<li><code>templates/landing.latte</code> → rendered at <code>/</code> (if present, <code>/</code> no longer redirects to the first doc page)</li>
+</ul>
+<p>You can use any of the three formats. Pick what fits:</p>
+<ul>
+<li><strong>Latte</strong> for layouts, partials, blocks</li>
+<li><strong>PHP</strong> (<code>&lt;?= $leafName ?&gt;</code>) if you prefer raw PHP views</li>
+<li><strong>HTML</strong> if you want a static page without template variables (the binary copies it through)</li>
+</ul>
+<h3 id="configyml"><a href="#configyml" class="heading-permalink" aria-hidden="true" title="Permalink">#</a><code>config.yml</code></h3>
+<p>Site settings: name, version, sections, production URL. See <a href="/configuration/reference">Configuration Reference</a>.</p>
+<h3 id="dist"><a href="#dist" class="heading-permalink" aria-hidden="true" title="Permalink">#</a><code>dist/</code></h3>
+<p>Generated output. Static HTML, CSS, JS, <code>sitemap.xml</code>, <code>robots.txt</code>, <code>search.json</code>. Deploy this.</p>
+<h2 id="composer-template"><a href="#composer-template" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Composer template</h2>
+<p><code>composer create-project zephyrus-framework/leaf my-docs</code> — or <code>leaf eject</code> on an existing CLI project — gives you the full Zephyrus application alongside the same <code>content/</code>, <code>templates/</code>, <code>public/</code>, <code>config.yml</code> structure:</p>
 <pre><code>my-docs/
   app/
     Controllers/
       DocsController.php      # Routes and page rendering
     Models/Core/
-      Application.php          # Extends Leaf\Kernel
+      Application.php         # Extends Leaf\Kernel
     Views/
-      layouts/docs.latte       # HTML wrapper for docs pages
-      docs/page.latte           # Individual doc page template
-      partials/                 # Reusable components (nav, sidebar, footer)
-      404.latte                 # Error page
+      layouts/docs.latte      # HTML wrapper for docs pages
+      docs/page.latte         # Individual doc page template
+      partials/               # Reusable components (nav, sidebar, footer)
+      404.latte               # Error page
   bin/
-    build.php                   # Static site build script
-    router.php                  # Dev server entry point
-  content/
-    getting-started/
-      introduction.md           # Markdown content pages
-      installation.md
-    guides/
-      deployment.md
-  public/
-    index.php                   # Web application entry point
-    assets/
-      css/app.css               # All styles (light/dark theme)
-      js/                       # Search, sidebar, copy-code, theme toggle
-  config.yml                    # Site configuration
-  dist/                         # Build output (deploy this)
+    build.php                 # Static site build script
+    router.php                # Dev server entry point
+  content/                    # same as CLI
+  public/                     # same as CLI
+  templates/                  # optional; CLI-style overrides still work
+  config.yml                  # same as CLI
+  vendor/                     # Composer dependencies
+  composer.json
+  dist/
 </code></pre>
-<h2 id="key-files"><a href="#key-files" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Key files</h2>
-<h3 id="configyml"><a href="#configyml" class="heading-permalink" aria-hidden="true" title="Permalink">#</a><code>config.yml</code></h3>
-<p>All site settings: project name, version, content paths, sections, and production URL. See <a href="/configuration/reference">Configuration</a> for the full reference.</p>
-<h3 id="appmodelscoreapplicationphp"><a href="#appmodelscoreapplicationphp" class="heading-permalink" aria-hidden="true" title="Permalink">#</a><code>app/Models/Core/Application.php</code></h3>
+<h3 id="key-files-unique-to-the-composer-path"><a href="#key-files-unique-to-the-composer-path" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Key files unique to the Composer path</h3>
+<h4 id="appmodelscoreapplicationphp"><a href="#appmodelscoreapplicationphp" class="heading-permalink" aria-hidden="true" title="Permalink">#</a><code>app/Models/Core/Application.php</code></h4>
 <p>Your application class. Extends <code>Leaf\Kernel</code> and provides dependency injection for controllers:</p>
 <pre><code class="language-php">use Leaf\Kernel;
 
@@ -297,16 +334,17 @@ final class Application extends Kernel
     }
 }
 </code></pre>
-<h3 id="binbuildphp"><a href="#binbuildphp" class="heading-permalink" aria-hidden="true" title="Permalink">#</a><code>bin/build.php</code></h3>
-<p>The build script. Uses <code>Leaf\BuildCommand</code> to run the standard pipeline:</p>
+<h4 id="binbuildphp"><a href="#binbuildphp" class="heading-permalink" aria-hidden="true" title="Permalink">#</a><code>bin/build.php</code></h4>
+<p>The build script. A file you own and can modify:</p>
 <pre><code class="language-php">$app = new Application();
 $command = new BuildCommand($app);
 exit($command-&gt;run());
 </code></pre>
-<h3 id="content"><a href="#content" class="heading-permalink" aria-hidden="true" title="Permalink">#</a><code>content/</code></h3>
-<p>Where your Markdown documentation lives. Organized into sections (directories) with pages (<code>.md</code> files). Each file needs <code>title</code> and <code>order</code> front matter.</p>
-<h3 id="dist"><a href="#dist" class="heading-permalink" aria-hidden="true" title="Permalink">#</a><code>dist/</code></h3>
-<p>Generated output from <code>composer build</code>. This is what you deploy. Contains static HTML, assets, sitemap, and robots.txt.</p>
+<p>Add custom paths, hook into the pipeline, post-process output. See the <a href="/building-sites/build-command">BuildCommand</a> reference.</p>
+<h4 id="appcontrollers"><a href="#appcontrollers" class="heading-permalink" aria-hidden="true" title="Permalink">#</a><code>app/Controllers/</code></h4>
+<p>Where you add custom routes. Each controller is a Zephyrus class with <code>#[Get]</code>, <code>#[Post]</code>, etc. attribute-routed endpoints.</p>
+<h2 id="which-files-are-shared-between-the-two-paths"><a href="#which-files-are-shared-between-the-two-paths" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Which files are shared between the two paths?</h2>
+<p>Everything under <code>content/</code>, <code>templates/</code>, <code>public/</code>, and <code>config.yml</code> is identical. You can move a project between paths via <code>leaf eject</code> (CLI → Composer) or by deleting <code>app/</code>, <code>bin/</code>, <code>composer.json</code>, and <code>vendor/</code> (Composer → CLI).</p>
 
     </div>
 
@@ -316,9 +354,9 @@ exit($command-&gt;run());
             <span class="pagination-title">Installation</span>
         </a>
 
-        <a href="/getting-started/claude-skills" class="pagination-link pagination-next">
+        <a href="/getting-started/cli-reference" class="pagination-link pagination-next">
             <span class="pagination-label">Next &rarr;</span>
-            <span class="pagination-title">Claude Code Skills</span>
+            <span class="pagination-title">CLI Reference</span>
         </a>
     </nav>
 </article>
@@ -328,10 +366,28 @@ exit($command-&gt;run());
         <h4 class="toc-title">On this page</h4>
         <ul class="toc-links">
             <li class="toc-item">
-                <a href="#key-files" class="toc-link">Key files</a>
+                <a href="#binary-cli" class="toc-link">Binary CLI</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#content" class="toc-link">content/</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#public" class="toc-link">public/</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#templates-optional" class="toc-link">templates/ (optional)</a>
             </li>
             <li class="toc-item toc-item-sub">
                 <a href="#configyml" class="toc-link">config.yml</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#dist" class="toc-link">dist/</a>
+            </li>
+            <li class="toc-item">
+                <a href="#composer-template" class="toc-link">Composer template</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#key-files-unique-to-the-composer-path" class="toc-link">Key files unique to the Composer path</a>
             </li>
             <li class="toc-item toc-item-sub">
                 <a href="#appmodelscoreapplicationphp" class="toc-link">app/Models/Core/Application.php</a>
@@ -340,10 +396,10 @@ exit($command-&gt;run());
                 <a href="#binbuildphp" class="toc-link">bin/build.php</a>
             </li>
             <li class="toc-item toc-item-sub">
-                <a href="#content" class="toc-link">content/</a>
+                <a href="#appcontrollers" class="toc-link">app/Controllers/</a>
             </li>
-            <li class="toc-item toc-item-sub">
-                <a href="#dist" class="toc-link">dist/</a>
+            <li class="toc-item">
+                <a href="#which-files-are-shared-between-the-two-paths" class="toc-link">Which files are shared between the two paths?</a>
             </li>
         </ul>
     </div>

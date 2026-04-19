@@ -15,7 +15,7 @@
 
 
 <title>BuildCommand · Zephyrus Leaf</title>
-<meta name="description" content="BuildCommand Leaf\BuildCommand is the standard build pipeline. It handles everything from rendering pages to generating SEO files. #Basic usage // bin/build....">
+<meta name="description" content="BuildCommand Leaf\BuildCommand is the build pipeline under the hood. It handles everything from rendering pages to generating SEO files. Both leaf build (bin...">
 <meta name="author" content="Ophelios">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://leaf.ophelios.com/">
@@ -23,7 +23,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Zephyrus Leaf">
 <meta property="og:title" content="BuildCommand · Zephyrus Leaf">
-<meta property="og:description" content="BuildCommand Leaf\BuildCommand is the standard build pipeline. It handles everything from rendering pages to generating SEO files. #Basic usage // bin/build....">
+<meta property="og:description" content="BuildCommand Leaf\BuildCommand is the build pipeline under the hood. It handles everything from rendering pages to generating SEO files. Both leaf build (bin...">
 <meta property="og:url" content="https://leaf.ophelios.com/">
 <meta property="og:image" content="https://leaf.ophelios.com/assets/images/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -33,7 +33,7 @@
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="BuildCommand · Zephyrus Leaf">
-<meta name="twitter:description" content="BuildCommand Leaf\BuildCommand is the standard build pipeline. It handles everything from rendering pages to generating SEO files. #Basic usage // bin/build....">
+<meta name="twitter:description" content="BuildCommand Leaf\BuildCommand is the build pipeline under the hood. It handles everything from rendering pages to generating SEO files. Both leaf build (bin...">
 <meta name="twitter:image" content="https://leaf.ophelios.com/assets/images/og-image.png">
 <meta name="twitter:image:alt" content="Zephyrus Leaf: static sites, quietly crafted.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -123,6 +123,12 @@ tailwind.config = {
                     <a href="/getting-started/project-structure"
                        class="sidebar-link">
                         Project Structure
+                    </a>
+                </li>
+                <li>
+                    <a href="/getting-started/cli-reference"
+                       class="sidebar-link">
+                        CLI Reference
                     </a>
                 </li>
                 <li>
@@ -246,8 +252,18 @@ tailwind.config = {
 <article class="docs-content">
     <div class="prose">
         <h1>BuildCommand</h1>
-<p><code>Leaf\BuildCommand</code> is the standard build pipeline. It handles everything from rendering pages to generating SEO files.</p>
-<h2 id="basic-usage"><a href="#basic-usage" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Basic usage</h2>
+<p><code>Leaf\BuildCommand</code> is the build pipeline under the hood. It handles everything from rendering pages to generating SEO files. Both <code>leaf build</code> (binary CLI) and <code>composer build</code> (Composer template) call it.</p>
+<h2 id="running-a-build"><a href="#running-a-build" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Running a build</h2>
+<h3 id="binary-cli"><a href="#binary-cli" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Binary CLI</h3>
+<pre><code class="language-bash">leaf build
+</code></pre>
+<p>That's it. No PHP code to write, no <code>bin/build.php</code> to maintain.</p>
+<h3 id="composer-template"><a href="#composer-template" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Composer template</h3>
+<p>The template ships a <code>bin/build.php</code> that you own:</p>
+<pre><code class="language-bash">composer build
+# or
+php bin/build.php
+</code></pre>
 <pre><code class="language-php">// bin/build.php
 define('ROOT_DIR', dirname(__DIR__));
 require ROOT_DIR . '/vendor/autoload.php';
@@ -259,25 +275,23 @@ $app = new Application();
 $command = new BuildCommand($app);
 exit($command-&gt;run());
 </code></pre>
-<p>Run it with:</p>
-<pre><code class="language-bash">composer build
-# or
-php bin/build.php
-</code></pre>
+<p>Edit this file to customize the build.</p>
 <h2 id="what-the-pipeline-does"><a href="#what-the-pipeline-does" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>What the pipeline does</h2>
 <ol>
-<li>Discovers all GET routes from your controllers</li>
+<li>Discovers all GET routes from your controllers (Composer path) or scaffold routes (CLI path)</li>
 <li>Scans <code>content/</code> for Markdown files and adds their paths</li>
 <li>Renders each page through the full Zephyrus application stack</li>
 <li>Copies static assets from <code>public/</code> to <code>dist/</code></li>
 <li>Moves <code>/404/index.html</code> to <code>/404.html</code></li>
 <li>Generates <code>search.json</code> for client-side search</li>
-<li>Creates a root redirect (single-locale) or builds default locale to root (multi-locale)</li>
+<li>Creates a root redirect (single-locale) or builds default locale to root (multi-locale). If a <code>GET /</code> route exists (custom landing), it's rendered instead of the redirect.</li>
 <li>Generates <code>sitemap.xml</code> and <code>robots.txt</code> (if <code>production_url</code> is configured)</li>
 <li>Runs any registered post-build callbacks</li>
 </ol>
-<h2 id="adding-custom-paths"><a href="#adding-custom-paths" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Adding custom paths</h2>
-<p>For parameterized routes that the router can't auto-discover (like <code>/blog/{slug}</code>), add them explicitly:</p>
+<h2 id="customizing-composer-path-only"><a href="#customizing-composer-path-only" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Customizing (Composer path only)</h2>
+<p>If you're on the CLI path, skip this section — the <code>leaf</code> binary drives a stock pipeline. To customize, <code>leaf eject</code> first.</p>
+<h3 id="adding-custom-paths"><a href="#adding-custom-paths" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Adding custom paths</h3>
+<p>For parameterized routes the router can't auto-discover (like <code>/blog/{slug}</code>):</p>
 <pre><code class="language-php">$command = new BuildCommand($app);
 
 $command-&gt;addPaths([
@@ -288,16 +302,14 @@ $command-&gt;addPaths([
 
 exit($command-&gt;run());
 </code></pre>
-<h2 id="excluding-paths"><a href="#excluding-paths" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Excluding paths</h2>
-<p>To exclude routes from the build:</p>
+<h3 id="excluding-paths"><a href="#excluding-paths" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Excluding paths</h3>
 <pre><code class="language-php">$command-&gt;excludePatterns([
     '#^/api/#',        // Exclude API routes
     '#^/admin#',       // Exclude admin pages
 ]);
 </code></pre>
-<p>The pipeline always excludes <code>/search.json</code> and <code>/</code> by default (the root is handled separately).</p>
-<h2 id="post-build-hooks"><a href="#post-build-hooks" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Post-build hooks</h2>
-<p>Add custom steps that run after the standard pipeline:</p>
+<p><code>/search.json</code> is always excluded (generated separately). <code>/</code> is excluded when no custom <code>GET /</code> route exists (handled by the redirect/default-locale logic).</p>
+<h3 id="post-build-hooks"><a href="#post-build-hooks" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Post-build hooks</h3>
 <pre><code class="language-php">$command-&gt;onPostBuild(function ($result, $outputDir) {
     // Generate OG images
     passthru('node bin/generate-og-images.js');
@@ -305,14 +317,13 @@ exit($command-&gt;run());
     // Optimize images
     passthru('npx imagemin dist/assets/images/* --out-dir=dist/assets/images');
 
-    // Custom sitemap additions
     echo &quot;Post-build complete!&quot; . PHP_EOL;
 });
 </code></pre>
 <p>The callback receives:</p>
 <ul>
-<li><code>$result</code> -- a <code>StaticBuildResult</code> with <code>pagesBuilt</code>, <code>totalPaths</code>, <code>errors</code>, <code>builtPages</code></li>
-<li><code>$outputDir</code> -- absolute path to the output directory</li>
+<li><code>$result</code> — a <code>StaticBuildResult</code> with <code>pagesBuilt</code>, <code>totalPaths</code>, <code>errors</code>, <code>builtPages</code></li>
+<li><code>$outputDir</code> — absolute path to the output directory</li>
 </ul>
 <h2 id="build-output"><a href="#build-output" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Build output</h2>
 <p>A successful build produces:</p>
@@ -325,7 +336,7 @@ exit($command-&gt;run());
   assets/                 # CSS, JS, images
   getting-started/
     introduction/
-      index.html           # Each page becomes a directory with index.html
+      index.html          # Each page becomes a directory with index.html
 </code></pre>
 
     </div>
@@ -348,18 +359,27 @@ exit($command-&gt;run());
         <h4 class="toc-title">On this page</h4>
         <ul class="toc-links">
             <li class="toc-item">
-                <a href="#basic-usage" class="toc-link">Basic usage</a>
+                <a href="#running-a-build" class="toc-link">Running a build</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#binary-cli" class="toc-link">Binary CLI</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#composer-template" class="toc-link">Composer template</a>
             </li>
             <li class="toc-item">
                 <a href="#what-the-pipeline-does" class="toc-link">What the pipeline does</a>
             </li>
             <li class="toc-item">
+                <a href="#customizing-composer-path-only" class="toc-link">Customizing (Composer path only)</a>
+            </li>
+            <li class="toc-item toc-item-sub">
                 <a href="#adding-custom-paths" class="toc-link">Adding custom paths</a>
             </li>
-            <li class="toc-item">
+            <li class="toc-item toc-item-sub">
                 <a href="#excluding-paths" class="toc-link">Excluding paths</a>
             </li>
-            <li class="toc-item">
+            <li class="toc-item toc-item-sub">
                 <a href="#post-build-hooks" class="toc-link">Post-build hooks</a>
             </li>
             <li class="toc-item">

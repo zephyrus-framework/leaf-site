@@ -99,4 +99,4 @@ Images are rendered with rounded corners and a subtle border.
 
 ## Inline code
 
-Use backticks for inline code: `` `composer build` `` renders as `composer build` with a subtle background and accent color.
+Use backticks for inline code: `` `leaf build` `` renders as `leaf build` with a subtle background and accent color.

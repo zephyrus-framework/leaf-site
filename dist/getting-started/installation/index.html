@@ -15,7 +15,7 @@
 
 
 <title>Installation · Zephyrus Leaf</title>
-<meta name="description" content="Installation #Requirements PHP 8.4+ with intl and mbstring extensions Composer 2.x Node.js (optional, only for OG image generation) #Create a new project com...">
+<meta name="description" content="Installation Two ways to install Leaf. Pick one. #Binary CLI (recommended) One command on macOS or Linux: curl -fsSL https://leaf.ophelios.com/install.sh | s...">
 <meta name="author" content="Ophelios">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://leaf.ophelios.com/">
@@ -23,7 +23,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Zephyrus Leaf">
 <meta property="og:title" content="Installation · Zephyrus Leaf">
-<meta property="og:description" content="Installation #Requirements PHP 8.4+ with intl and mbstring extensions Composer 2.x Node.js (optional, only for OG image generation) #Create a new project com...">
+<meta property="og:description" content="Installation Two ways to install Leaf. Pick one. #Binary CLI (recommended) One command on macOS or Linux: curl -fsSL https://leaf.ophelios.com/install.sh | s...">
 <meta property="og:url" content="https://leaf.ophelios.com/">
 <meta property="og:image" content="https://leaf.ophelios.com/assets/images/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -33,7 +33,7 @@
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Installation · Zephyrus Leaf">
-<meta name="twitter:description" content="Installation #Requirements PHP 8.4+ with intl and mbstring extensions Composer 2.x Node.js (optional, only for OG image generation) #Create a new project com...">
+<meta name="twitter:description" content="Installation Two ways to install Leaf. Pick one. #Binary CLI (recommended) One command on macOS or Linux: curl -fsSL https://leaf.ophelios.com/install.sh | s...">
 <meta name="twitter:image" content="https://leaf.ophelios.com/assets/images/og-image.png">
 <meta name="twitter:image:alt" content="Zephyrus Leaf: static sites, quietly crafted.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -123,6 +123,12 @@ tailwind.config = {
                     <a href="/getting-started/project-structure"
                        class="sidebar-link">
                         Project Structure
+                    </a>
+                </li>
+                <li>
+                    <a href="/getting-started/cli-reference"
+                       class="sidebar-link">
+                        CLI Reference
                     </a>
                 </li>
                 <li>
@@ -246,35 +252,98 @@ tailwind.config = {
 <article class="docs-content">
     <div class="prose">
         <h1>Installation</h1>
-<h2 id="requirements"><a href="#requirements" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Requirements</h2>
-<ul>
-<li><strong>PHP 8.4+</strong> with <code>intl</code> and <code>mbstring</code> extensions</li>
-<li><strong>Composer</strong> 2.x</li>
-<li><strong>Node.js</strong> (optional, only for OG image generation)</li>
-</ul>
-<h2 id="create-a-new-project"><a href="#create-a-new-project" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Create a new project</h2>
+<p>Two ways to install Leaf. Pick one.</p>
+<h2 id="binary-cli-recommended"><a href="#binary-cli-recommended" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Binary CLI (recommended)</h2>
+<p>One command on macOS or Linux:</p>
+<pre><code class="language-bash">curl -fsSL https://leaf.ophelios.com/install.sh | sh
+</code></pre>
+<p>The script detects your OS/arch, downloads the matching binary from the <a href="https://github.com/ophelios-studio/zephyrus-leaf-cli/releases/latest">GitHub release</a>, verifies the checksum, and installs to <code>/usr/local/bin/leaf</code>.</p>
+<p>Then scaffold and build:</p>
+<pre><code class="language-bash">leaf init my-docs
+cd my-docs
+leaf dev      # live reload on http://localhost:8080
+leaf build    # writes dist/
+</code></pre>
+<h3 id="manual-download"><a href="#manual-download" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Manual download</h3>
+<p>Grab the binary for your platform from the <a href="https://github.com/ophelios-studio/zephyrus-leaf-cli/releases/latest">releases page</a>:</p>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Binary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>macOS (Apple Silicon)</td>
+<td><code>leaf-darwin-arm64</code></td>
+</tr>
+<tr>
+<td>macOS (Intel)</td>
+<td><code>leaf-darwin-amd64</code></td>
+</tr>
+<tr>
+<td>Linux (x86_64)</td>
+<td><code>leaf-linux-amd64</code></td>
+</tr>
+<tr>
+<td>Linux (arm64)</td>
+<td><code>leaf-linux-arm64</code></td>
+</tr>
+<tr>
+<td>Windows</td>
+<td><code>leaf-windows-amd64.exe</code></td>
+</tr>
+</tbody>
+</table>
+<p>Verify the checksum, then <code>chmod +x leaf-&lt;platform&gt;</code> and move it into your <code>PATH</code>. On macOS, if you downloaded via a browser, run <code>xattr -d com.apple.quarantine leaf-&lt;platform&gt;</code> to clear the Gatekeeper flag.</p>
+<h3 id="install-options"><a href="#install-options" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Install options</h3>
+<p>Environment variables the install script respects:</p>
+<table>
+<thead>
+<tr>
+<th>Var</th>
+<th>Default</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LEAF_PREFIX</code></td>
+<td><code>/usr/local/bin</code></td>
+<td>Where to install the binary</td>
+</tr>
+<tr>
+<td><code>LEAF_VERSION</code></td>
+<td><code>latest</code></td>
+<td>Specific release tag (e.g. <code>v0.1.0-dev</code>)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="runtime-requirement"><a href="#runtime-requirement" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Runtime requirement</h3>
+<p>The binary currently needs <strong>system PHP 8.4+</strong> on your machine at build time (with <code>intl</code>, <code>mbstring</code>, <code>sodium</code>, <code>pdo</code> extensions). It shells out to <code>php</code> under the hood. Removing that dependency (via FrankenPHP static link) is on the roadmap.</p>
+<h2 id="composer-template"><a href="#composer-template" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Composer template</h2>
+<p>For PHP developers who want controllers, Composer packages, and full build-script control:</p>
 <pre><code class="language-bash">composer create-project zephyrus-framework/leaf my-docs
 cd my-docs
+composer dev     # dev server with live reload
+composer build   # writes dist/
 </code></pre>
-<p>This gives you a ready-to-use documentation site with sample content, dark/light theme, search, and live-reload.</p>
-<h2 id="development-server"><a href="#development-server" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Development server</h2>
-<pre><code class="language-bash">composer dev
-</code></pre>
-<p>This starts PHP's built-in server at <code>http://localhost:8080</code> with:</p>
+<h3 id="requirements"><a href="#requirements" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Requirements</h3>
 <ul>
-<li><strong>Live-reload</strong> -- the page refreshes automatically when you edit templates, CSS, JS, or content</li>
-<li><strong>Locale prefix handling</strong> -- URLs like <code>/fr/getting-started/intro</code> are routed correctly</li>
-<li><strong>Static file serving</strong> -- assets from <code>public/</code> are served directly</li>
+<li><strong>PHP 8.4+</strong> with <code>intl</code>, <code>mbstring</code>, <code>sodium</code>, <code>pdo</code> extensions</li>
+<li><strong>Composer 2.x</strong></li>
 </ul>
-<h2 id="build-for-production"><a href="#build-for-production" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Build for production</h2>
-<pre><code class="language-bash">composer build
-</code></pre>
-<p>This generates a fully static site in the <code>dist/</code> directory. The output is plain HTML, CSS, and JS that can be deployed to any static hosting provider: Netlify, Vercel, GitHub Pages, Cloudflare Pages, DigitalOcean, or a simple web server.</p>
-<h2 id="using-in-an-existing-project"><a href="#using-in-an-existing-project" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Using in an existing project</h2>
-<p>If you want to add Leaf's build tools to an existing Zephyrus project:</p>
+<h3 id="adding-leaf-to-an-existing-zephyrus-project"><a href="#adding-leaf-to-an-existing-zephyrus-project" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Adding Leaf to an existing Zephyrus project</h3>
 <pre><code class="language-bash">composer require zephyrus-framework/leaf-core
 </code></pre>
-<p>Then extend <code>Leaf\Kernel</code> in your Application class and use <code>Leaf\BuildCommand</code> in your build script. See the <a href="/building-sites/build-command">BuildCommand</a> documentation.</p>
+<p>Then extend <code>Leaf\Kernel</code> in your Application class and use <code>Leaf\BuildCommand</code> in your build script. See the <a href="/building-sites/build-command">BuildCommand</a> reference.</p>
+<h2 id="switching-paths-leaf-eject"><a href="#switching-paths-leaf-eject" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Switching paths: <code>leaf eject</code></h2>
+<p>Started with the CLI but need PHP extensibility?</p>
+<pre><code class="language-bash">leaf eject
+composer install
+</code></pre>
+<p>This writes the full framework (<code>app/</code>, <code>bin/</code>, <code>composer.json</code>, <code>vendor/</code> after install) into your project directory while keeping <code>content/</code>, <code>templates/</code>, <code>public/</code>, and <code>config.yml</code> intact. One-way: you now manage a Composer project.</p>
 
     </div>
 
@@ -296,19 +365,28 @@ cd my-docs
         <h4 class="toc-title">On this page</h4>
         <ul class="toc-links">
             <li class="toc-item">
+                <a href="#binary-cli-recommended" class="toc-link">Binary CLI (recommended)</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#manual-download" class="toc-link">Manual download</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#install-options" class="toc-link">Install options</a>
+            </li>
+            <li class="toc-item toc-item-sub">
+                <a href="#runtime-requirement" class="toc-link">Runtime requirement</a>
+            </li>
+            <li class="toc-item">
+                <a href="#composer-template" class="toc-link">Composer template</a>
+            </li>
+            <li class="toc-item toc-item-sub">
                 <a href="#requirements" class="toc-link">Requirements</a>
             </li>
-            <li class="toc-item">
-                <a href="#create-a-new-project" class="toc-link">Create a new project</a>
+            <li class="toc-item toc-item-sub">
+                <a href="#adding-leaf-to-an-existing-zephyrus-project" class="toc-link">Adding Leaf to an existing Zephyrus project</a>
             </li>
             <li class="toc-item">
-                <a href="#development-server" class="toc-link">Development server</a>
-            </li>
-            <li class="toc-item">
-                <a href="#build-for-production" class="toc-link">Build for production</a>
-            </li>
-            <li class="toc-item">
-                <a href="#using-in-an-existing-project" class="toc-link">Using in an existing project</a>
+                <a href="#switching-paths-leaf-eject" class="toc-link">Switching paths: leaf eject</a>
             </li>
         </ul>
     </div>

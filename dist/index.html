@@ -131,32 +131,17 @@ tailwind.config = {
                     Star on GitHub
                 </a>
             </div>
-            <div class="hero-install-wrap">
-                <div class="hero-install-tabs" role="tablist" aria-label="Install method">
-                    <button type="button" class="hero-install-tab is-active" role="tab" aria-selected="true" data-tab="binary">Binary</button>
-                    <button type="button" class="hero-install-tab" role="tab" aria-selected="false" data-tab="composer">Composer</button>
-                </div>
-
-                <div class="hero-install" data-tab-pane="binary" data-copy="curl -fsSL https://leaf.ophelios.com/install.sh | sh">
-                    <span class="hero-install-prompt">$</span>
-                    <code>curl -fsSL https://leaf.ophelios.com/install.sh | sh</code>
-                    <button type="button" class="hero-install-copy" aria-label="Copy command">
-                        <svg class="icon-copy" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                        <svg class="icon-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    </button>
-                </div>
-
-                <div class="hero-install" data-tab-pane="composer" hidden data-copy="composer create-project zephyrus-framework/leaf my-docs">
-                    <span class="hero-install-prompt">$</span>
-                    <code>composer create-project zephyrus-framework/leaf my-docs</code>
-                    <button type="button" class="hero-install-copy" aria-label="Copy command">
-                        <svg class="icon-copy" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                        <svg class="icon-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    </button>
-                </div>
-
-                <p class="hero-install-hint"><span class="hero-install-hint-binary">One command, one binary, no PHP or Composer required.</span><span class="hero-install-hint-composer" hidden>For PHP devs who want to extend with controllers or Composer packages.</span></p>
+            <div class="hero-install" data-copy="curl -fsSL https://leaf.ophelios.com/install.sh | sh">
+                <span class="hero-install-prompt">$</span>
+                <code>curl -fsSL https://leaf.ophelios.com/install.sh | sh</code>
+                <button type="button" class="hero-install-copy" aria-label="Copy command">
+                    <svg class="icon-copy" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <svg class="icon-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </button>
             </div>
+            <p class="hero-install-aside">
+                PHP developer? <a href="#composer-path">See the Composer path &darr;</a>
+            </p>
         </div>
 
         <div class="hero-screenshot-wrap">
@@ -164,29 +149,6 @@ tailwind.config = {
                 <div class="hero-screenshot-inner">
                     <img src="/assets/images/screenshot-light.png" alt="Leaf documentation preview" class="hero-ss-light">
                     <img src="/assets/images/screenshot-dark.png" alt="Leaf documentation preview" class="hero-ss-dark">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="stats">
-        <div class="section-container">
-            <div class="stats-grid">
-                <div class="stat">
-                    <div class="stat-value">1<span class="stat-unit">cmd</span></div>
-                    <div class="stat-label">to build the whole site</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-value">0<span class="stat-unit">config</span></div>
-                    <div class="stat-label">required to get running</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-value">58<span class="stat-unit">tests</span></div>
-                    <div class="stat-label">covering the core library</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-value">∞<span class="stat-unit">hosts</span></div>
-                    <div class="stat-label">deploy static HTML anywhere</div>
                 </div>
             </div>
         </div>
@@ -253,8 +215,9 @@ tailwind.config = {
                     </div>
                     <h3 class="feature-title">One-command builds</h3>
                     <p class="feature-desc">
-                        Run <code>composer build</code> and get a fully static site in <code>dist/</code>.
-                        Ready for Netlify, Vercel, GitHub Pages, or any web server.
+                        Run <code>leaf build</code> (or <code>composer build</code> if you're on the PHP path)
+                        and get a fully static site in <code>dist/</code>. Ready for Netlify, Vercel, GitHub Pages,
+                        or any web server.
                     </p>
                 </article>
 
@@ -321,27 +284,35 @@ tailwind.config = {
         </div>
     </section>
 
-    <section class="showcase">
+    <section class="showcase" id="composer-path">
         <div class="section-container">
             <div class="showcase-grid">
                 <div class="showcase-copy">
-                    <div class="section-eyebrow">Build pipeline</div>
+                    <div class="section-eyebrow">For PHP developers</div>
                     <h2 class="section-title showcase-title">
-                        Ten lines of&nbsp;PHP.<br>
-                        <span class="section-title-muted">A production build.</span>
+                        Need more? Drop into PHP.
                     </h2>
                     <p class="showcase-lede">
-                        The default <code>bin/build.php</code> is a single file you own.
-                        Add routes, hook into the pipeline, post-process output. It's yours to evolve.
+                        The binary covers most sites. If you want controllers, Composer packages, or to own
+                        the build pipeline, the Composer path is the escape hatch. Same <code>zephyrus-leaf-core</code>,
+                        full PHP surface.
                     </p>
+                    <div class="path-snippet showcase-snippet" data-copy="composer create-project zephyrus-framework/leaf my-docs">
+                        <span class="path-snippet-prompt">$</span>
+                        <code>composer create-project zephyrus-framework/leaf my-docs</code>
+                        <button type="button" class="hero-install-copy" aria-label="Copy command">
+                            <svg class="icon-copy" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            <svg class="icon-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </button>
+                    </div>
                     <ul class="showcase-list">
                         <li>
                             <span class="showcase-tick" aria-hidden="true">
                                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                             </span>
                             <div>
-                                <strong>Composable</strong>
-                                <span>Add paths, extend the kernel, register routes.</span>
+                                <strong>Own the build pipeline</strong>
+                                <span><code>bin/build.php</code> is a single file you can read and edit.</span>
                             </div>
                         </li>
                         <li>
@@ -349,8 +320,8 @@ tailwind.config = {
                                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                             </span>
                             <div>
-                                <strong>Hookable</strong>
-                                <span>Pre-build and post-build callbacks for custom steps.</span>
+                                <strong>Add controllers, routes, packages</strong>
+                                <span>Anything you can do in a Zephyrus app, you can do here.</span>
                             </div>
                         </li>
                         <li>
@@ -358,8 +329,8 @@ tailwind.config = {
                                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                             </span>
                             <div>
-                                <strong>Transparent</strong>
-                                <span>No black boxes. The whole build is regular PHP you can read.</span>
+                                <strong>Started on the binary? <code>leaf eject</code></strong>
+                                <span>Converts your project to the Composer tier in one command.</span>
                             </div>
                         </li>
                     </ul>
@@ -408,14 +379,9 @@ exit($command-&gt;run());</code></pre>
                         <div class="step-line"></div>
                     </div>
                     <div class="step-body">
-                        <h3 class="step-title">Install and scaffold</h3>
-                        <p class="step-desc">Either path gives you a working site. Binary is zero-dependency. Composer is for PHP devs who want to extend.</p>
-                        <pre class="step-code language-bash"><code class="language-bash"># Binary, recommended
-curl -fsSL https://leaf.ophelios.com/install.sh | sh
-leaf init my-docs
-
-# Or: Composer, for full PHP project
-composer create-project zephyrus-framework/leaf my-docs</code></pre>
+                        <h3 class="step-title">Install the CLI</h3>
+                        <p class="step-desc">One binary per platform. No PHP or Composer on your machine.</p>
+                        <pre class="step-code language-bash"><code class="language-bash">curl -fsSL https://leaf.ophelios.com/install.sh | sh</code></pre>
                     </div>
                 </li>
 
@@ -425,14 +391,11 @@ composer create-project zephyrus-framework/leaf my-docs</code></pre>
                         <div class="step-line"></div>
                     </div>
                     <div class="step-body">
-                        <h3 class="step-title">Write your content</h3>
-                        <p class="step-desc">Drop Markdown files under <code>content/</code>. Front matter controls titles, order, and metadata.</p>
-                        <pre class="step-code language-yaml"><code class="language-yaml">---
-title: Introduction
-order: 1
----
-# Welcome to my docs
-Your documentation starts here.</code></pre>
+                        <h3 class="step-title">Scaffold and write</h3>
+                        <p class="step-desc"><code>leaf init</code> creates <code>content/</code>, <code>public/</code>, and a <code>config.yml</code>. Drop Markdown files in with front matter to control title and order.</p>
+                        <pre class="step-code language-bash"><code class="language-bash">leaf init my-docs
+cd my-docs
+leaf dev     # live reload on localhost:8080</code></pre>
                     </div>
                 </li>
 
@@ -443,7 +406,7 @@ Your documentation starts here.</code></pre>
                     <div class="step-body">
                         <h3 class="step-title">Build &amp; deploy</h3>
                         <p class="step-desc">Render every page to static HTML in <code>dist/</code>. Push anywhere: Netlify, Vercel, GitHub Pages, or your own server.</p>
-                        <pre class="step-code language-bash"><code class="language-bash">leaf build     # or composer build
+                        <pre class="step-code language-bash"><code class="language-bash">leaf build
 # dist/ is ready to deploy anywhere</code></pre>
                     </div>
                 </li>

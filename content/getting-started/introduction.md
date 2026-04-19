@@ -5,41 +5,61 @@ order: 1
 
 # Introduction
 
-Zephyrus Leaf is a static site generator built on the [Zephyrus PHP Framework](https://github.com/ophelios-studio/zephyrus). It turns your Markdown content and Latte templates into a fast, deployable static site with one command.
+Zephyrus Leaf is a static site generator for documentation, landings, and blogs. You author Markdown (and optionally templates in Latte, PHP, or plain HTML). Leaf produces deployable static HTML in one command.
+
+There are two ways to use Leaf. Both share the same core library.
+
+| Path | Who it's for | What you run |
+|------|--------------|--------------|
+| **Binary CLI** | Most people. Zero dependencies on your machine. | `leaf init`, `leaf dev`, `leaf build` |
+| **Composer** | PHP developers who want controllers, packages, or full build-script control. | `composer create-project`, `composer dev`, `composer build` |
+
+You can start with the CLI and switch to Composer later via `leaf eject`. One-way, documented.
 
 ## What you get
 
 - **Markdown-powered pages** with front matter, GFM tables, and syntax highlighting
-- **Live-reload** during development -- edit a file, see changes instantly
-- **One-command static builds** -- run `composer build` to generate a `dist/` folder
-- **Full-text search** -- client-side fuzzy search across all your pages
-- **Multi-locale support** -- build in multiple languages with the default locale at root
-- **SEO out of the box** -- automatic sitemap.xml, robots.txt, and hreflang tags
-- **Light and dark themes** -- system-preference aware with a toggle
-- **Built on Zephyrus** -- the full framework is available if you need controllers, middleware, or custom logic
+- **Live-reload dev server** with change detection on content, templates, and assets
+- **One-command builds** that produce static HTML in `dist/`
+- **Full-text search** (client-side, zero backend)
+- **Multi-locale support** with automatic `hreflang` tags and sitemap alternates
+- **SEO out of the box** (`sitemap.xml`, `robots.txt`, OpenGraph tags)
+- **Light and dark themes** with system-preference awareness
+- **Templates in Latte, PHP, or plain HTML** — pick what fits
 
-## Architecture
+## Quick start (binary CLI, recommended)
 
-Leaf has two packages:
+```bash
+curl -fsSL https://leaf.ophelios.com/install.sh | sh
+leaf init my-docs
+cd my-docs
+leaf dev      # live reload on http://localhost:8080
+leaf build    # writes dist/, ready to deploy anywhere static
+```
 
-| Package | Type | Purpose |
-|---------|------|---------|
-| `zephyrus-framework/leaf-core` | Library | Static builder, content parser, SEO generators, Kernel |
-| `zephyrus-framework/leaf` | Template | Views, controllers, config, assets, sample content |
+## Quick start (Composer)
 
-When you create a project from the template, you get a working documentation site. The core library handles the build pipeline. When the core is updated, all projects benefit via `composer update`.
-
-## Quick start
+For teams who want to extend with PHP:
 
 ```bash
 composer create-project zephyrus-framework/leaf my-docs
 cd my-docs
 composer dev
+composer build
 ```
 
-Open `http://localhost:8080` and you'll see your documentation site with live-reload enabled.
+## Architecture
+
+| Package | Type | Purpose |
+|---------|------|---------|
+| `zephyrus-framework/leaf-core` | Library | Static builder, content parser, SEO generators, Kernel |
+| `zephyrus-framework/leaf` | Composer template | Views, controllers, config, assets, sample content |
+| `ophelios-studio/zephyrus-leaf-cli` | Go binary | Wraps everything above, ships as one executable |
+
+The CLI bundles the framework and scaffolds inside the binary. The Composer template exposes the same framework as a regular PHP project you can extend. Updates to `leaf-core` flow to both paths.
 
 ## Next steps
 
-- [Installation](/getting-started/installation) -- detailed setup instructions
-- [Project Structure](/getting-started/project-structure) -- understand the file layout
+- [Installation](/getting-started/installation) — detailed setup for either path
+- [Project Structure](/getting-started/project-structure) — what the CLI scaffolds, and what Composer gives you
+- [CLI Reference](/getting-started/cli-reference) — every `leaf` subcommand

@@ -1,6 +1,6 @@
 ---
 title: Claude Code Skills
-order: 4
+order: 5
 ---
 
 # Claude Code Skills

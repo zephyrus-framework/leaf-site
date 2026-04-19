@@ -5,9 +5,27 @@ order: 1
 
 # BuildCommand
 
-`Leaf\BuildCommand` is the standard build pipeline. It handles everything from rendering pages to generating SEO files.
+`Leaf\BuildCommand` is the build pipeline under the hood. It handles everything from rendering pages to generating SEO files. Both `leaf build` (binary CLI) and `composer build` (Composer template) call it.
 
-## Basic usage
+## Running a build
+
+### Binary CLI
+
+```bash
+leaf build
+```
+
+That's it. No PHP code to write, no `bin/build.php` to maintain.
+
+### Composer template
+
+The template ships a `bin/build.php` that you own:
+
+```bash
+composer build
+# or
+php bin/build.php
+```
 
 ```php
 // bin/build.php
@@ -22,29 +40,27 @@ $command = new BuildCommand($app);
 exit($command->run());
 ```
 
-Run it with:
-
-```bash
-composer build
-# or
-php bin/build.php
-```
+Edit this file to customize the build.
 
 ## What the pipeline does
 
-1. Discovers all GET routes from your controllers
+1. Discovers all GET routes from your controllers (Composer path) or scaffold routes (CLI path)
 2. Scans `content/` for Markdown files and adds their paths
 3. Renders each page through the full Zephyrus application stack
 4. Copies static assets from `public/` to `dist/`
 5. Moves `/404/index.html` to `/404.html`
 6. Generates `search.json` for client-side search
-7. Creates a root redirect (single-locale) or builds default locale to root (multi-locale)
+7. Creates a root redirect (single-locale) or builds default locale to root (multi-locale). If a `GET /` route exists (custom landing), it's rendered instead of the redirect.
 8. Generates `sitemap.xml` and `robots.txt` (if `production_url` is configured)
 9. Runs any registered post-build callbacks
 
-## Adding custom paths
+## Customizing (Composer path only)
 
-For parameterized routes that the router can't auto-discover (like `/blog/{slug}`), add them explicitly:
+If you're on the CLI path, skip this section — the `leaf` binary drives a stock pipeline. To customize, `leaf eject` first.
+
+### Adding custom paths
+
+For parameterized routes the router can't auto-discover (like `/blog/{slug}`):
 
 ```php
 $command = new BuildCommand($app);
@@ -58,9 +74,7 @@ $command->addPaths([
 exit($command->run());
 ```
 
-## Excluding paths
-
-To exclude routes from the build:
+### Excluding paths
 
 ```php
 $command->excludePatterns([
@@ -69,11 +83,9 @@ $command->excludePatterns([
 ]);
 ```
 
-The pipeline always excludes `/search.json` and `/` by default (the root is handled separately).
+`/search.json` is always excluded (generated separately). `/` is excluded when no custom `GET /` route exists (handled by the redirect/default-locale logic).
 
-## Post-build hooks
-
-Add custom steps that run after the standard pipeline:
+### Post-build hooks
 
 ```php
 $command->onPostBuild(function ($result, $outputDir) {
@@ -83,14 +95,14 @@ $command->onPostBuild(function ($result, $outputDir) {
     // Optimize images
     passthru('npx imagemin dist/assets/images/* --out-dir=dist/assets/images');
 
-    // Custom sitemap additions
     echo "Post-build complete!" . PHP_EOL;
 });
 ```
 
 The callback receives:
-- `$result` -- a `StaticBuildResult` with `pagesBuilt`, `totalPaths`, `errors`, `builtPages`
-- `$outputDir` -- absolute path to the output directory
+
+- `$result` — a `StaticBuildResult` with `pagesBuilt`, `totalPaths`, `errors`, `builtPages`
+- `$outputDir` — absolute path to the output directory
 
 ## Build output
 
@@ -106,5 +118,5 @@ dist/
   assets/                 # CSS, JS, images
   getting-started/
     introduction/
-      index.html           # Each page becomes a directory with index.html
+      index.html          # Each page becomes a directory with index.html
 ```

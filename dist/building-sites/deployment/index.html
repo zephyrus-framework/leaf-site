@@ -15,7 +15,7 @@
 
 
 <title>Deployment · Zephyrus Leaf</title>
-<meta name="description" content="Deployment After running composer build, the dist/ directory contains a fully static site ready for deployment. #Supported platforms The output works with an...">
+<meta name="description" content="Deployment After running leaf build (or composer build), the dist/ directory contains a fully static site ready for deployment. #Supported platforms The outp...">
 <meta name="author" content="Ophelios">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://leaf.ophelios.com/">
@@ -23,7 +23,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Zephyrus Leaf">
 <meta property="og:title" content="Deployment · Zephyrus Leaf">
-<meta property="og:description" content="Deployment After running composer build, the dist/ directory contains a fully static site ready for deployment. #Supported platforms The output works with an...">
+<meta property="og:description" content="Deployment After running leaf build (or composer build), the dist/ directory contains a fully static site ready for deployment. #Supported platforms The outp...">
 <meta property="og:url" content="https://leaf.ophelios.com/">
 <meta property="og:image" content="https://leaf.ophelios.com/assets/images/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -33,7 +33,7 @@
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Deployment · Zephyrus Leaf">
-<meta name="twitter:description" content="Deployment After running composer build, the dist/ directory contains a fully static site ready for deployment. #Supported platforms The output works with an...">
+<meta name="twitter:description" content="Deployment After running leaf build (or composer build), the dist/ directory contains a fully static site ready for deployment. #Supported platforms The outp...">
 <meta name="twitter:image" content="https://leaf.ophelios.com/assets/images/og-image.png">
 <meta name="twitter:image:alt" content="Zephyrus Leaf: static sites, quietly crafted.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -123,6 +123,12 @@ tailwind.config = {
                     <a href="/getting-started/project-structure"
                        class="sidebar-link">
                         Project Structure
+                    </a>
+                </li>
+                <li>
+                    <a href="/getting-started/cli-reference"
+                       class="sidebar-link">
+                        CLI Reference
                     </a>
                 </li>
                 <li>
@@ -246,23 +252,45 @@ tailwind.config = {
 <article class="docs-content">
     <div class="prose">
         <h1>Deployment</h1>
-<p>After running <code>composer build</code>, the <code>dist/</code> directory contains a fully static site ready for deployment.</p>
+<p>After running <code>leaf build</code> (or <code>composer build</code>), the <code>dist/</code> directory contains a fully static site ready for deployment.</p>
 <h2 id="supported-platforms"><a href="#supported-platforms" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Supported platforms</h2>
-<p>The output works with any static hosting provider:</p>
+<p>The output works with any static host:</p>
 <ul>
-<li><strong>Netlify</strong> -- connect your repo, set build command to <code>composer build</code>, publish directory to <code>dist/</code></li>
-<li><strong>Vercel</strong> -- same approach, or deploy the <code>dist/</code> folder directly</li>
-<li><strong>GitHub Pages</strong> -- push the <code>dist/</code> folder or use a GitHub Action</li>
-<li><strong>Cloudflare Pages</strong> -- connect your repo with <code>dist/</code> as output directory</li>
-<li><strong>DigitalOcean App Platform</strong> -- point to the <code>dist/</code> directory</li>
-<li><strong>Any web server</strong> -- upload <code>dist/</code> to your server's document root</li>
+<li><strong>Netlify</strong> — connect your repo, set the build command and publish directory (<code>dist/</code>)</li>
+<li><strong>Vercel</strong> — same approach, or deploy the <code>dist/</code> folder directly</li>
+<li><strong>GitHub Pages</strong> — push the <code>dist/</code> folder, or use a GitHub Action</li>
+<li><strong>Cloudflare Pages</strong> — connect your repo with <code>dist/</code> as the output directory</li>
+<li><strong>DigitalOcean App Platform</strong> — point a Static Site component at the <code>dist/</code> directory</li>
+<li><strong>Any web server</strong> — upload <code>dist/</code> to your document root</li>
 </ul>
-<h2 id="committing-dist"><a href="#committing-dist" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Committing dist/</h2>
-<p>You can choose to either:</p>
-<ol>
-<li><strong>Commit <code>dist/</code> to git</strong> -- the simplest approach. Your hosting platform serves the files directly without running a build step.</li>
-<li><strong>Build on deploy</strong> -- add <code>composer build</code> as a build command in your hosting platform's settings. Requires PHP on the build server.</li>
-</ol>
+<h2 id="build-commands-per-host"><a href="#build-commands-per-host" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Build commands per host</h2>
+<p>If your host runs the build for you, the command depends on which path you're on:</p>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Build command</th>
+<th>Dependencies your build server needs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Binary CLI</td>
+<td><code>leaf build</code></td>
+<td>The <code>leaf</code> binary (fetch via <code>curl</code> step) plus system PHP 8.4</td>
+</tr>
+<tr>
+<td>Composer</td>
+<td><code>composer install &amp;&amp; composer build</code></td>
+<td>PHP 8.4 + Composer</td>
+</tr>
+</tbody>
+</table>
+<p>Example Netlify build command for the binary path:</p>
+<pre><code class="language-bash">curl -fsSL https://leaf.ophelios.com/install.sh | sh &amp;&amp; leaf build
+</code></pre>
+<h2 id="committing-dist-to-git"><a href="#committing-dist-to-git" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Committing <code>dist/</code> to git</h2>
+<p>Alternative: build locally, commit <code>dist/</code>, let the host serve it without a build step. This is the simplest approach and works with every provider. Trade-off: every content change needs a rebuild + commit.</p>
 <h2 id="production-url"><a href="#production-url" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Production URL</h2>
 <p>Set <code>production_url</code> in <code>config.yml</code> to enable sitemap and robots.txt generation:</p>
 <pre><code class="language-yaml">leaf:
@@ -276,7 +304,7 @@ tailwind.config = {
 <h2 id="custom-domain"><a href="#custom-domain" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Custom domain</h2>
 <p>After deploying, configure your DNS to point to your hosting provider. Most providers support custom domains with automatic HTTPS via Let's Encrypt.</p>
 <h2 id="404-handling"><a href="#404-handling" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>404 handling</h2>
-<p>The build produces a <code>dist/404.html</code> file. Most static hosting providers serve this automatically for unmatched routes. If yours doesn't, configure it in your provider's settings.</p>
+<p>The build produces <code>dist/404.html</code>. Most static hosts serve it automatically for unmatched routes. If yours doesn't, configure it in the provider's settings.</p>
 
     </div>
 
@@ -301,7 +329,10 @@ tailwind.config = {
                 <a href="#supported-platforms" class="toc-link">Supported platforms</a>
             </li>
             <li class="toc-item">
-                <a href="#committing-dist" class="toc-link">Committing dist/</a>
+                <a href="#build-commands-per-host" class="toc-link">Build commands per host</a>
+            </li>
+            <li class="toc-item">
+                <a href="#committing-dist-to-git" class="toc-link">Committing dist/ to git</a>
             </li>
             <li class="toc-item">
                 <a href="#production-url" class="toc-link">Production URL</a>

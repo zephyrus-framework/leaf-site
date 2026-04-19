@@ -15,7 +15,7 @@
 
 
 <title>Introduction · Zephyrus Leaf</title>
-<meta name="description" content="Introduction Zephyrus Leaf is a static site generator built on the Zephyrus PHP Framework. It turns your Markdown content and Latte templates into a fast, de...">
+<meta name="description" content="Introduction Zephyrus Leaf is a static site generator for documentation, landings, and blogs. You author Markdown (and optionally templates in Latte, PHP, or...">
 <meta name="author" content="Ophelios">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://leaf.ophelios.com/">
@@ -23,7 +23,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Zephyrus Leaf">
 <meta property="og:title" content="Introduction · Zephyrus Leaf">
-<meta property="og:description" content="Introduction Zephyrus Leaf is a static site generator built on the Zephyrus PHP Framework. It turns your Markdown content and Latte templates into a fast, de...">
+<meta property="og:description" content="Introduction Zephyrus Leaf is a static site generator for documentation, landings, and blogs. You author Markdown (and optionally templates in Latte, PHP, or...">
 <meta property="og:url" content="https://leaf.ophelios.com/">
 <meta property="og:image" content="https://leaf.ophelios.com/assets/images/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -33,7 +33,7 @@
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Introduction · Zephyrus Leaf">
-<meta name="twitter:description" content="Introduction Zephyrus Leaf is a static site generator built on the Zephyrus PHP Framework. It turns your Markdown content and Latte templates into a fast, de...">
+<meta name="twitter:description" content="Introduction Zephyrus Leaf is a static site generator for documentation, landings, and blogs. You author Markdown (and optionally templates in Latte, PHP, or...">
 <meta name="twitter:image" content="https://leaf.ophelios.com/assets/images/og-image.png">
 <meta name="twitter:image:alt" content="Zephyrus Leaf: static sites, quietly crafted.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -123,6 +123,12 @@ tailwind.config = {
                     <a href="/getting-started/project-structure"
                        class="sidebar-link">
                         Project Structure
+                    </a>
+                </li>
+                <li>
+                    <a href="/getting-started/cli-reference"
+                       class="sidebar-link">
+                        CLI Reference
                     </a>
                 </li>
                 <li>
@@ -246,20 +252,56 @@ tailwind.config = {
 <article class="docs-content">
     <div class="prose">
         <h1>Introduction</h1>
-<p>Zephyrus Leaf is a static site generator built on the <a href="https://github.com/ophelios-studio/zephyrus">Zephyrus PHP Framework</a>. It turns your Markdown content and Latte templates into a fast, deployable static site with one command.</p>
+<p>Zephyrus Leaf is a static site generator for documentation, landings, and blogs. You author Markdown (and optionally templates in Latte, PHP, or plain HTML). Leaf produces deployable static HTML in one command.</p>
+<p>There are two ways to use Leaf. Both share the same core library.</p>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Who it's for</th>
+<th>What you run</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Binary CLI</strong></td>
+<td>Most people. Zero dependencies on your machine.</td>
+<td><code>leaf init</code>, <code>leaf dev</code>, <code>leaf build</code></td>
+</tr>
+<tr>
+<td><strong>Composer</strong></td>
+<td>PHP developers who want controllers, packages, or full build-script control.</td>
+<td><code>composer create-project</code>, <code>composer dev</code>, <code>composer build</code></td>
+</tr>
+</tbody>
+</table>
+<p>You can start with the CLI and switch to Composer later via <code>leaf eject</code>. One-way, documented.</p>
 <h2 id="what-you-get"><a href="#what-you-get" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>What you get</h2>
 <ul>
 <li><strong>Markdown-powered pages</strong> with front matter, GFM tables, and syntax highlighting</li>
-<li><strong>Live-reload</strong> during development -- edit a file, see changes instantly</li>
-<li><strong>One-command static builds</strong> -- run <code>composer build</code> to generate a <code>dist/</code> folder</li>
-<li><strong>Full-text search</strong> -- client-side fuzzy search across all your pages</li>
-<li><strong>Multi-locale support</strong> -- build in multiple languages with the default locale at root</li>
-<li><strong>SEO out of the box</strong> -- automatic sitemap.xml, robots.txt, and hreflang tags</li>
-<li><strong>Light and dark themes</strong> -- system-preference aware with a toggle</li>
-<li><strong>Built on Zephyrus</strong> -- the full framework is available if you need controllers, middleware, or custom logic</li>
+<li><strong>Live-reload dev server</strong> with change detection on content, templates, and assets</li>
+<li><strong>One-command builds</strong> that produce static HTML in <code>dist/</code></li>
+<li><strong>Full-text search</strong> (client-side, zero backend)</li>
+<li><strong>Multi-locale support</strong> with automatic <code>hreflang</code> tags and sitemap alternates</li>
+<li><strong>SEO out of the box</strong> (<code>sitemap.xml</code>, <code>robots.txt</code>, OpenGraph tags)</li>
+<li><strong>Light and dark themes</strong> with system-preference awareness</li>
+<li><strong>Templates in Latte, PHP, or plain HTML</strong> — pick what fits</li>
 </ul>
+<h2 id="quick-start-binary-cli-recommended"><a href="#quick-start-binary-cli-recommended" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Quick start (binary CLI, recommended)</h2>
+<pre><code class="language-bash">curl -fsSL https://leaf.ophelios.com/install.sh | sh
+leaf init my-docs
+cd my-docs
+leaf dev      # live reload on http://localhost:8080
+leaf build    # writes dist/, ready to deploy anywhere static
+</code></pre>
+<h2 id="quick-start-composer"><a href="#quick-start-composer" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Quick start (Composer)</h2>
+<p>For teams who want to extend with PHP:</p>
+<pre><code class="language-bash">composer create-project zephyrus-framework/leaf my-docs
+cd my-docs
+composer dev
+composer build
+</code></pre>
 <h2 id="architecture"><a href="#architecture" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Architecture</h2>
-<p>Leaf has two packages:</p>
 <table>
 <thead>
 <tr>
@@ -276,22 +318,22 @@ tailwind.config = {
 </tr>
 <tr>
 <td><code>zephyrus-framework/leaf</code></td>
-<td>Template</td>
+<td>Composer template</td>
 <td>Views, controllers, config, assets, sample content</td>
+</tr>
+<tr>
+<td><code>ophelios-studio/zephyrus-leaf-cli</code></td>
+<td>Go binary</td>
+<td>Wraps everything above, ships as one executable</td>
 </tr>
 </tbody>
 </table>
-<p>When you create a project from the template, you get a working documentation site. The core library handles the build pipeline. When the core is updated, all projects benefit via <code>composer update</code>.</p>
-<h2 id="quick-start"><a href="#quick-start" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Quick start</h2>
-<pre><code class="language-bash">composer create-project zephyrus-framework/leaf my-docs
-cd my-docs
-composer dev
-</code></pre>
-<p>Open <code>http://localhost:8080</code> and you'll see your documentation site with live-reload enabled.</p>
+<p>The CLI bundles the framework and scaffolds inside the binary. The Composer template exposes the same framework as a regular PHP project you can extend. Updates to <code>leaf-core</code> flow to both paths.</p>
 <h2 id="next-steps"><a href="#next-steps" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>Next steps</h2>
 <ul>
-<li><a href="/getting-started/installation">Installation</a> -- detailed setup instructions</li>
-<li><a href="/getting-started/project-structure">Project Structure</a> -- understand the file layout</li>
+<li><a href="/getting-started/installation">Installation</a> — detailed setup for either path</li>
+<li><a href="/getting-started/project-structure">Project Structure</a> — what the CLI scaffolds, and what Composer gives you</li>
+<li><a href="/getting-started/cli-reference">CLI Reference</a> — every <code>leaf</code> subcommand</li>
 </ul>
 
     </div>
@@ -314,10 +356,13 @@ composer dev
                 <a href="#what-you-get" class="toc-link">What you get</a>
             </li>
             <li class="toc-item">
-                <a href="#architecture" class="toc-link">Architecture</a>
+                <a href="#quick-start-binary-cli-recommended" class="toc-link">Quick start (binary CLI, recommended)</a>
             </li>
             <li class="toc-item">
-                <a href="#quick-start" class="toc-link">Quick start</a>
+                <a href="#quick-start-composer" class="toc-link">Quick start (Composer)</a>
+            </li>
+            <li class="toc-item">
+                <a href="#architecture" class="toc-link">Architecture</a>
             </li>
             <li class="toc-item">
                 <a href="#next-steps" class="toc-link">Next steps</a>

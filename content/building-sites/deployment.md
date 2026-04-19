@@ -5,25 +5,37 @@ order: 3
 
 # Deployment
 
-After running `composer build`, the `dist/` directory contains a fully static site ready for deployment.
+After running `leaf build` (or `composer build`), the `dist/` directory contains a fully static site ready for deployment.
 
 ## Supported platforms
 
-The output works with any static hosting provider:
+The output works with any static host:
 
-- **Netlify** -- connect your repo, set build command to `composer build`, publish directory to `dist/`
-- **Vercel** -- same approach, or deploy the `dist/` folder directly
-- **GitHub Pages** -- push the `dist/` folder or use a GitHub Action
-- **Cloudflare Pages** -- connect your repo with `dist/` as output directory
-- **DigitalOcean App Platform** -- point to the `dist/` directory
-- **Any web server** -- upload `dist/` to your server's document root
+- **Netlify** — connect your repo, set the build command and publish directory (`dist/`)
+- **Vercel** — same approach, or deploy the `dist/` folder directly
+- **GitHub Pages** — push the `dist/` folder, or use a GitHub Action
+- **Cloudflare Pages** — connect your repo with `dist/` as the output directory
+- **DigitalOcean App Platform** — point a Static Site component at the `dist/` directory
+- **Any web server** — upload `dist/` to your document root
 
-## Committing dist/
+## Build commands per host
 
-You can choose to either:
+If your host runs the build for you, the command depends on which path you're on:
 
-1. **Commit `dist/` to git** -- the simplest approach. Your hosting platform serves the files directly without running a build step.
-2. **Build on deploy** -- add `composer build` as a build command in your hosting platform's settings. Requires PHP on the build server.
+| Path | Build command | Dependencies your build server needs |
+|------|---------------|---------------------------------------|
+| Binary CLI | `leaf build` | The `leaf` binary (fetch via `curl` step) plus system PHP 8.4 |
+| Composer | `composer install && composer build` | PHP 8.4 + Composer |
+
+Example Netlify build command for the binary path:
+
+```bash
+curl -fsSL https://leaf.ophelios.com/install.sh | sh && leaf build
+```
+
+## Committing `dist/` to git
+
+Alternative: build locally, commit `dist/`, let the host serve it without a build step. This is the simplest approach and works with every provider. Trade-off: every content change needs a rebuild + commit.
 
 ## Production URL
 
@@ -35,6 +47,7 @@ leaf:
 ```
 
 This generates:
+
 - `dist/sitemap.xml` with all page URLs and hreflang alternates
 - `dist/robots.txt` with a reference to the sitemap
 
@@ -44,4 +57,4 @@ After deploying, configure your DNS to point to your hosting provider. Most prov
 
 ## 404 handling
 
-The build produces a `dist/404.html` file. Most static hosting providers serve this automatically for unmatched routes. If yours doesn't, configure it in your provider's settings.
+The build produces `dist/404.html`. Most static hosts serve it automatically for unmatched routes. If yours doesn't, configure it in the provider's settings.

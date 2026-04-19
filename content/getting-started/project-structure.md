@@ -5,7 +5,62 @@ order: 3
 
 # Project Structure
 
-A Leaf project follows a clear convention:
+What your project looks like depends on which path you picked.
+
+## Binary CLI
+
+`leaf init` creates a minimal tree. You only see content, assets, optional templates, and config.
+
+```
+my-docs/
+  content/
+    getting-started/
+      introduction.md
+  public/
+    assets/
+      css/app.css
+      js/
+      images/
+  templates/              # optional overrides (Latte, PHP, or HTML)
+  config.yml
+  dist/                   # build output (deploy this)
+```
+
+Everything else — the framework, controllers, the build pipeline, the vendor graph — lives inside the `leaf` binary.
+
+### `content/`
+
+Your Markdown pages. Organized into sections (directories) with pages (`.md` files). Each file has `title` and `order` front matter.
+
+### `public/`
+
+Static assets copied verbatim to `dist/`. Put your logo, custom CSS overrides, fonts, and images here.
+
+### `templates/` (optional)
+
+Drop Latte/PHP/HTML files here to override the bundled defaults. The binary merges your templates on top of the bundled theme at build time. Examples:
+
+- `templates/layouts/docs.latte` → overrides the bundled docs layout
+- `templates/partials/nav.latte` → overrides the bundled nav
+- `templates/landing.latte` → rendered at `/` (if present, `/` no longer redirects to the first doc page)
+
+You can use any of the three formats. Pick what fits:
+
+- **Latte** for layouts, partials, blocks
+- **PHP** (`<?= $leafName ?>`) if you prefer raw PHP views
+- **HTML** if you want a static page without template variables (the binary copies it through)
+
+### `config.yml`
+
+Site settings: name, version, sections, production URL. See [Configuration Reference](/configuration/reference).
+
+### `dist/`
+
+Generated output. Static HTML, CSS, JS, `sitemap.xml`, `robots.txt`, `search.json`. Deploy this.
+
+## Composer template
+
+`composer create-project zephyrus-framework/leaf my-docs` — or `leaf eject` on an existing CLI project — gives you the full Zephyrus application alongside the same `content/`, `templates/`, `public/`, `config.yml` structure:
 
 ```
 my-docs/
@@ -13,37 +68,27 @@ my-docs/
     Controllers/
       DocsController.php      # Routes and page rendering
     Models/Core/
-      Application.php          # Extends Leaf\Kernel
+      Application.php         # Extends Leaf\Kernel
     Views/
-      layouts/docs.latte       # HTML wrapper for docs pages
-      docs/page.latte           # Individual doc page template
-      partials/                 # Reusable components (nav, sidebar, footer)
-      404.latte                 # Error page
+      layouts/docs.latte      # HTML wrapper for docs pages
+      docs/page.latte         # Individual doc page template
+      partials/               # Reusable components (nav, sidebar, footer)
+      404.latte               # Error page
   bin/
-    build.php                   # Static site build script
-    router.php                  # Dev server entry point
-  content/
-    getting-started/
-      introduction.md           # Markdown content pages
-      installation.md
-    guides/
-      deployment.md
-  public/
-    index.php                   # Web application entry point
-    assets/
-      css/app.css               # All styles (light/dark theme)
-      js/                       # Search, sidebar, copy-code, theme toggle
-  config.yml                    # Site configuration
-  dist/                         # Build output (deploy this)
+    build.php                 # Static site build script
+    router.php                # Dev server entry point
+  content/                    # same as CLI
+  public/                     # same as CLI
+  templates/                  # optional; CLI-style overrides still work
+  config.yml                  # same as CLI
+  vendor/                     # Composer dependencies
+  composer.json
+  dist/
 ```
 
-## Key files
+### Key files unique to the Composer path
 
-### `config.yml`
-
-All site settings: project name, version, content paths, sections, and production URL. See [Configuration](/configuration/reference) for the full reference.
-
-### `app/Models/Core/Application.php`
+#### `app/Models/Core/Application.php`
 
 Your application class. Extends `Leaf\Kernel` and provides dependency injection for controllers:
 
@@ -66,9 +111,9 @@ final class Application extends Kernel
 }
 ```
 
-### `bin/build.php`
+#### `bin/build.php`
 
-The build script. Uses `Leaf\BuildCommand` to run the standard pipeline:
+The build script. A file you own and can modify:
 
 ```php
 $app = new Application();
@@ -76,10 +121,12 @@ $command = new BuildCommand($app);
 exit($command->run());
 ```
 
-### `content/`
+Add custom paths, hook into the pipeline, post-process output. See the [BuildCommand](/building-sites/build-command) reference.
 
-Where your Markdown documentation lives. Organized into sections (directories) with pages (`.md` files). Each file needs `title` and `order` front matter.
+#### `app/Controllers/`
 
-### `dist/`
+Where you add custom routes. Each controller is a Zephyrus class with `#[Get]`, `#[Post]`, etc. attribute-routed endpoints.
 
-Generated output from `composer build`. This is what you deploy. Contains static HTML, assets, sitemap, and robots.txt.
+## Which files are shared between the two paths?
+
+Everything under `content/`, `templates/`, `public/`, and `config.yml` is identical. You can move a project between paths via `leaf eject` (CLI → Composer) or by deleting `app/`, `bin/`, `composer.json`, and `vendor/` (Composer → CLI).
