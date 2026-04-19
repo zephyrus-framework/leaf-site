@@ -23,15 +23,13 @@
             </div>
         </div>
     </header>
-    <div class="landing-nav-spacer"></div>
 
     {* ═══════════════════════ HERO ═══════════════════════ *}
     <section class="hero-section">
-        <div class="hero-bg">
+        <div class="hero-image-wrap">
             <img src="/assets/images/hero-light.jpg" alt="" class="hero-img hero-img-light">
             <img src="/assets/images/hero-dark.jpg" alt="" class="hero-img hero-img-dark">
             <div class="hero-grid"></div>
-            <div class="hero-fade"></div>
         </div>
         <div class="hero-content">
             <div class="hero-badge">Open Source Static Site Generator</div>
@@ -46,8 +44,10 @@
         </div>
         <div class="hero-screenshot-wrap">
             <div class="hero-screenshot">
-                <img src="/assets/images/screenshot-light.png" alt="Leaf documentation" class="hero-ss-light">
-                <img src="/assets/images/screenshot-dark.png" alt="Leaf documentation" class="hero-ss-dark">
+                <div class="hero-ss-inner">
+                    <img src="/assets/images/screenshot-light.png" alt="Leaf documentation" class="hero-ss-light">
+                    <img src="/assets/images/screenshot-dark.png" alt="Leaf documentation" class="hero-ss-dark">
+                </div>
             </div>
         </div>
     </section>
@@ -120,8 +120,7 @@
                     <span class="code-file-dot"></span>
                     <span class="code-file-name">bin/build.php</span>
                 </div>
-                {syntax off}
-                <pre class="language-php"><code class="language-php">$app = new Application();
+                <pre class="language-php" n:syntax="off"><code class="language-php">$app = new Application();
 $command = new BuildCommand($app);
 
 // Add blog posts as build paths
@@ -133,7 +132,6 @@ $command->onPostBuild(function ($result, $outputDir) {
 });
 
 exit($command->run());</code></pre>
-                {syntax latte}
             </div>
         </div>
     </section>
