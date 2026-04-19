@@ -11,11 +11,7 @@
             var shouldBeScrolled = window.scrollY > scrollThreshold;
             if (shouldBeScrolled !== scrolled) {
                 scrolled = shouldBeScrolled;
-                if (scrolled) {
-                    nav.classList.add('scrolled');
-                } else {
-                    nav.classList.remove('scrolled');
-                }
+                nav.classList.toggle('scrolled', scrolled);
             }
         }
 
@@ -53,5 +49,29 @@
                 target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         });
+    });
+
+    // ── Copy install command ───────────────────────────────
+    document.querySelectorAll('.hero-install').forEach(function (el) {
+        var btn = el.querySelector('.hero-install-copy');
+        if (!btn) return;
+        btn.addEventListener('click', function () {
+            var text = el.getAttribute('data-copy') || el.querySelector('code').textContent;
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(flash);
+            } else {
+                var ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                try { document.execCommand('copy'); } catch (e) {}
+                document.body.removeChild(ta);
+                flash();
+            }
+        });
+        function flash() {
+            el.classList.add('copied');
+            setTimeout(function () { el.classList.remove('copied'); }, 1600);
+        }
     });
 })();

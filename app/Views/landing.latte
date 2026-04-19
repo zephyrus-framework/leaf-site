@@ -1,179 +1,430 @@
 {layout 'layouts/landing.latte'}
 
+{block head}
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+{/block}
+
 {block content}
-<main>
-    {* ═══════════════════════ NAV ═══════════════════════ *}
+<main class="landing">
+    {* ═══════════════════════ NAV (two islands) ═══════════════════════ *}
     <header class="landing-nav" id="landingNav">
-        <div class="landing-nav-inner" id="landingNavInner">
+        <div class="landing-nav-island landing-nav-island-left">
             <a href="/" class="landing-nav-brand">
-                <svg width="20" height="20" viewBox="0 0 32 32" fill="none"><path d="M8 6 L24 6 L16 16 L24 26 L8 26 L16 16 Z" fill="currentColor" opacity="0.9"/></svg>
-                <span>Leaf</span>
+                <img src="/assets/images/logo.png" alt="" class="landing-nav-logo" width="28" height="26" aria-hidden="true">
+                <span>{$leafName ?? 'Zephyrus Leaf'}</span>
             </a>
-            <nav class="landing-nav-links">
+            <nav class="landing-nav-links" aria-label="Primary">
                 <a href="#features">Features</a>
                 <a href="#quickstart">Quick Start</a>
                 <a href="/getting-started/introduction">Docs</a>
                 <a href="https://github.com/ophelios-studio/zephyrus-leaf-core" target="_blank" rel="noopener">GitHub</a>
             </nav>
-            <div class="landing-nav-right">
-                <button id="landingThemeToggle" class="theme-toggle" type="button" aria-label="Toggle theme">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-                </button>
-                <a href="/getting-started/installation" class="landing-nav-cta">Get Started</a>
-            </div>
+        </div>
+        <div class="landing-nav-island landing-nav-island-right">
+            <button id="landingThemeToggle" class="theme-toggle" type="button" aria-label="Toggle theme">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            </button>
+            <a href="/getting-started/installation" class="landing-nav-cta">
+                Get Started
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
         </div>
     </header>
 
     {* ═══════════════════════ HERO ═══════════════════════ *}
-    <section class="hero-section">
-        <div class="hero-image-wrap">
+    <section class="hero">
+        <div class="hero-image-wrap" aria-hidden="true">
             <img src="/assets/images/hero-light.jpg" alt="" class="hero-img hero-img-light">
             <img src="/assets/images/hero-dark.jpg" alt="" class="hero-img hero-img-dark">
-            <div class="hero-grid"></div>
+            <div class="hero-image-fade"></div>
         </div>
+
         <div class="hero-content">
-            <div class="hero-badge">Open Source Static Site Generator</div>
-            <h1 class="hero-title">Your docs,<br>built to last.</h1>
-            <p class="hero-subtitle">Static sites from Markdown. Multi-locale, SEO, search, and light/dark themes included. One command to build, deploy anywhere.</p>
+            <div class="hero-eyebrow">
+                <svg class="hero-eyebrow-star" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 7 7.1.6-5.4 4.7 1.6 7-6.2-3.8L5.8 21.3l1.6-7L2 9.6 9.1 9z"/></svg>
+                <span><strong>100% open source</strong></span>
+                <span class="hero-eyebrow-divider"></span>
+                <span>MIT licensed</span>
+                <span class="hero-eyebrow-divider"></span>
+                <span>PHP 8.4+</span>
+            </div>
+            <h1 class="hero-title">
+                Static sites,<br>
+                <span class="hero-title-accent">quietly crafted.</span>
+            </h1>
+            <p class="hero-subtitle">
+                Documentation out of the box, but Leaf is a full static site generator under the hood.
+                Ship landing pages, marketing, blogs, anything. Themes, search, multi-locale, SEO baked in.
+            </p>
             <div class="hero-actions">
-                <a href="/getting-started/installation" class="hero-btn hero-btn-primary">Get Started</a>
-                <div class="hero-install">
-                    <code>composer create-project zephyrus-framework/leaf</code>
+                <a href="/getting-started/installation" class="btn btn-primary">
+                    Get Started
+                    <svg class="btn-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </a>
+                <a href="https://github.com/ophelios-studio/zephyrus-leaf-core" target="_blank" rel="noopener" class="btn btn-ghost">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57v-2.07c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.09-.72.09-.72 1.2.08 1.83 1.24 1.83 1.24 1.08 1.83 2.81 1.3 3.5.99.1-.78.42-1.31.76-1.61-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.3-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18a4.66 4.66 0 0 1 1.24 3.22c0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 12 .3"/></svg>
+                    Star on GitHub
+                </a>
+            </div>
+            <div class="hero-install" data-copy="composer create-project zephyrus-framework/leaf my-docs">
+                <span class="hero-install-prompt">$</span>
+                <code>composer create-project zephyrus-framework/leaf my-docs</code>
+                <button type="button" class="hero-install-copy" aria-label="Copy command">
+                    <svg class="icon-copy" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    <svg class="icon-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="hero-screenshot-wrap">
+            <div class="hero-screenshot">
+                <div class="hero-screenshot-inner">
+                    <img src="/assets/images/screenshot-light.png" alt="Leaf documentation preview" class="hero-ss-light">
+                    <img src="/assets/images/screenshot-dark.png" alt="Leaf documentation preview" class="hero-ss-dark">
                 </div>
             </div>
         </div>
-        <div class="hero-screenshot-wrap">
-            <div class="hero-screenshot">
-                <div class="hero-ss-inner">
-                    <img src="/assets/images/screenshot-light.png" alt="Leaf documentation" class="hero-ss-light">
-                    <img src="/assets/images/screenshot-dark.png" alt="Leaf documentation" class="hero-ss-dark">
+    </section>
+
+    {* ═══════════════════════ STATS STRIP ═══════════════════════ *}
+    <section class="stats">
+        <div class="section-container">
+            <div class="stats-grid">
+                <div class="stat">
+                    <div class="stat-value">1<span class="stat-unit">cmd</span></div>
+                    <div class="stat-label">to build the whole site</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">0<span class="stat-unit">config</span></div>
+                    <div class="stat-label">required to get running</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">58<span class="stat-unit">tests</span></div>
+                    <div class="stat-label">covering the core library</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">∞<span class="stat-unit">hosts</span></div>
+                    <div class="stat-label">deploy static HTML anywhere</div>
                 </div>
             </div>
         </div>
     </section>
 
     {* ═══════════════════════ FEATURES ═══════════════════════ *}
-    <section class="features-section" id="features">
+    <section class="features" id="features">
         <div class="section-container">
-            <div class="section-header">
-                <h2 class="section-title">Everything you need.</h2>
-                <p class="section-subtitle">Leaf handles the build pipeline, SEO, search, and theming so you can focus on content.</p>
-            </div>
+            <header class="section-header">
+                <div class="section-eyebrow">Features</div>
+                <h2 class="section-title">
+                    Everything you need.<br>
+                    <span class="section-title-muted">Nothing you don't.</span>
+                </h2>
+                <p class="section-subtitle">
+                    Leaf handles the build pipeline, SEO, search, and theming so you can focus on content.
+                </p>
+            </header>
+
             <div class="features-grid">
-                <div class="feature-item">
-                    <div class="feature-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                <article class="feature feature-wide">
+                    <div class="feature-wide-copy">
+                        <div class="feature-num">00 · Positioning</div>
+                        <h3 class="feature-wide-title">
+                            Documentation out of the box.<br>
+                            <span class="feature-wide-title-muted">Anything static, under the hood.</span>
+                        </h3>
+                        <p class="feature-wide-desc">
+                            The default scaffold gets you polished <strong>documentation</strong> in minutes.
+                            That's the fast path. But Leaf is a full static site generator underneath.
+                            Ship a <strong>landing page</strong>, a <strong>marketing site</strong>, a
+                            <strong>blog</strong>, and drop into a PHP controller when a page needs more.
+                            One pipeline. One deploy.
+                        </p>
                     </div>
-                    <h3 class="feature-title">One-Command Builds</h3>
-                    <p class="feature-desc">Run <code>composer build</code> and get a fully static site in <code>dist/</code>. Ready for Netlify, Vercel, GitHub Pages, or any web server.</p>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    <div class="feature-wide-tags">
+                        <span class="feature-tag feature-tag-default">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                            Docs
+                            <span class="feature-tag-meta">out of the box</span>
+                        </span>
+                        <span class="feature-tag">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg>
+                            Landing pages
+                        </span>
+                        <span class="feature-tag">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor"/></svg>
+                            Marketing sites
+                        </span>
+                        <span class="feature-tag">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v16H4z"/><line x1="4" y1="10" x2="20" y2="10"/><line x1="10" y1="10" x2="10" y2="20"/></svg>
+                            Blogs
+                        </span>
+                        <span class="feature-tag">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                            Custom PHP
+                        </span>
                     </div>
-                    <h3 class="feature-title">Markdown Content</h3>
-                    <p class="feature-desc">Write in Markdown with front matter, GFM tables, and fenced code blocks. Syntax highlighting with Prism.js and automatic copy buttons.</p>
-                </div>
-                <div class="feature-item">
+                </article>
+
+                <article class="feature">
+                    <div class="feature-num">01</div>
                     <div class="feature-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
                     </div>
-                    <h3 class="feature-title">Multi-Locale</h3>
-                    <p class="feature-desc">Build your site in multiple languages. Default locale at root, others in subdirectories. Automatic hreflang tags and sitemap alternates.</p>
-                </div>
-                <div class="feature-item">
+                    <h3 class="feature-title">One-command builds</h3>
+                    <p class="feature-desc">
+                        Run <code>composer build</code> and get a fully static site in <code>dist/</code>.
+                        Ready for Netlify, Vercel, GitHub Pages, or any web server.
+                    </p>
+                </article>
+
+                <article class="feature">
+                    <div class="feature-num">02</div>
                     <div class="feature-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
                     </div>
-                    <h3 class="feature-title">Full-Text Search</h3>
-                    <p class="feature-desc">Client-side fuzzy search across all pages. No server needed. Ctrl+K to open, keyboard navigation, instant results.</p>
-                </div>
-                <div class="feature-item">
+                    <h3 class="feature-title">Markdown content</h3>
+                    <p class="feature-desc">
+                        Front matter, GFM tables, fenced code blocks. Syntax highlighting via Prism.js
+                        with automatic copy buttons on every block.
+                    </p>
+                </article>
+
+                <article class="feature">
+                    <div class="feature-num">03</div>
                     <div class="feature-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                     </div>
-                    <h3 class="feature-title">SEO Ready</h3>
-                    <p class="feature-desc">Automatic sitemap.xml, robots.txt, canonical URLs, and hreflang tags. Structured metadata on every page.</p>
-                </div>
-                <div class="feature-item">
+                    <h3 class="feature-title">Multi-locale, out of the box</h3>
+                    <p class="feature-desc">
+                        Default locale at root, others in subdirectories. Automatic
+                        <code>hreflang</code> tags and sitemap alternates. No plugin gymnastics.
+                    </p>
+                </article>
+
+                <article class="feature">
+                    <div class="feature-num">04</div>
                     <div class="feature-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                     </div>
-                    <h3 class="feature-title">Light & Dark Themes</h3>
-                    <p class="feature-desc">Both themes built in and polished. Respects system preference with a manual toggle. Smooth transitions, consistent across all components.</p>
-                </div>
+                    <h3 class="feature-title">Client-side full-text search</h3>
+                    <p class="feature-desc">
+                        Fuzzy search across every page with zero backend.
+                        <kbd>⌘K</kbd> to open, arrow keys to navigate, instant results.
+                    </p>
+                </article>
+
+                <article class="feature">
+                    <div class="feature-num">05</div>
+                    <div class="feature-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    </div>
+                    <h3 class="feature-title">SEO &amp; structured metadata</h3>
+                    <p class="feature-desc">
+                        Automatic <code>sitemap.xml</code>, <code>robots.txt</code>, canonical URLs,
+                        OpenGraph tags. Everything crawlers expect, nothing you have to remember.
+                    </p>
+                </article>
+
+                <article class="feature">
+                    <div class="feature-num">06</div>
+                    <div class="feature-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                    </div>
+                    <h3 class="feature-title">Light &amp; dark themes</h3>
+                    <p class="feature-desc">
+                        Both themes polished and production-ready. Respects system preference,
+                        with a manual toggle and smooth transitions across every component.
+                    </p>
+                </article>
             </div>
         </div>
     </section>
 
-    {* ═══════════════════════ CODE EXAMPLE ═══════════════════════ *}
-    <section class="code-section">
+    {* ═══════════════════════ CODE SHOWCASE (editorial split) ═══════════════════════ *}
+    <section class="showcase">
         <div class="section-container">
-            <div class="section-header">
-                <h2 class="section-title">Simple by design.</h2>
-                <p class="section-subtitle">A complete build script in 10 lines. Add hooks for custom steps.</p>
-            </div>
-            <div class="code-showcase">
-                <div class="code-file-header">
-                    <span class="code-file-dot"></span>
-                    <span class="code-file-dot"></span>
-                    <span class="code-file-dot"></span>
-                    <span class="code-file-name">bin/build.php</span>
+            <div class="showcase-grid">
+                <div class="showcase-copy">
+                    <div class="section-eyebrow">Build pipeline</div>
+                    <h2 class="section-title showcase-title">
+                        Ten lines of&nbsp;PHP.<br>
+                        <span class="section-title-muted">A production build.</span>
+                    </h2>
+                    <p class="showcase-lede">
+                        The default <code>bin/build.php</code> is a single file you own.
+                        Add routes, hook into the pipeline, post-process output. It's yours to evolve.
+                    </p>
+                    <ul class="showcase-list">
+                        <li>
+                            <span class="showcase-tick" aria-hidden="true">
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            </span>
+                            <div>
+                                <strong>Composable</strong>
+                                <span>Add paths, extend the kernel, register routes.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="showcase-tick" aria-hidden="true">
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            </span>
+                            <div>
+                                <strong>Hookable</strong>
+                                <span>Pre-build and post-build callbacks for custom steps.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="showcase-tick" aria-hidden="true">
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            </span>
+                            <div>
+                                <strong>Transparent</strong>
+                                <span>No black boxes. The whole build is regular PHP you can read.</span>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-                <pre class="language-php" n:syntax="off"><code class="language-php">$app = new Application();
+
+                <div class="showcase-code">
+                    <div class="code-window">
+                        <div class="code-window-chrome">
+                            <span class="code-dot"></span>
+                            <span class="code-dot"></span>
+                            <span class="code-dot"></span>
+                            <span class="code-window-name">bin/build.php</span>
+                        </div>
+                        <pre class="language-php" n:syntax="off"><code class="language-php">$app = new Application();
 $command = new BuildCommand($app);
 
 // Add blog posts as build paths
-$command->addPaths(['/blog', '/blog/my-post']);
+$command-&gt;addPaths(['/blog', '/blog/my-post']);
 
 // Custom post-build step
-$command->onPostBuild(function ($result, $outputDir) {
-    echo "Built {$result->pagesBuilt} pages!" . PHP_EOL;
+$command-&gt;onPostBuild(function ($result, $outputDir) {
+    echo "Built {$result-&gt;pagesBuilt} pages!" . PHP_EOL;
 });
 
-exit($command->run());</code></pre>
+exit($command-&gt;run());</code></pre>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    {* ═══════════════════════ QUICK START ═══════════════════════ *}
-    <section class="quickstart-section" id="quickstart">
+    {* ═══════════════════════ QUICKSTART (horizontal flow) ═══════════════════════ *}
+    <section class="quickstart" id="quickstart">
         <div class="section-container">
-            <div class="section-header">
-                <h2 class="section-title">Up and running in 30 seconds.</h2>
-            </div>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-num">1</div>
+            <header class="section-header">
+                <div class="section-eyebrow">Quick start</div>
+                <h2 class="section-title">
+                    Up and running<br>
+                    <span class="section-title-muted">in thirty seconds.</span>
+                </h2>
+            </header>
+
+            <ol class="steps">
+                <li class="step">
+                    <div class="step-rail" aria-hidden="true">
+                        <div class="step-marker">1</div>
+                        <div class="step-line"></div>
+                    </div>
                     <div class="step-body">
                         <h3 class="step-title">Create your project</h3>
-                        <pre class="language-bash"><code class="language-bash">composer create-project zephyrus-framework/leaf my-docs</code></pre>
+                        <p class="step-desc">Scaffold a new Leaf site with Composer. Everything wires up on first run.</p>
+                        <pre class="step-code language-bash"><code class="language-bash">composer create-project zephyrus-framework/leaf my-docs</code></pre>
                     </div>
-                </div>
-                <div class="step">
-                    <div class="step-num">2</div>
+                </li>
+
+                <li class="step">
+                    <div class="step-rail" aria-hidden="true">
+                        <div class="step-marker">2</div>
+                        <div class="step-line"></div>
+                    </div>
                     <div class="step-body">
                         <h3 class="step-title">Write your content</h3>
-                        <pre class="language-yaml"><code class="language-yaml"># content/getting-started/introduction.md
----
+                        <p class="step-desc">Drop Markdown files under <code>content/</code>. Front matter controls titles, order, and metadata.</p>
+                        <pre class="step-code language-yaml" n:syntax="off"><code class="language-yaml">---
 title: Introduction
 order: 1
 ---
-# Welcome to My Project
+# Welcome to my docs
 Your documentation starts here.</code></pre>
                     </div>
-                </div>
-                <div class="step">
-                    <div class="step-num">3</div>
+                </li>
+
+                <li class="step">
+                    <div class="step-rail" aria-hidden="true">
+                        <div class="step-marker">3</div>
+                    </div>
                     <div class="step-body">
-                        <h3 class="step-title">Build and deploy</h3>
-                        <pre class="language-bash"><code class="language-bash">composer build
+                        <h3 class="step-title">Build &amp; deploy</h3>
+                        <p class="step-desc">Render every page to static HTML in <code>dist/</code>. Push anywhere: Netlify, Vercel, GitHub Pages, or your own server.</p>
+                        <pre class="step-code language-bash"><code class="language-bash">composer build
 # dist/ is ready to deploy anywhere</code></pre>
                     </div>
-                </div>
-            </div>
+                </li>
+            </ol>
+
             <div class="quickstart-cta">
-                <a href="/getting-started/introduction" class="hero-btn hero-btn-primary">Read the Documentation</a>
+                <a href="/getting-started/introduction" class="btn btn-primary">
+                    Read the documentation
+                    <svg class="btn-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    {* ═══════════════════════ BUILT WITH (stack row) ═══════════════════════ *}
+    <section class="stack">
+        <div class="section-container">
+            <p class="stack-label">Standing on the shoulders of</p>
+            <ul class="stack-logos">
+                <li>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v6H4zM4 14h16v6H4z"/><circle cx="8" cy="7" r="1" fill="currentColor"/><circle cx="8" cy="17" r="1" fill="currentColor"/></svg>
+                    <span>PHP 8.4</span>
+                </li>
+                <li>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7 9h10M7 13h6M7 17h4"/></svg>
+                    <span>Zephyrus 2</span>
+                </li>
+                <li>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    <span>CommonMark</span>
+                </li>
+                <li>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                    <span>Prism.js</span>
+                </li>
+                <li>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2L4 7v10l8 5 8-5V7l-8-5z"/><path d="M12 22V12M4 7l8 5 8-5"/></svg>
+                    <span>Latte 3</span>
+                </li>
+                <li>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="7" y1="10" x2="17" y2="10"/><line x1="7" y1="14" x2="13" y2="14"/></svg>
+                    <span>Composer</span>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    {* ═══════════════════════ CTA BAND ═══════════════════════ *}
+    <section class="cta-band">
+        <div class="section-container">
+            <div class="cta-inner">
+                <div class="cta-copy">
+                    <h2 class="cta-title">Start writing. <span class="cta-title-accent">Stop configuring.</span></h2>
+                    <p class="cta-subtitle">Open source, MIT licensed, and built to be read. Ship your docs this afternoon.</p>
+                </div>
+                <div class="cta-actions">
+                    <a href="/getting-started/installation" class="btn btn-primary">
+                        Install Leaf
+                        <svg class="btn-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </a>
+                    <a href="https://github.com/ophelios-studio/zephyrus-leaf-core" target="_blank" rel="noopener" class="btn btn-secondary">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57v-2.07c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.09-.72.09-.72 1.2.08 1.83 1.24 1.83 1.24 1.08 1.83 2.81 1.3 3.5.99.1-.78.42-1.31.76-1.61-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.3-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18a4.66 4.66 0 0 1 1.24 3.22c0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 12 .3"/></svg>
+                        Star on GitHub
+                    </a>
+                </div>
             </div>
         </div>
     </section>
@@ -181,17 +432,71 @@ Your documentation starts here.</code></pre>
     {* ═══════════════════════ FOOTER ═══════════════════════ *}
     <footer class="landing-footer">
         <div class="section-container">
-            <div class="footer-inner">
-                <div class="footer-brand">
-                    <svg width="20" height="20" viewBox="0 0 32 32" fill="none"><path d="M8 6 L24 6 L16 16 L24 26 L8 26 L16 16 Z" fill="currentColor" opacity="0.9"/></svg>
-                    <span>Zephyrus Leaf</span>
+            <div class="footer-grid">
+                <div class="footer-brand-col">
+                    <a href="/" class="footer-brand">
+                        <img src="/assets/images/logo.png" alt="" class="footer-brand-logo" width="30" height="28" aria-hidden="true">
+                        <span>Zephyrus Leaf</span>
+                    </a>
+                    <p class="footer-tagline">
+                        Static documentation sites, quietly excellent.
+                    </p>
+                    <div class="footer-social">
+                        <a href="https://github.com/ophelios-studio/zephyrus-leaf-core" target="_blank" rel="noopener" aria-label="GitHub">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57v-2.07c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.09-.72.09-.72 1.2.08 1.83 1.24 1.83 1.24 1.08 1.83 2.81 1.3 3.5.99.1-.78.42-1.31.76-1.61-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.3-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18a4.66 4.66 0 0 1 1.24 3.22c0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 12 .3"/></svg>
+                        </a>
+                        <a href="https://packagist.org/packages/zephyrus-framework/leaf" target="_blank" rel="noopener" aria-label="Packagist">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                        </a>
+                        <a href="https://ophelios.com" target="_blank" rel="noopener" aria-label="Ophelios">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                        </a>
+                    </div>
                 </div>
-                <div class="footer-links">
-                    <a href="/getting-started/introduction">Documentation</a>
-                    <a href="https://github.com/ophelios-studio/zephyrus-leaf-core" target="_blank" rel="noopener">GitHub</a>
-                    <a href="https://ophelios.com" target="_blank" rel="noopener">Ophelios</a>
+
+                <div class="footer-col">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#quickstart">Quick start</a></li>
+                        <li><a href="/getting-started/installation">Installation</a></li>
+                        <li><a href="/getting-started/introduction">Introduction</a></li>
+                    </ul>
                 </div>
-                <div class="footer-copy">Built with Leaf by <a href="https://ophelios.com">Ophelios</a></div>
+
+                <div class="footer-col">
+                    <h4>Docs</h4>
+                    <ul>
+                        <li><a href="/building-sites/buildcommand">BuildCommand</a></li>
+                        <li><a href="/content/pages">Content &amp; Pages</a></li>
+                        <li><a href="/multi-locale/setup">Multi-locale</a></li>
+                        <li><a href="/configuration/reference">Configuration</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Community</h4>
+                    <ul>
+                        <li><a href="https://github.com/ophelios-studio/zephyrus-leaf-core" target="_blank" rel="noopener">GitHub</a></li>
+                        <li><a href="https://github.com/ophelios-studio/zephyrus-leaf-core/issues" target="_blank" rel="noopener">Issues</a></li>
+                        <li><a href="https://github.com/ophelios-studio/zephyrus-leaf-core/discussions" target="_blank" rel="noopener">Discussions</a></li>
+                        <li><a href="https://github.com/ophelios-studio/zephyrus-leaf-core/releases" target="_blank" rel="noopener">Releases</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="https://ophelios.com" target="_blank" rel="noopener">Ophelios</a></li>
+                        <li><a href="https://github.com/ophelios-studio/zephyrus-core" target="_blank" rel="noopener">Zephyrus</a></li>
+                        <li><a href="https://github.com/ophelios-studio/zephyrus-leaf-core/blob/main/LICENSE" target="_blank" rel="noopener">License</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-legal">
+                <span>© {date('Y')} Ophelios Studio. MIT licensed.</span>
+                <span class="footer-legal-version">v{$leafVersion ?? '1.0.0'}</span>
             </div>
         </div>
     </footer>
