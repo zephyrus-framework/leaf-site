@@ -1,8 +1,8 @@
-# CLAUDE.md — Zephyrus Leaf
+# CLAUDE.md: Zephyrus Leaf
 
 ## What Is This
 
-`dadajuice/zephyrus-leaf` is a **static content site template** powered by the Zephyrus 2 framework. It provides everything needed to build documentation sites, blogs, and landing pages — with live-reload during development and one-command static builds. Users scaffold a new site via `composer create-project dadajuice/zephyrus-leaf my-docs`.
+`dadajuice/zephyrus-leaf` is a **static content site template** powered by the Zephyrus 2 framework. It provides everything needed to build documentation sites, blogs, and landing pages: with live-reload during development and one-command static builds. Users scaffold a new site via `composer create-project dadajuice/zephyrus-leaf my-docs`.
 
 **Package:** `dadajuice/zephyrus-leaf` (type: project)
 **Branch:** `main`
@@ -23,8 +23,8 @@
 
 ### Two Layers
 
-1. **Library (`src/` — namespace `Leaf\`)** — Reusable classes that `zephyrus-docs` imports as a dependency.
-2. **Application (`app/` — namespaces `App\Controllers\`, `App\Models\`)** — Controllers, kernel, views that ship as the template starter.
+1. **Library (`src/`: namespace `Leaf\`)**: Reusable classes that `zephyrus-docs` imports as a dependency.
+2. **Application (`app/`: namespaces `App\Controllers\`, `App\Models\`)**: Controllers, kernel, views that ship as the template starter.
 
 ### Library Classes (`src/`)
 
@@ -47,7 +47,7 @@
 |---|---|
 | `Controllers/DocsController.php` | `GET /` (redirect to first page), `GET /{section}/{slug}` (page), `GET /search.json` (index), `GET /404` (error page) |
 | `Models/Core/Kernel.php` | Abstract bootstrap: loads config, creates Latte engine with `LeafLatteExtension`, wires controllers with dependency injection, registers 404 handler |
-| `Models/Core/Application.php` | Concrete `Kernel` subclass (empty — relies on parent defaults) |
+| `Models/Core/Application.php` | Concrete `Kernel` subclass (empty: relies on parent defaults) |
 
 ### Templates (`app/Views/`)
 
@@ -135,8 +135,8 @@ composer test    # Run PHPUnit (58 tests)
 
 | File | Purpose |
 |---|---|
-| `bin/router.php` | Dev server entry — defines `DEV_SERVER` constant, delegates to `DevRouter`. **Must `return false` at top-level scope** for static file serving. |
-| `bin/build.php` | Static build entry — boots Application, uses `StaticSiteBuilder`, generates search index, creates root redirect and GitHub Pages 404. |
+| `bin/router.php` | Dev server entry: defines `DEV_SERVER` constant, delegates to `DevRouter`. **Must `return false` at top-level scope** for static file serving. |
+| `bin/build.php` | Static build entry: boots Application, uses `StaticSiteBuilder`, generates search index, creates root redirect and GitHub Pages 404. |
 | `public/index.php` | Web entry point (production). |
 | `public/assets/css/app.css` | 937-line dark theme CSS. |
 | `public/assets/js/copy-code.js` | Code block copy button. |
@@ -146,11 +146,11 @@ composer test    # Run PHPUnit (58 tests)
 
 ## Important Discoveries
 
-- **PHP built-in server needs `return false` at top-level scope** — `DevRouter::handle()` returns `false` for static files, but that return value from a method call is ignored by PHP. The router script MUST have `if ((new DevRouter(...))->handle() === false) { return false; }`.
-- **`DEV_SERVER` constant gating** — Only defined in `bin/router.php`. Templates check `{if defined('DEV_SERVER')}` to inject live-reload. Static builds never define it.
-- **Latte 3 parses `{` inside templates** — Code examples need `n:syntax="off"` on `<pre>` elements. Latte 3 does NOT parse `{` inside `<script>` tags.
-- **Latte 3 `$params` is protected** — `LeafLatteExtension` uses `Closure::bind()` in `beforeRender()` to inject template variables.
-- **ConfigSection normalizes keys to camelCase** — `github_url` → `githubUrl`. Section slugs with hyphens need raw `$this->values['sections']` access.
+- **PHP built-in server needs `return false` at top-level scope**: `DevRouter::handle()` returns `false` for static files, but that return value from a method call is ignored by PHP. The router script MUST have `if ((new DevRouter(...))->handle() === false) { return false; }`.
+- **`DEV_SERVER` constant gating**: Only defined in `bin/router.php`. Templates check `{if defined('DEV_SERVER')}` to inject live-reload. Static builds never define it.
+- **Latte 3 parses `{` inside templates**: Code examples need `n:syntax="off"` on `<pre>` elements. Latte 3 does NOT parse `{` inside `<script>` tags.
+- **Latte 3 `$params` is protected**: `LeafLatteExtension` uses `Closure::bind()` in `beforeRender()` to inject template variables.
+- **ConfigSection normalizes keys to camelCase**: `github_url` → `githubUrl`. Section slugs with hyphens need raw `$this->values['sections']` access.
 
 ## Conventions
 
@@ -158,6 +158,6 @@ composer test    # Run PHPUnit (58 tests)
 - **No co-author** in commits
 - **Tests for every change**
 - **`dist/` committed** to repo (no CI build needed, deploy direct to GitHub Pages)
-- **No light theme** — single dark theme only
-- **No landing page** — `/` redirects to first documentation page. The site is docs-only.
-- **No `/docs` prefix** — URLs are `/{section}/{slug}` directly
+- **No light theme**: single dark theme only
+- **No landing page**: `/` redirects to first documentation page. The site is docs-only.
+- **No `/docs` prefix**: URLs are `/{section}/{slug}` directly
