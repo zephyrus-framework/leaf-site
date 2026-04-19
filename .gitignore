@@ -1,8 +1,18 @@
+# Agent-private workspace
+.claude/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# Legacy composer-tier artefacts, kept ignored for stale local checkouts
 vendor/
 composer.lock
-.env
 cache/
 temp/
-.idea/
-.DS_Store
 .phpunit.cache/
+
+# Local env
+.env
+.env.local
