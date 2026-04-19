@@ -51,6 +51,31 @@
         });
     });
 
+    // ── Install method tabs (binary vs composer) ───────────
+    (function () {
+        var tabs = document.querySelectorAll('.hero-install-tab');
+        if (tabs.length === 0) return;
+        tabs.forEach(function (tab) {
+            tab.addEventListener('click', function () {
+                var id = tab.getAttribute('data-tab');
+                tabs.forEach(function (t) {
+                    var active = t === tab;
+                    t.classList.toggle('is-active', active);
+                    t.setAttribute('aria-selected', active ? 'true' : 'false');
+                });
+                document.querySelectorAll('[data-tab-pane]').forEach(function (pane) {
+                    pane.hidden = pane.getAttribute('data-tab-pane') !== id;
+                });
+                var binHint = document.querySelector('.hero-install-hint-binary');
+                var compHint = document.querySelector('.hero-install-hint-composer');
+                if (binHint && compHint) {
+                    binHint.hidden = id !== 'binary';
+                    compHint.hidden = id !== 'composer';
+                }
+            });
+        });
+    })();
+
     // ── Copy install command ───────────────────────────────
     document.querySelectorAll('.hero-install').forEach(function (el) {
         var btn = el.querySelector('.hero-install-copy');
