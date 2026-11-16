@@ -17,22 +17,31 @@
 {var $siteName = $leafName ?? ''}
 {var $metaTitle = ($pageTitle === '' || $pageTitle === $siteName) ? $siteName : ($pageTitle . ' · ' . $siteName)}
 {var $siteUrl = ($leafProductionUrl ?? '') !== '' ? $leafProductionUrl : $leafBaseUrl}
-{var $pagePath = $requestPath ?? '/'}
+{var $isNotFound = $pageTitle === 'Page Not Found'}
+{var $pagePath = isset($pagePath) ? $pagePath : (isset($section) && isset($slug) ? '/' . $section . '/' . $slug : '/')}
 {var $canonicalUrl = $siteUrl . ($pagePath === '/' ? '/' : rtrim($pagePath, '/') . '/')}
 {var $ogImageUrl = $siteUrl . '/assets/images/og-image.png'}
 
 <title>{$metaTitle}</title>
 <meta name="description" content="{$metaDesc}">
 <meta name="author" content="{$leafAuthor ?? ''}">
+{if $isNotFound}
+<meta name="robots" content="noindex">
+{else}
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="{$canonicalUrl}">
+{/if}
 
 {* Open Graph *}
-<meta property="og:type" content="{($pagePath ?? '/') === '/' ? 'website' : 'article'}">
+{if !$isNotFound}
+<meta property="og:type" content="{$pagePath === '/' ? 'website' : 'article'}">
+{/if}
 <meta property="og:site_name" content="{$leafName ?? ''}">
 <meta property="og:title" content="{$metaTitle}">
 <meta property="og:description" content="{$metaDesc}">
+{if !$isNotFound}
 <meta property="og:url" content="{$canonicalUrl}">
+{/if}
 <meta property="og:image" content="{$ogImageUrl}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
