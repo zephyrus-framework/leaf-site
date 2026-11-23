@@ -1,6 +1,3 @@
-# Agent-private workspace
-.claude/
-
 # OS / editor
 .DS_Store
 .idea/
@@ -16,3 +13,6 @@ temp/
 # Local env
 .env
 .env.local
+
+# Build output, built and deployed by .github/workflows/pages.yml
+dist/

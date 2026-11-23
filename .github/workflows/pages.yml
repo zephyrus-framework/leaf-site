@@ -1,0 +1,86 @@
+name: Deploy site to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+env:
+  LEAF_VERSION: v0.1.8
+  APP_ENV: production
+  APP_DEBUG: 'false'
+
+jobs:
+  build:
+    name: Build with Leaf
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
+        with:
+          php-version: '8.4'
+          extensions: dom, intl, mbstring, sodium, pdo
+          coverage: none
+
+      - name: Install pinned Leaf release
+        shell: bash
+        run: |
+          curl --fail --silent --show-error --location --retry 3 \
+            "https://github.com/zephyrus-framework/leaf-cli/releases/download/${LEAF_VERSION}/leaf-linux-amd64" \
+            --output "$RUNNER_TEMP/leaf"
+          printf '%s  %s\n' \
+            '3d47d23c1a1d8327be130170dc63b1adfdd4d2e5461c7fa4cbce8c8768d47972' \
+            "$RUNNER_TEMP/leaf" | sha256sum --check --strict
+          chmod +x "$RUNNER_TEMP/leaf"
+          "$RUNNER_TEMP/leaf" version
+
+      - name: Build the site
+        run: |
+          "$RUNNER_TEMP/leaf" build
+          test -s dist/index.html
+          test -s dist/404.html
+          test -s dist/install.sh
+          test -s dist/sitemap.xml
+          test -s dist/robots.txt
+          test -s dist/search.json
+          test -s dist/assets/images/og-image.png
+          test -s dist/getting-started/installation/index.html
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: dist
+
+  deploy:
+    name: Deploy to Pages
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure Pages
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

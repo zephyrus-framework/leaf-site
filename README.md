@@ -37,7 +37,7 @@ This site is itself a Binary CLI tier Leaf project. It has no `app/`, `bin/`, `v
 ├── resources/og-templates/site.html # source for the OG social card
 ├── scripts/generate-og-image.sh     # renders the OG card via headless Chrome
 ├── config.yml                       # site identity, sections, production URL
-└── dist/                            # build output (committed; DO serves this)
+└── dist/                            # build output (not committed; GitHub Pages builds it)
 ```
 
 ## Commands
@@ -99,16 +99,9 @@ Styles live in `public/assets/css/`:
 
 ## Deployment
 
-`dist/` is committed to `main`. DigitalOcean's App Platform auto-deploys on push. The site is served as pure static files; no runtime PHP in production.
+A push to `main` builds the site with the Leaf release pinned in `.github/workflows/pages.yml` and publishes it to GitHub Pages, at `leaf.ophelios.com`. The site is served as pure static files; no runtime PHP in production.
 
-Before committing, rebuild:
-
-```sh
-leaf build
-git add dist/ <your other changes>
-git commit -m "feat: <change>"
-git push
-```
+`dist/` is build output and is not versioned. Run `leaf build` locally only to preview the site before you push.
 
 ## OG image
 
