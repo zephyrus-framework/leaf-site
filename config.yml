@@ -19,7 +19,7 @@ leaf:
   name: "Zephyrus Leaf"
   version: "1.0.0"
   description: "Build beautiful static sites with PHP. One-command builds, multi-locale, SEO, Markdown-powered docs."
-  github_url: "https://github.com/ophelios-studio/zephyrus-leaf-core"
+  github_url: "https://github.com/zephyrus-framework/leaf-core"
   content_path: "content"
   sections:
     getting-started: "Getting Started"

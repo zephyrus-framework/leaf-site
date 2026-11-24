@@ -1,6 +1,6 @@
 # leaf.ophelios.com
 
-The landing and documentation site for [Zephyrus Leaf](https://github.com/ophelios-studio/zephyrus-leaf-cli), published at [leaf.ophelios.com](https://leaf.ophelios.com).
+The landing and documentation site for [Zephyrus Leaf](https://github.com/zephyrus-framework/leaf-cli), published at [leaf.ophelios.com](https://leaf.ophelios.com).
 
 This repo also serves the install script at [leaf.ophelios.com/install.sh](https://leaf.ophelios.com/install.sh), which is how users install the `leaf` CLI.
 
@@ -111,9 +111,9 @@ A push to `main` builds the site with the Leaf release pinned in `.github/workfl
 
 | Repo | Purpose |
 |------|---------|
-| [`zephyrus-leaf-cli`](https://github.com/ophelios-studio/zephyrus-leaf-cli) | The `leaf` Go binary that builds this site |
-| [`zephyrus-leaf`](https://github.com/ophelios-studio/zephyrus-leaf) | Composer template (scaffolds embedded in the CLI) |
-| [`zephyrus-leaf-core`](https://github.com/ophelios-studio/zephyrus-leaf-core) | PHP library powering both tiers |
+| [`leaf-cli`](https://github.com/zephyrus-framework/leaf-cli) | The `leaf` Go binary that builds this site |
+| [`leaf`](https://github.com/zephyrus-framework/leaf) | Composer template (scaffolds embedded in the CLI) |
+| [`leaf-core`](https://github.com/zephyrus-framework/leaf-core) | PHP library powering both tiers |
 
 ## License
 

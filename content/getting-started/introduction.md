@@ -54,7 +54,7 @@ composer build
 |---------|------|---------|
 | `zephyrus-framework/leaf-core` | Library | Static builder, content parser, SEO generators, Kernel |
 | `zephyrus-framework/leaf` | Composer template | Views, controllers, config, assets, sample content |
-| `ophelios-studio/zephyrus-leaf-cli` | Go binary | Wraps everything above, ships as one executable |
+| `zephyrus-framework/leaf-cli` | Go binary | Wraps everything above, ships as one executable |
 
 The CLI bundles the framework and scaffolds inside the binary. The Composer template exposes the same framework as a regular PHP project you can extend. Updates to `leaf-core` flow to both paths.
 

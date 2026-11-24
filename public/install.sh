@@ -9,7 +9,7 @@
 
 set -eu
 
-REPO="ophelios-studio/zephyrus-leaf-cli"
+REPO="zephyrus-framework/leaf-cli"
 PREFIX="${LEAF_PREFIX:-/usr/local/bin}"
 VERSION="${LEAF_VERSION:-latest}"
 

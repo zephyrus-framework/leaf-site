@@ -15,7 +15,7 @@ One command on macOS or Linux:
 curl -fsSL https://leaf.ophelios.com/install.sh | sh
 ```
 
-The script detects your OS/arch, downloads the matching binary from the [GitHub release](https://github.com/ophelios-studio/zephyrus-leaf-cli/releases/latest), verifies the checksum, and installs to `/usr/local/bin/leaf`.
+The script detects your OS/arch, downloads the matching binary from the [GitHub release](https://github.com/zephyrus-framework/leaf-cli/releases/latest), verifies the checksum, and installs to `/usr/local/bin/leaf`.
 
 Then scaffold and build:
 
@@ -28,7 +28,7 @@ leaf build    # writes dist/
 
 ### Manual download
 
-Grab the binary for your platform from the [releases page](https://github.com/ophelios-studio/zephyrus-leaf-cli/releases/latest):
+Grab the binary for your platform from the [releases page](https://github.com/zephyrus-framework/leaf-cli/releases/latest):
 
 | Platform | Binary |
 |----------|--------|
