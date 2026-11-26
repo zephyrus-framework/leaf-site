@@ -414,7 +414,7 @@
     border-bottom-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 [data-theme="light"] .hero-install-aside a:hover {
-    color: var(--accent-deep, var(--accent));
+    color: var(--accent-light);
     border-bottom-color: currentColor;
 }
 @media (prefers-color-scheme: light) {
@@ -425,6 +425,10 @@
     :root:not([data-theme="dark"]) .hero-install-aside a {
         color: var(--accent);
         border-bottom-color: color-mix(in srgb, var(--accent) 40%, transparent);
+    }
+    :root:not([data-theme="dark"]) .hero-install-aside a:hover {
+        color: var(--accent-light);
+        border-bottom-color: currentColor;
     }
 }
 
