@@ -198,7 +198,7 @@ class DevRouter
 }
 ```
 
-Handles static files, locale prefix stripping, live-reload endpoint (`/__dev/reload`), and defines the `DEV_SERVER` constant.
+Handles static files, the locale prefix (a non-default locale from `supported_locales`, subtags included, is served from `content/<locale>/`), the live-reload endpoint (`/__dev/reload`), and defines the `DEV_SERVER` constant.
 
 ---
 
@@ -221,4 +221,4 @@ class TranslationLatteExtension extends Extension
 }
 ```
 
-Registers `localize()` and `i18n()` template functions. Injects `$currentLocale`, `$defaultLocale`, and `$supportedLocales` template variables.
+Registers `localize()` and `i18n()` template functions. Injects `$currentLocale`, `$defaultLocale`, `$supportedLocales` and `$localePrefix` template variables; a variable the render passes wins.
