@@ -88,6 +88,8 @@ Any file under a locale directory is merged into one namespace, so you can split
 
 On the Binary CLI, your files are merged key by key over the bundled theme's own `locale/<locale>/general.json`, and your keys win. A `locale/en/general.json` that sets only `search.empty` changes that one string; every other theme string keeps its bundled text. The theme ships English and French strings; for another locale, translate its keys in `locale/<locale>/general.json` (copy them from the English file).
 
+On the Composer tier nothing is merged: your `locale/` is the complete catalog, the theme's strings included, so edit those files and add your keys to them rather than replacing them with only yours (a key found in no catalog renders as the key itself).
+
 Without `locale_path`, Leaf reads `locale/` at the project root when that directory exists.
 
 Use them in templates:

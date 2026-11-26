@@ -108,5 +108,14 @@ The `LeafLatteExtension` injects these variables into every template:
 | `$leafLicense` | `leaf.license` |
 | `$leafBaseUrl` | `leaf.base_url` |
 | `$leafProductionUrl` | `leaf.production_url` |
-| `$localePrefix` | `''` for the default locale, `'/fr'` for French (see [Templates & Links](/multi-locale/templates/)) |
+
+The locale variables come from the `TranslationLatteExtension`, which Leaf registers when it finds a locale directory (`localization.locale_path`, else `locale/` at the project root; a CLI build always has the theme's):
+
+| Variable | Source |
+|----------|--------|
+| `$currentLocale` | The locale being rendered |
+| `$defaultLocale` | `localization.locale` |
 | `$supportedLocales` | `localization.supported_locales` |
+| `$localePrefix` | `''` for the default locale, `'/fr'` for French (see [Templates & Links](/multi-locale/templates/)) |
+
+Without a locale directory, `$localePrefix` is `''` and `$supportedLocales` is `[]` (the `LeafLatteExtension` defaults), and `$currentLocale` and `$defaultLocale` are not defined. A variable the render passes under the same name wins over all of them.

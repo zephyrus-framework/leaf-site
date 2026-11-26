@@ -48,6 +48,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       # actions/checkout, then shivammathur/setup-php with php-version: '8.4'
+      # and extensions: dom, intl, mbstring, sodium, pdo
       - name: Install pinned Leaf release
         shell: bash
         run: |
