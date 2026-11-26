@@ -93,12 +93,10 @@
     font-size: 0.84rem;
     font-weight: 500;
     text-decoration: none;
-    transition: color 0.15s ease, opacity 0.15s ease;
+    transition: color 0.15s ease;
     white-space: nowrap;
-    opacity: 0.75;
 }
 .landing-nav-links a:hover {
-    opacity: 1;
     color: var(--text-bright);
 }
 
@@ -396,14 +394,13 @@
     text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
 }
 .hero-install-aside a {
-    color: var(--accent-light);
+    color: var(--text-bright);
     font-weight: 500;
     text-decoration: none;
     border-bottom: 1px solid color-mix(in srgb, var(--accent-light) 45%, transparent);
     transition: color 0.18s var(--ease), border-color 0.18s var(--ease);
 }
 .hero-install-aside a:hover {
-    color: var(--text-bright);
     border-bottom-color: var(--text-bright);
 }
 /* Light theme: image is bright, so dark text with a light scrim reads better. */
@@ -675,10 +672,9 @@
 
 .feature-desc {
     font-size: 0.9rem;
-    color: var(--text);
+    color: var(--text-muted);
     line-height: 1.6;
     margin: 0;
-    opacity: 0.78;
 }
 .feature-desc code,
 .feature-desc kbd {
@@ -860,10 +856,9 @@
 }
 .showcase-lede {
     font-size: 1rem;
-    color: var(--text);
+    color: var(--text-muted);
     line-height: 1.65;
     margin: 1.25rem 0 2rem;
-    opacity: 0.8;
 }
 .showcase-lede code {
     background: var(--bg-elevated);
@@ -897,10 +892,9 @@
     margin-bottom: 0.15rem;
 }
 .showcase-list span {
-    color: var(--text);
+    color: var(--text-muted);
     font-size: 0.88rem;
     line-height: 1.55;
-    opacity: 0.75;
 }
 .showcase-tick {
     flex-shrink: 0;
