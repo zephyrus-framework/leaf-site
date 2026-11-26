@@ -211,16 +211,16 @@
     animation: leafFadeUp 0.7s var(--ease) both;
 }
 .hero-content::before {
-    /* Soft scrim, lifts copy off the busy image without hiding it */
+    /* Scrim: the drifting leaves of the image must never cross a line of the copy */
     content: '';
     position: absolute;
-    inset: -8rem -25% -6rem;
+    inset: -8rem -8rem -6rem;
     z-index: -1;
     background:
-        radial-gradient(ellipse 55% 60% at center,
-            color-mix(in srgb, var(--bg-deep) 72%, transparent) 0%,
-            color-mix(in srgb, var(--bg-deep) 35%, transparent) 45%,
-            transparent 75%
+        radial-gradient(closest-side,
+            color-mix(in srgb, var(--bg-deep) 84%, transparent) 50%,
+            color-mix(in srgb, var(--bg-deep) 40%, transparent) 78%,
+            transparent
         );
     pointer-events: none;
 }
@@ -1357,8 +1357,8 @@
         margin-top: 0;
     }
     .hero-content::before {
-        /* Rein in the negative horizontal inset so the scrim can't push past the viewport. */
-        inset: -4rem -1rem -3rem;
+        /* The copy spans the width here: the scrim runs past the viewport, .hero clips it. */
+        inset: -4rem -9rem -3rem;
     }
     .hero-eyebrow {
         font-size: 0.68rem;
