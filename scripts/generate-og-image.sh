@@ -23,7 +23,7 @@ if [ ! -f "$TEMPLATE" ]; then
   exit 1
 fi
 
-# Use a larger window than needed — Chrome headless reserves some vertical space,
+# Use a larger window than needed: Chrome headless reserves some vertical space,
 # which otherwise clips the body bottom. We render into a taller viewport then
 # crop to exactly 1200x630.
 "$CHROME" \
