@@ -16,7 +16,7 @@ templates/
     pricing.latte     → /pricing/
 ```
 
-That's it. `leaf build` (or `composer build`) picks up every `.latte` file in that directory, registers the route, and renders each one with the full template context.
+That's it. `leaf build` picks up every `.latte` file in that directory, registers the route, and renders each one with the full template context. On the Composer tier, `composer build` reads `app/Views/pages/` instead.
 
 ## A minimal page
 
