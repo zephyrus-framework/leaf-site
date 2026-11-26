@@ -16,12 +16,14 @@ my-docs/
   content/
     getting-started/
       introduction.md
+  locale/
+    en/general.json       # theme strings, yours to edit
+    fr/general.json
   public/
     assets/
       css/app.css
       js/
-      images/
-  templates/              # optional overrides (Latte, PHP, or HTML)
+  templates/              # optional Latte overrides
   config.yml
   dist/                   # build output (deploy this)
 ```
@@ -38,19 +40,19 @@ Static assets copied verbatim to `dist/`. Put your logo, custom CSS overrides, f
 
 ### `templates/` (optional)
 
-Drop Latte/PHP/HTML files here to override the bundled defaults. The binary merges your templates on top of the bundled theme at build time. Examples:
+Drop [Latte](https://latte.nette.org/) files here to override the bundled defaults. The binary merges your templates on top of the bundled theme at build time, file by file, at the same path. Examples:
 
 - `templates/layouts/docs.latte` → overrides the bundled docs layout
 - `templates/partials/nav.latte` → overrides the bundled nav
-- `templates/landing.latte` → rendered at `/` (if present, `/` no longer redirects to the first doc page)
+- `templates/landing.latte` → replaces the bundled landing page at `/`
 
-You can use any of the three formats. Pick what fits:
-
-- **[Latte](https://latte.nette.org/)** for layouts, partials, blocks
-- **PHP** (`<?= $leafName ?>`) if you prefer raw PHP views
-- **HTML** if you want a static page without template variables (the binary copies it through)
+Only `.latte` files are rendered: a `.php` or `.html` file under `templates/` is ignored.
 
 To add standalone URLs like `/about` or `/contact`, drop Latte files under `templates/pages/`. See [Custom Pages](/content-system/custom-pages).
+
+### `locale/`
+
+The theme's interface strings (search, table of contents, pagination, 404), one JSON file per locale. Your keys are merged over the bundled ones, so a file can hold only the strings you change. See [Multi-Locale Setup](/multi-locale/setup/).
 
 ### `config.yml`
 
@@ -62,7 +64,7 @@ Generated output. Static HTML, CSS, JS, `sitemap.xml`, `robots.txt`, `search.jso
 
 ## Composer template
 
-`composer create-project zephyrus-framework/leaf my-docs` — or `leaf eject` on an existing CLI project — gives you the full Zephyrus application alongside the same `content/`, `templates/`, `public/`, `config.yml` structure:
+`composer create-project zephyrus-framework/leaf my-docs` (or `leaf eject` on an existing CLI project) gives you the full Zephyrus application alongside the same `content/`, `public/`, `locale/` and `config.yml`:
 
 ```
 my-docs/
@@ -80,8 +82,9 @@ my-docs/
     build.php                 # Static site build script
     router.php                # Dev server entry point
   content/                    # same as CLI
+  locale/                     # theme strings, the full catalogue (nothing merged in)
   public/                     # same as CLI
-  templates/                  # optional; CLI-style overrides still work
+  templates/                  # not read by composer build: overrides go in app/Views/
   config.yml                  # same as CLI
   vendor/                     # Composer dependencies
   composer.json
@@ -131,4 +134,4 @@ Where you add custom routes. Each controller is a Zephyrus class with `#[Get]`, 
 
 ## Which files are shared between the two paths?
 
-Everything under `content/`, `templates/`, `public/`, and `config.yml` is identical. You can move a project between paths via `leaf eject` (CLI → Composer) or by deleting `app/`, `bin/`, `composer.json`, and `vendor/` (Composer → CLI).
+Everything under `content/`, `public/`, `locale/` and `config.yml` is identical. `templates/` is a CLI feature: on the Composer path, edit `app/Views/` instead. You can move a project between paths via `leaf eject` (CLI → Composer) or by deleting `app/`, `bin/`, `composer.json`, and `vendor/` (Composer → CLI).

@@ -47,15 +47,15 @@ Environment variables the install script respects:
 | Var | Default | What it does |
 |-----|---------|--------------|
 | `LEAF_PREFIX` | `/usr/local/bin` | Where to install the binary |
-| `LEAF_VERSION` | `latest` | Specific release tag (e.g. `v0.1.0-dev`) |
+| `LEAF_VERSION` | `latest` | Specific release tag (e.g. `v0.1.11`) |
 
 ### Runtime requirement
 
-The binary currently needs **system PHP 8.4+** on your machine at build time (with `intl`, `mbstring`, `sodium`, `pdo` extensions). It shells out to `php` under the hood. Removing that dependency (via FrankenPHP static link) is on the roadmap.
+Installing needs no PHP, but building does: the binary shells out to the `php` on your `PATH`, which must be **PHP 8.4+** with the `intl`, `mbstring` and `tokenizer` extensions. Without `intl` the build stops; without `tokenizer` every page fails with HTTP 500. Most PHP packages ship `tokenizer`. Removing the PHP dependency (via FrankenPHP static link) is on the roadmap.
 
 ## Composer template
 
-For PHP developers who want controllers, Composer packages, and full build-script control:
+For PHP developers who want controllers, Composer packages, and full build-script control. The template and `zephyrus-framework/leaf-core` are tagged releases, so this installs stable versions:
 
 ```bash
 composer create-project zephyrus-framework/leaf my-docs
@@ -66,7 +66,7 @@ composer build   # writes dist/
 
 ### Requirements
 
-- **PHP 8.4+** with `intl`, `mbstring`, `sodium`, `pdo` extensions
+- **PHP 8.4+** with `intl`, `mbstring`, `pdo`, `fileinfo`, `sodium` and `tokenizer` (required by `zephyrus-framework/core` and Latte; Composer checks them on install)
 - **Composer 2.x**
 
 ### Adding Leaf to an existing Zephyrus project
@@ -74,6 +74,8 @@ composer build   # writes dist/
 ```bash
 composer require zephyrus-framework/leaf-core
 ```
+
+It resolves to the latest tagged release, with no change to your `minimum-stability`.
 
 Then extend `Leaf\Kernel` in your Application class and use `Leaf\BuildCommand` in your build script. See the [BuildCommand](/building-sites/build-command) reference.
 
@@ -86,4 +88,4 @@ leaf eject
 composer install
 ```
 
-This writes the full framework (`app/`, `bin/`, `composer.json`, `vendor/` after install) into your project directory while keeping `content/`, `templates/`, `public/`, and `config.yml` intact. One-way: you now manage a Composer project.
+This writes the full framework (`app/`, `bin/`, `composer.json`, `vendor/` after install) into your project directory while keeping `content/`, `templates/`, `public/`, `locale/` and `config.yml` intact. Your translations survive: the theme only adds the keys your `locale/` files lack. Overrides under `templates/` are not read by `composer build`: move them into `app/Views/`. One-way: you now manage a Composer project.

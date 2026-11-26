@@ -20,13 +20,20 @@ Creates:
 ```
 my-docs/
   content/
-    getting-started/introduction.md
+    getting-started/
+      introduction.md
+      writing-content.md
+      deployment.md
+  locale/
+    en/general.json
+    fr/general.json
   public/
-    assets/css/
-    assets/js/
-    assets/images/
+    assets/css/app.css
+    assets/js/            # theme, sidebar, search, copy-code, lang-switcher
   config.yml
 ```
+
+The three pages are placeholders: replace or delete them before you publish.
 
 No `app/`, `bin/`, `vendor/`, or `composer.json`. The framework lives inside the binary.
 
@@ -48,7 +55,7 @@ leaf dev --addr :3000
 leaf dev --dir ./some/path
 ```
 
-Builds once at startup, serves `dist/`, watches `content/`, `templates/`, `public/`, and `config.yml`. When anything changes:
+Builds once at startup, serves `dist/`, watches `content/`, `templates/`, `public/`, `app/` and `config.yml`. It does not watch `locale/`: after editing a translation, save `config.yml` again or restart. When anything changes:
 
 1. Full rebuild into `dist/` (debounced ~250ms)
 2. SSE event pushed to every open browser tab
@@ -92,7 +99,7 @@ composer install
 composer build
 ```
 
-Writes the framework files (`app/`, `bin/`, `composer.json`, etc.) into your project alongside the existing `content/`, `templates/`, `public/`, `config.yml`. Your user content is not touched.
+Writes the framework files (`app/`, `bin/`, `composer.json`, etc.) into your project alongside the existing `content/`, `templates/`, `public/`, `locale/` and `config.yml`. Your files are not overwritten: the theme only fills the gaps in `public/`, and only adds the keys your `locale/` files lack. `composer build` does not read `templates/`: move your overrides into `app/Views/`.
 
 One-way. Refuses to run if `composer.json` already exists unless you pass `--force`.
 
@@ -109,7 +116,7 @@ Prints the version string.
 
 ```bash
 $ leaf version
-leaf v0.1.0-dev
+leaf v0.1.11
 ```
 
 ## `leaf help`
