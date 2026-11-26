@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  LEAF_VERSION: v0.1.8
+  LEAF_VERSION: v0.1.11
   APP_ENV: production
   APP_DEBUG: 'false'
 
@@ -44,7 +44,7 @@ jobs:
             "https://github.com/zephyrus-framework/leaf-cli/releases/download/${LEAF_VERSION}/leaf-linux-amd64" \
             --output "$RUNNER_TEMP/leaf"
           printf '%s  %s\n' \
-            '3d47d23c1a1d8327be130170dc63b1adfdd4d2e5461c7fa4cbce8c8768d47972' \
+            '26d3675d47f39a835442a840da437667652628a6e46ab49ee5c2dd374bf3e377' \
             "$RUNNER_TEMP/leaf" | sha256sum --check --strict
           chmod +x "$RUNNER_TEMP/leaf"
           "$RUNNER_TEMP/leaf" version
