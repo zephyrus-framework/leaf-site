@@ -20,7 +20,11 @@ The default locale has no URL prefix. Other locales use `/{locale}/`. Every temp
 For the default locale (English), links become `/`, `/blog/`, `/about/`.
 For French, they become `/fr/`, `/fr/blog/`, `/fr/about/`. With `base_url: "/docs"`, `/docs/fr/blog/`.
 
-The sidebar and previous/next items carry a `url` that already includes the base URL but no locale prefix. To link one in an overridden partial, build the link from its parts, as the bundled partials do: `{$leafBaseUrl}{$localePrefix}/{$item['section']}/{$item['slug']}/`.
+The sidebar and previous/next items carry a `url` that already includes the base URL but no locale prefix. To link one in an overridden partial, build the link from its parts, as the bundled partials do:
+
+```latte
+<a href="{$leafBaseUrl}{$localePrefix}/{$item['section']}/{$item['slug']}/">{$item['title']}</a>
+```
 
 ## Language switcher
 
