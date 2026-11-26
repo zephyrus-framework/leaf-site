@@ -1,11 +1,12 @@
 ---
 title: Setup
 order: 1
+description: Set up a multilingual Leaf site, with i18n strings, translated pages in French or any other locale under their own URL prefix, and fallback to the default locale.
 ---
 
 # Multi-Locale Setup
 
-Leaf builds your site in multiple languages. The default locale goes to the root URL; other locales get their own subdirectory (`dist/fr/`, `dist/ar/`, etc.).
+Leaf builds multilingual sites (i18n): the default locale, English for example, goes to the root URL, and every other locale, such as French or Arabic, gets its own subdirectory (`dist/fr/`, `dist/ar/`, etc.).
 
 Two layers of translation work together:
 
