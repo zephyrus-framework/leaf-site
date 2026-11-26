@@ -17,6 +17,8 @@
     --accent: #8b5cf6;
     --accent-light: #a78bfa;
     --accent-glow: rgba(139, 92, 246, 0.15);
+    --accent-fill: #7c3aed;
+    --accent-fill-hover: #6d28d9;
     --nav-bg: rgba(8, 8, 13, 0.85);
     --overlay-bg: rgba(8, 8, 13, 0.6);
     --search-overlay: rgba(8, 8, 13, 0.7);
