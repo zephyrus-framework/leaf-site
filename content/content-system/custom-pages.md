@@ -21,7 +21,7 @@ That's it. `leaf build` (or `composer build`) picks up every `.latte` file in th
 ## A minimal page
 
 ```latte
-{layout 'layouts/landing.latte'}
+{layout '../layouts/landing.latte'}
 
 {block content}
 <main class="container mx-auto px-6 py-24">
@@ -55,40 +55,54 @@ The file name becomes the URL slug. Leaf accepts names matching `[a-z0-9][a-z0-9
 - `about.latte` → `/about/`  ✓
 - `pricing-plans.latte` → `/pricing-plans/`  ✓
 - `2024-roadmap.latte` → routes fine, though numeric-leading is unusual  ✓
-- `About.latte` → rejected (uppercase disallowed)
+- `About.latte` → stops the whole build: `Page "About.latte" cannot be served: page file names may only contain lowercase letters, digits and hyphens, and must not start with a hyphen. Rename it to "about.latte".`
 - `partial.latte` inside a subdirectory (`pages/marketing/partial.latte`) → ignored (only top-level files are exposed as routes)
 
 Rename to fit the rules, and the route snaps into place.
 
 ## Layouts and partials
 
-Pages extend layouts exactly like any other view:
+Pages extend layouts exactly like any other view. Paths in `{layout}` and `{include}` resolve from the page's own folder, `pages/`, hence the `../`:
 
 ```latte
-{layout 'layouts/landing.latte'}
+{layout '../layouts/landing.latte'}
 
 {block content}
 <section>…</section>
 {/block}
 ```
 
-Need a nav, footer, or hero partial? Use `{include 'partials/nav.latte'}` the same way docs pages do. Or author your own partial under `templates/partials/<name>.latte` and reference it.
+Need a nav, footer, or hero partial? Use `{include '../partials/nav.latte'}`, as the bundled layouts do. Or author your own partial under `templates/partials/<name>.latte` and reference it.
 
 ## Binary CLI vs Composer
 
-Both tiers work the same. On the Binary CLI tier, the `leaf` binary merges your `templates/pages/` into the bundled `app/Views/pages/` at build time; no further wiring. On the Composer tier, you can either use `templates/pages/` (same pattern, mapped at build) or drop files directly into `app/Views/pages/`.
+Only the `leaf` binary maps `templates/` onto `app/Views/`: at build time it merges your `templates/pages/` into the bundled `app/Views/pages/`, with no further wiring. On the Composer tier, `composer build` and `composer dev` render `app/Views/` and ignore `templates/`, so pages go in `app/Views/pages/`. `leaf eject` leaves `templates/` where it is: move its files into `app/Views/` yourself.
 
 If you ejected to the Composer tier and want full control over `PagesController`, it's a standard Zephyrus controller in `app/Controllers/PagesController.php`: inject services, swap the view resolution, add caching, whatever you need.
 
-## Using PHP or HTML instead of Latte
+## Pasting plain HTML
 
-The override surface accepts any of the three formats:
+Only `.latte` files become pages. A `.php` or `.html` file in `templates/pages/` is skipped without a word: the build succeeds and the URL does not exist.
 
-- `templates/pages/about.latte`: full Latte power, recommended.
-- `templates/pages/about.php`: plain PHP view, echo markup directly.
-- `templates/pages/about.html`: copied through as static HTML, no variable interpolation.
+To ship markup exactly as you pasted it, save it as a `.latte` file and wrap it in `{syntax off}`, so Latte leaves every brace alone:
 
-HTML is the escape hatch for "I pasted markup from Tailwind UI and don't want any framework involved." The `leaf build` pipeline still copies it to `dist/about/index.html` and the URL works.
+```latte
+{syntax off}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>About</title>
+    <style>body { font-family: system-ui; }</style>
+</head>
+<body>
+    <h1>About</h1>
+</body>
+</html>
+{/syntax}
+```
+
+Saved as `templates/pages/about.latte`, it builds to `dist/about/index.html` as written: no layout, no variables.
 
 ## When to eject
 
