@@ -28,7 +28,7 @@ my-docs/
   dist/                   # build output (deploy this)
 ```
 
-Everything else — the framework, controllers, the build pipeline, the vendor graph — lives inside the `leaf` binary.
+Everything else (the framework, controllers, the build pipeline, the vendor graph) lives inside the `leaf` binary.
 
 ### `content/`
 

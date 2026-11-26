@@ -9,8 +9,8 @@ Leaf builds your site in multiple languages. The default locale goes to the root
 
 Two layers of translation work together:
 
-1. **String-level** — UI chrome (nav labels, button text, search placeholder) translated via JSON files and `{localize('key')}` in templates.
-2. **Content-level** — Markdown pages under `content/<locale>/...` that override the default-locale pages with translations. Untranslated pages fall back to the default.
+1. **String-level**: UI chrome (nav labels, button text, search placeholder) translated via JSON files and `{localize('key')}` in templates.
+2. **Content-level**: Markdown pages under `content/<locale>/...` that override the default-locale pages with translations. Untranslated pages fall back to the default.
 
 Both are enabled by the same config and work in both tiers (Binary CLI, Composer).
 
@@ -127,7 +127,7 @@ Resolution rules per build:
 | `/fr/getting-started/installation/` | falls back to `content/getting-started/installation.md` (not translated) |
 | `/ar/concepts/overview/` | `content/ar/concepts/overview.md` (Arabic-only section) |
 
-The default locale only sees files at the root of `content/` — it will not render locale-only pages (so `/concepts/overview/` is a 404 in English). Non-default locales see the union.
+The default locale only sees files at the root of `content/`: it will not render locale-only pages (so `/concepts/overview/` is a 404 in English). Non-default locales see the union.
 
 The **search index** is generated per locale. `/search.json` only returns English/fallback entries; `/fr/search.json` returns the translated pages plus English fallbacks. Fuzzy search stays fast and locale-relevant.
 
@@ -180,7 +180,7 @@ When `production_url` is set, the build generates `sitemap.xml` with `xhtml:link
 
 ## SEO and fallback marking
 
-A page that falls back to the default locale gets the same markup as a translated page. If you want to mark partially-translated pages visually (a small "English" badge, say), check `$currentLocale` in the template and add a conditional banner — the loader doesn't attach metadata to fallback pages.
+A page that falls back to the default locale gets the same markup as a translated page. If you want to mark partially-translated pages visually (a small "English" badge, say), check `$currentLocale` in the template and add a conditional banner. The loader doesn't attach metadata to fallback pages.
 
 ## Sidebar differences across locales
 

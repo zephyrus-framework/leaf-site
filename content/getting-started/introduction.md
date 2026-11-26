@@ -60,6 +60,6 @@ The CLI bundles the framework and scaffolds inside the binary. The Composer temp
 
 ## Next steps
 
-- [Installation](/getting-started/installation) — detailed setup for either path
-- [Project Structure](/getting-started/project-structure) — what the CLI scaffolds, and what Composer gives you
-- [CLI Reference](/getting-started/cli-reference) — every `leaf` subcommand
+- [Installation](/getting-started/installation): detailed setup for either path
+- [Project Structure](/getting-started/project-structure): what the CLI scaffolds, and what Composer gives you
+- [CLI Reference](/getting-started/cli-reference): every `leaf` subcommand

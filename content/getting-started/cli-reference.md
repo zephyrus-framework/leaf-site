@@ -61,7 +61,7 @@ Builds once at startup, serves `dist/`, watches `content/`, `templates/`, `publi
 2. SSE event pushed to every open browser tab
 3. Page reloads
 
-Reload uses Server-Sent Events, not WebSocket — zero proxy friction, works behind nginx, Caddy, or a tunnel.
+Reload uses Server-Sent Events, not WebSocket: zero proxy friction, works behind nginx, Caddy, or a tunnel.
 
 ### Flags
 

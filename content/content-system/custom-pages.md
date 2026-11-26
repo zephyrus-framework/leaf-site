@@ -78,18 +78,18 @@ Need a nav, footer, or hero partial? Use `{include 'partials/nav.latte'}` the sa
 
 Both tiers work the same. On the Binary CLI tier, the `leaf` binary merges your `templates/pages/` into the bundled `app/Views/pages/` at build time; no further wiring. On the Composer tier, you can either use `templates/pages/` (same pattern, mapped at build) or drop files directly into `app/Views/pages/`.
 
-If you ejected to the Composer tier and want full control over `PagesController`, it's a standard Zephyrus controller in `app/Controllers/PagesController.php` — inject services, swap the view resolution, add caching, whatever you need.
+If you ejected to the Composer tier and want full control over `PagesController`, it's a standard Zephyrus controller in `app/Controllers/PagesController.php`: inject services, swap the view resolution, add caching, whatever you need.
 
 ## Using PHP or HTML instead of Latte
 
 The override surface accepts any of the three formats:
 
-- `templates/pages/about.latte` — full Latte power, recommended.
-- `templates/pages/about.php` — plain PHP view, echo markup directly.
-- `templates/pages/about.html` — copied through as static HTML, no variable interpolation.
+- `templates/pages/about.latte`: full Latte power, recommended.
+- `templates/pages/about.php`: plain PHP view, echo markup directly.
+- `templates/pages/about.html`: copied through as static HTML, no variable interpolation.
 
 HTML is the escape hatch for "I pasted markup from Tailwind UI and don't want any framework involved." The `leaf build` pipeline still copies it to `dist/about/index.html` and the URL works.
 
 ## When to eject
 
-Custom pages cover the 90% case: static marketing pages, a contact form that posts to a third party, a pricing page with Stripe checkout button, legal text. If you need something the template doesn't — form submission handlers, API endpoints, custom middleware, database queries on the dynamic side — that's when `leaf eject` kicks in and you get the full Zephyrus toolkit.
+Custom pages cover the 90% case: static marketing pages, a contact form that posts to a third party, a pricing page with Stripe checkout button, legal text. If you need something the template doesn't (form submission handlers, API endpoints, custom middleware, database queries on the dynamic side), that's when `leaf eject` kicks in and you get the full Zephyrus toolkit.

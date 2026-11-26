@@ -20,8 +20,8 @@ leaf:
 
 Each entry is either:
 
-- A **string** — path to an executable with no args.
-- An **array of strings** — first element is the executable, the rest are argv.
+- A **string**: path to an executable with no args.
+- An **array of strings**: first element is the executable, the rest are argv.
 
 ## How it runs
 
@@ -57,7 +57,7 @@ leaf:
     - "./scripts/generate-og-image.sh"
 ```
 
-`scripts/generate-og-image.sh` launches headless Chrome against an HTML template and writes `public/assets/images/og-image.png`. Since it runs post-build, the generated file is not yet copied into `dist/` — the next build picks it up. For regeneration-on-every-build that lands in `dist/` immediately, point the script's output at `dist/` directly.
+`scripts/generate-og-image.sh` launches headless Chrome against an HTML template and writes `public/assets/images/og-image.png`. Since it runs post-build, the generated file is not yet copied into `dist/`: the next build picks it up. For regeneration-on-every-build that lands in `dist/` immediately, point the script's output at `dist/` directly.
 
 ## Integration with `leaf dev`
 

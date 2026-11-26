@@ -56,7 +56,7 @@ Edit this file to customize the build.
 
 ## Customizing (Composer path only)
 
-If you're on the CLI path, skip this section — the `leaf` binary drives a stock pipeline. To customize, `leaf eject` first.
+If you're on the CLI path, skip this section: the `leaf` binary drives a stock pipeline. To customize, `leaf eject` first.
 
 ### Adding custom paths
 
@@ -101,8 +101,8 @@ $command->onPostBuild(function ($result, $outputDir) {
 
 The callback receives:
 
-- `$result` — a `StaticBuildResult` with `pagesBuilt`, `totalPaths`, `errors`, `builtPages`
-- `$outputDir` — absolute path to the output directory
+- `$result`: a `StaticBuildResult` with `pagesBuilt`, `totalPaths`, `errors`, `builtPages`
+- `$outputDir`: absolute path to the output directory
 
 ## Build output
 

@@ -65,9 +65,9 @@ description: Optional; used in meta description and OG tags
 ---
 ```
 
-- `title` — sidebar label and `<title>` tag
-- `order` — position in the sidebar (lower = higher)
-- `description` — auto-generated from the content if omitted
+- `title`: sidebar label and `<title>` tag
+- `order`: position in the sidebar (lower = higher)
+- `description`: auto-generated from the content if omitted
 
 Sections (the top-level folders under `content/`) are defined in `config.yml`:
 
