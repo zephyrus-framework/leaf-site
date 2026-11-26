@@ -23,14 +23,15 @@ This site is itself a Binary CLI tier Leaf project. It has no `app/`, `bin/`, `v
 .
 ├── content/                         # Markdown docs, organized by section
 ├── templates/                       # Overrides for the bundled theme
-│   ├── landing.latte                # Custom landing with binary/composer tabs
-│   ├── layouts/docs.latte           # Custom docs wrapper
-│   ├── layouts/landing.latte        # Custom landing wrapper
-│   ├── partials/head.latte          # SEO meta + OG tags
-│   └── partials/nav.latte           # Site nav (brand, theme toggle)
+│   ├── landing.latte                # Home page with binary/composer tabs, on layouts/home.latte
+│   ├── layouts/home.latte           # Home wrapper: landing.css + landing.js, no theme nav or footer
+│   ├── layouts/docs.latte           # Theme docs layout minus its <title>
+│   ├── layouts/landing.latte        # Theme landing layout (used by the 404) minus its <title>
+│   ├── partials/head.latte          # The <title>, SEO meta, canonical, OG tags, favicons
+│   └── partials/nav.latte           # Theme nav with the Leaf logo image
 ├── public/
-│   ├── assets/css/                  # app.css (docs) + landing.css
-│   ├── assets/js/                   # landing.js + search/sidebar/theme/copy-code
+│   ├── assets/css/                  # landing.css (app.css comes from the theme)
+│   ├── assets/js/                   # landing.js (the docs scripts come from the theme)
 │   ├── assets/images/               # logo, hero, screenshots, og-image
 │   ├── assets/favicon/              # favicon + PWA manifest
 │   └── install.sh                   # served at leaf.ophelios.com/install.sh
@@ -39,6 +40,8 @@ This site is itself a Binary CLI tier Leaf project. It has no `app/`, `bin/`, `v
 ├── config.yml                       # site identity, sections, production URL
 └── dist/                            # build output (not committed; GitHub Pages builds it)
 ```
+
+Every other template, `app.css` and the docs scripts (search, sidebar, theme, copy-code, language switcher) come from the theme bundled in the `leaf` release pinned in `.github/workflows/pages.yml`. `layouts/docs.latte`, `layouts/landing.latte` and `partials/nav.latte` are the theme's files at that release (`app/Views/` of [`leaf`](https://github.com/zephyrus-framework/leaf) at the same tag) with only the change noted above: the site's own `<title>` comes from `partials/head.latte`, with a middle dot. When the pinned release moves, take these three files again from the new tag.
 
 ## Commands
 
@@ -84,18 +87,9 @@ The YAML order drives the sidebar order.
 
 ## Customizing the theme
 
-Drop any file under `templates/` at the same relative path as the bundled view to override it. Examples:
+Drop a `.latte` file under `templates/` at the same relative path as the bundled view to override it, or a file under `public/` at the path of a bundled asset to replace it. The `leaf` binary merges both on top of the bundled theme at build time. An override replaces the whole file and stops following the theme, so keep overrides to what the site really changes (see Layout).
 
-- `templates/partials/nav.latte` — overrides the site nav
-- `templates/layouts/docs.latte` — overrides the docs page wrapper
-- `templates/landing.latte` — overrides the home page
-
-The `leaf` binary merges your templates on top of the bundled theme at build time. You can use `.latte`, `.php`, or `.html` (HTML is passed through, no interpolation).
-
-Styles live in `public/assets/css/`:
-
-- `app.css` — docs shell, sidebar, TOC, page content
-- `landing.css` — landing-page-only tokens and components (scoped to `.landing`)
+The docs styles (`app.css`: docs shell, sidebar, TOC, page content) come from the theme. `public/assets/css/landing.css` holds the landing-page-only tokens and components (scoped to `.landing`).
 
 ## Deployment
 
