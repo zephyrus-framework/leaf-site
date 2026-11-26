@@ -41,7 +41,7 @@ This site is itself a Binary CLI tier Leaf project. It has no `app/`, `bin/`, `v
 └── dist/                            # build output (not committed; GitHub Pages builds it)
 ```
 
-Every other template, `app.css` and the docs scripts (search, sidebar, theme, copy-code, language switcher) come from the theme bundled in the `leaf` release pinned in `.github/workflows/pages.yml`. `layouts/docs.latte`, `layouts/landing.latte` and `partials/nav.latte` are the theme's files at that release (`app/Views/` of [`leaf`](https://github.com/zephyrus-framework/leaf) at the same tag) with one change each: both layouts drop their `<title>`, because `partials/head.latte` writes the site's own (with a middle dot), and the nav shows the Leaf logo image instead of the theme's mark. When the pinned release moves, take these three files again from the new tag.
+Every other template, `app.css` and the docs scripts (search, sidebar, theme, copy-code, language switcher) come from the theme bundled in the `leaf` release pinned in `.github/workflows/pages.yml`. `layouts/docs.latte`, `layouts/landing.latte` and `partials/nav.latte` are the theme's files at that release (`app/Views/` of [`leaf`](https://github.com/zephyrus-framework/leaf) at the same tag) with one change each: both layouts drop their `<title>`, because `partials/head.latte` writes the site's own (with a middle dot), and the nav shows the Leaf logo image instead of the theme's mark. When the pinned release moves (`LEAF_VERSION` in `.github/workflows/pages.yml`), take these three files again from the new tag and set `leaf.version` in `config.yml` (shown in the header badge and the home footer) to the same version, without the `v`.
 
 ## Commands
 
