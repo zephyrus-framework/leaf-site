@@ -31,13 +31,30 @@ localization:
 
 With more than one entry in `supported_locales`, `leaf build` switches to multi-locale mode automatically: it iterates every locale, invoking the full pipeline once per locale, writing each into its own output subdirectory. A language switcher also appears in the nav automatically (no markup needed from you).
 
+### Locale codes
+
+Each locale becomes a directory and a URL segment, so Leaf checks every code before it builds anything. A code is a language of 2 or 3 letters, optionally followed by hyphenated subtags of 2 to 8 letters or digits: `fr`, `fr-ca`, `pt-br`. Values are lowercased first, so `fr-CA` is accepted and builds to `dist/fr-ca/`, served at `/fr-ca/`.
+
+Any other value stops the build before it writes anything, and the error names the value. `fr_CA` comes with a hint:
+
+```
+Configuration section 'localization' field 'supported_locales' has invalid value "fr_ca": a lowercase language code of 2 or 3 letters, optionally followed by hyphenated subtags of 2 to 8 letters or digits (such as "fr" or "fr-ca"); use a hyphen, such as "fr-ca".
+```
+
+Values such as `../x` or `/x.example` are refused the same way. The default `locale` follows the same rule and must be one of `supported_locales`, since it is the locale built at the site root:
+
+```
+Configuration section 'localization' field 'locale' has invalid value "de": one of the supported_locales (en, fr), since the default locale is built at the site root; set locale to one of them, or add "de" to supported_locales.
+```
+
 ## String-level translations
 
-`leaf init` scaffolds a `locale/` directory with an English starter:
+`leaf init` scaffolds a `locale/` directory with the theme's English and French strings:
 
 ```
 locale/
   en/general.json
+  fr/general.json
 ```
 
 Add a directory per locale:
@@ -73,14 +90,18 @@ And `locale/fr/general.json`:
 
 Any file under a locale directory is merged into one namespace, so you can split long translation files however you like (`general.json`, `legal.json`, `marketing.json`).
 
+On the Binary CLI, your files are merged key by key over the bundled theme's own `locale/<locale>/general.json`, and your keys win. A `locale/en/general.json` that sets only `search.empty` changes that one string; every other theme string keeps its bundled text. The theme ships English and French strings; for another locale, translate its keys in `locale/<locale>/general.json` (copy them from the English file).
+
+Without `locale_path`, Leaf reads `locale/` at the project root when that directory exists.
+
 Use them in templates:
 
 ```latte
-<a href="/">{localize('nav.home')}</a>
-<a href="/docs">{localize('nav.docs')}</a>
+<a href="{$leafBaseUrl}{$localePrefix}/">{localize('nav.home')}</a>
+<a href="{$leafBaseUrl}{$localePrefix}/docs">{localize('nav.docs')}</a>
 ```
 
-`i18n()` is an alias for `localize()`. Missing keys fall back to the key itself, so the page still renders.
+`i18n()` is an alias for `localize()`. A key missing in a locale falls back to the default locale's value, then to the key itself, so the page still renders.
 
 ## Content-level translations
 
@@ -126,6 +147,16 @@ With English as the default locale:
 
 The default locale has no URL prefix. Cleaner URLs for the primary language, better SEO, zero-click landing for most visitors.
 
+## 404 pages
+
+Each locale gets its own 404 page, but only the default locale's is written to `dist/404.html`, the file static hosts serve for a missing URL. The others are built as ordinary pages at `dist/<locale>/404/index.html` (`/fr/404/`), and a host does not serve them for a missing `/fr/...` URL: every visitor sees the default locale's 404, which links to the home page of every other locale. If your host can set an error page per path prefix, have it serve `/fr/404/` for missing URLs under `/fr/`.
+
+## Dev servers
+
+`leaf dev` builds every locale and serves `dist/`, so `/fr/...` behaves as in production, 404 included.
+
+`composer dev` (Composer tier) renders each request live. It serves `/<locale>/...` from `content/<locale>/` for every non-default locale in `supported_locales`, subtags included (`/fr-ca/...`). Any other first segment stays in the path: `/en/...` for a default locale `en` is a 404, as in `dist/`.
+
 ## Template variables
 
 Every template receives:
@@ -134,19 +165,22 @@ Every template receives:
 |----------|------|-------------|
 | `$currentLocale` | string | Active locale code (`en`, `fr`, etc.) |
 | `$defaultLocale` | string | Default locale from config |
-| `$supportedLocales` | array | All supported locale codes |
+| `$supportedLocales` | array | All supported locale codes (`[]` when the config declares none) |
+| `$localePrefix` | string | `''` for the default locale, `'/fr'` for French. Always defined, on a single-locale site too |
 
-Use them for language switchers, hreflang tags, and locale-prefixed links.
+Use them for language switchers, hreflang tags, and locale-prefixed links. A variable your controller passes, or one your template sets with `{var}`, wins over these.
 
 ## Language switcher
 
-The bundled nav automatically renders a language switcher when `supported_locales` has more than one entry. It sits next to the theme toggle, shows the current locale code, and its dropdown links preserve the current path when switching (so clicking `FR` from `/guides/auth/` takes you to `/fr/guides/auth/`, not the French landing).
+The bundled nav renders a language switcher when `supported_locales` has more than one entry. It sits next to the theme toggle: a globe button with the current locale code opens a menu of locale codes. Each link keeps the current page and the base URL, so `FR` on `/docs/guides/auth/` leads to `/docs/fr/guides/auth/`, not to the French landing. On the 404 page, the links lead to each locale's home page instead. The switcher does not check that the page exists in the other locale: from a page that exists only under `content/fr/`, `EN` leads to a 404.
 
-If you customise the nav via `templates/partials/nav.latte`, copy the switcher block from the bundled template or render your own. The JavaScript helper is loaded automatically from `/assets/js/lang-switcher.js`.
+The menu works from the keyboard: Tab reaches the button, Enter opens the menu, Escape closes it and returns focus to the button.
+
+If you customise the nav via `templates/partials/nav.latte`, copy the switcher block from [Templates & Links](/multi-locale/templates/#language-switcher). The bundled layouts load its script, `/assets/js/lang-switcher.js`.
 
 ## Hreflang and canonical
 
-When `production_url` is set, the build generates `sitemap.xml` with `xhtml:link` hreflang alternates for every page. For canonical and `<link rel="alternate" hreflang=...>` tags inside page templates, thread `$requestPath` through from controllers (Composer tier) or rely on the bundled head partial (both tiers).
+When `production_url` is set, the build generates `sitemap.xml` with `xhtml:link` hreflang alternates for every page. The bundled head writes no canonical or hreflang tag: add them in an overridden `templates/partials/head.latte`, as shown in [Templates & Links](/multi-locale/templates/#canonical-and-hreflang-tags).
 
 ## SEO and fallback marking
 

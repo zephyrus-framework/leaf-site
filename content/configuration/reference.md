@@ -79,9 +79,9 @@ Environment variables are loaded from a `.env` file at the project root via Dote
 
 | Field | Default | Description |
 |-------|---------|-------------|
-| `locale` | `"en"` | Default locale code |
-| `supported_locales` | `["en"]` | List of all supported locales |
-| `locale_path` | `""` | Path to JSON translation files |
+| `locale` | `"en"` | Default locale code, built at the site root. When `supported_locales` is set, it must be one of them |
+| `supported_locales` | `[]` | Locale codes to build, such as `fr` or `fr-ca` (see [Locale codes](/multi-locale/setup/#locale-codes)). More than one entry turns on multi-locale builds |
+| `locale_path` | `""` | Directory of JSON translation files. When empty, Leaf reads `locale/` at the project root if it exists |
 | `timezone` | `"UTC"` | Application timezone |
 
 ## Render section
@@ -108,3 +108,5 @@ The `LeafLatteExtension` injects these variables into every template:
 | `$leafLicense` | `leaf.license` |
 | `$leafBaseUrl` | `leaf.base_url` |
 | `$leafProductionUrl` | `leaf.production_url` |
+| `$localePrefix` | `''` for the default locale, `'/fr'` for French (see [Templates & Links](/multi-locale/templates/)) |
+| `$supportedLocales` | `localization.supported_locales` |
