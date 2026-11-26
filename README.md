@@ -25,10 +25,7 @@ This site is itself a Binary CLI tier Leaf project. It has no `app/`, `bin/`, `v
 ├── templates/                       # Overrides for the bundled theme
 │   ├── landing.latte                # Home page with binary/composer tabs, on layouts/home.latte
 │   ├── layouts/home.latte           # Home wrapper: landing.css + landing.js, no theme nav or footer
-│   ├── layouts/docs.latte           # Theme docs layout minus its <title>
-│   ├── layouts/landing.latte        # Theme landing layout (used by the 404) minus its <title>
-│   ├── partials/head.latte          # The <title>, SEO meta, canonical, OG tags, favicons
-│   └── partials/nav.latte           # Theme nav with the Leaf logo image
+│   └── partials/head.latte          # The <title>, SEO meta, canonical, OG tags, favicons
 ├── public/
 │   ├── assets/css/                  # landing.css (app.css comes from the theme)
 │   ├── assets/js/                   # landing.js (the docs scripts come from the theme)
@@ -41,7 +38,9 @@ This site is itself a Binary CLI tier Leaf project. It has no `app/`, `bin/`, `v
 └── dist/                            # build output (not committed; GitHub Pages builds it)
 ```
 
-Every other template, `app.css` and the docs scripts (search, sidebar, theme, copy-code, language switcher) come from the theme bundled in the `leaf` release pinned in `.github/workflows/pages.yml`. `layouts/docs.latte`, `layouts/landing.latte` and `partials/nav.latte` are the theme's files at that release (`app/Views/` of [`leaf`](https://github.com/zephyrus-framework/leaf) at the same tag) with one change each: both layouts drop their `<title>`, because `partials/head.latte` writes the site's own (with a middle dot), and the nav shows the Leaf logo image instead of the theme's mark. When the pinned release moves (`LEAF_VERSION` in `.github/workflows/pages.yml`), take these three files again from the new tag and set `leaf.version` in `config.yml` (shown in the header badge and the home footer) to the same version, without the `v`.
+Every other template, `app.css` and the docs scripts (search, sidebar, theme, copy-code, tables, language switcher) come from the theme bundled in the `leaf` release pinned in `.github/workflows/pages.yml`. Besides the home page (`landing.latte`, on the site's own `layouts/home.latte`), `partials/head.latte` is the only theme file the site overrides, for what the theme's head lacks: favicons and the web manifest, a canonical URL and `og:url`, the `og:image` social card with a large Twitter card, and the site description on pages that set none. From the Tailwind script down it is the theme's head as is. The docs header shows the Leaf logo through `leaf.logo` in `config.yml`, with no nav override. When the pinned release moves (`LEAF_VERSION` in `.github/workflows/pages.yml`), compare `partials/head.latte` with `app/Views/partials/head.latte` of [`leaf`](https://github.com/zephyrus-framework/leaf) at the new tag, and set `leaf.version` in `config.yml` (shown in the header badge and the home footer) to the same version, without the `v`.
+
+The two docs previews in the hero (`screenshot-light.png` and `screenshot-dark.png`) are captures of `/getting-started/introduction/` at 1440×900 and twice the pixel density, taken with the header version badge hidden so that they do not go stale at the next release.
 
 ## Commands
 
