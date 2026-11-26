@@ -35,17 +35,13 @@ With more than one entry in `supported_locales`, `leaf build` switches to multi-
 
 Each locale becomes a directory and a URL segment, so Leaf checks every code before it builds anything. A code is a language of 2 or 3 letters, optionally followed by hyphenated subtags of 2 to 8 letters or digits: `fr`, `fr-ca`, `pt-br`. Values are lowercased first, so `fr-CA` is accepted and builds to `dist/fr-ca/`, served at `/fr-ca/`.
 
-Any other value stops the build before it writes anything, and the error names the value. `fr_CA` comes with a hint:
+Any other value stops the build before it writes anything, with an uncaught `ConfigurationException` whose message names the value. `fr_CA` comes with a hint:
 
-```
-Configuration section 'localization' field 'supported_locales' has invalid value "fr_ca": a lowercase language code of 2 or 3 letters, optionally followed by hyphenated subtags of 2 to 8 letters or digits (such as "fr" or "fr-ca"); use a hyphen, such as "fr-ca".
-```
+> Configuration section 'localization' field 'supported_locales' has invalid value "fr_ca": a lowercase language code of 2 or 3 letters, optionally followed by hyphenated subtags of 2 to 8 letters or digits (such as "fr" or "fr-ca"); use a hyphen, such as "fr-ca".
 
 Values such as `../x` or `/x.example` are refused the same way. The default `locale` follows the same rule and must be one of `supported_locales`, since it is the locale built at the site root:
 
-```
-Configuration section 'localization' field 'locale' has invalid value "de": one of the supported_locales (en, fr), since the default locale is built at the site root; set locale to one of them, or add "de" to supported_locales.
-```
+> Configuration section 'localization' field 'locale' has invalid value "de": one of the supported_locales (en, fr), since the default locale is built at the site root; set locale to one of them, or add "de" to supported_locales.
 
 ## String-level translations
 
