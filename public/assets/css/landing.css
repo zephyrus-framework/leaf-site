@@ -892,7 +892,7 @@
     letter-spacing: -0.01em;
     margin-bottom: 0.15rem;
 }
-.showcase-list span {
+.showcase-list div > span {
     color: var(--text-muted);
     font-size: 0.88rem;
     line-height: 1.55;
