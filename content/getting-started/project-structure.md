@@ -48,7 +48,7 @@ Drop [Latte](https://latte.nette.org/) files here to override the bundled defaul
 
 Only `.latte` files are rendered: a `.php` or `.html` file under `templates/` is ignored.
 
-To add standalone URLs like `/about` or `/contact`, drop Latte files under `templates/pages/`. See [Custom Pages](/content-system/custom-pages).
+To add standalone URLs like `/about` or `/contact`, drop Latte files under `templates/pages/`. See [Custom Pages](/content-system/custom-pages/).
 
 ### `locale/`
 
@@ -56,7 +56,7 @@ The theme's interface strings (search, table of contents, pagination, 404), one 
 
 ### `config.yml`
 
-Site settings: name, version, sections, production URL. See [Configuration Reference](/configuration/reference).
+Site settings: name, version, sections, production URL. See [Configuration Reference](/configuration/reference/).
 
 ### `dist/`
 
@@ -126,7 +126,7 @@ $command = new BuildCommand($app);
 exit($command->run());
 ```
 
-Add custom paths, hook into the pipeline, post-process output. See the [BuildCommand](/building-sites/build-command) reference.
+Add custom paths, hook into the pipeline, post-process output. See the [BuildCommand](/building-sites/build-command/) reference.
 
 #### `app/Controllers/`
 

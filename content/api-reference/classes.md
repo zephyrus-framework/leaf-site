@@ -204,7 +204,7 @@ Handles static files, the locale prefix (a non-default locale from `supported_lo
 
 ## Leaf\Config\LeafConfig
 
-Typed configuration from the `leaf:` section in config.yml. See [Configuration Reference](/configuration/reference) for all fields.
+Typed configuration from the `leaf:` section in config.yml. See [Configuration Reference](/configuration/reference/) for all fields.
 
 ---
 

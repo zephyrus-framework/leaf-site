@@ -46,7 +46,7 @@ Every page renders with:
 | `$title` | `<slug>` humanized, as `$pageTitle`: the theme's `head.latte` writes `<title>` as `About Us · <leafName>` |
 | `$pageTitle` | `<slug>` humanized (`about-us` → `About Us`) |
 | `$pagePath` | `/about`, for hreflang/canonical helpers |
-| `$leaf*` | All standard [Latte globals](/configuration/reference) |
+| `$leaf*` | All standard [Latte globals](/configuration/reference/) |
 
 Override any of them yourself in the template if the defaults don't fit.
 

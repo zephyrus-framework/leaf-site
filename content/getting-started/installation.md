@@ -78,7 +78,7 @@ composer require zephyrus-framework/leaf-core
 
 It resolves to the latest tagged release, with no change to your `minimum-stability`.
 
-Then extend `Leaf\Kernel` in your Application class and use `Leaf\BuildCommand` in your build script. See the [BuildCommand](/building-sites/build-command) reference.
+Then extend `Leaf\Kernel` in your Application class and use `Leaf\BuildCommand` in your build script. See the [BuildCommand](/building-sites/build-command/) reference.
 
 ## Switching paths: `leaf eject`
 
