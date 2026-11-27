@@ -148,7 +148,7 @@ The default locale has no URL prefix. Cleaner URLs for the primary language, bet
 
 ## 404 pages
 
-Each locale gets its own 404 page, but only the default locale's is written to `dist/404.html`, the file static hosts serve for a missing URL. The others are built as ordinary pages at `dist/<locale>/404/index.html` (`/fr/404/`), and a host does not serve them for a missing `/fr/...` URL: every visitor sees the default locale's 404, which links to the home page of every other locale. If your host can set an error page per path prefix, have it serve `/fr/404/` for missing URLs under `/fr/`.
+Each locale gets its own 404 page: the default locale's at `dist/404.html`, every other one at `dist/<locale>/404.html` (`/fr/404.html`). A host that serves the nearest `404.html` shows the right language directly. A host that serves only the root one, such as GitHub Pages, answers a missing `/fr/...` URL with the default locale's page, whose script then sends the visitor to `/fr/404.html`; without JavaScript, that page links to the home page of every other locale. A site that overrides `404.latte` must copy that script from the theme's file.
 
 ## Dev servers
 

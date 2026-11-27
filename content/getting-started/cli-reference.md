@@ -116,7 +116,7 @@ Prints the version string.
 
 ```bash
 $ leaf version
-leaf v0.1.11
+leaf v1.0.0
 ```
 
 ## `leaf help`

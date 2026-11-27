@@ -27,6 +27,8 @@ composer build
 php bin/build.php
 ```
 
+In a project created from the 1.0 template, or one that took over its compiled stylesheet, `composer build` first compiles the theme's Tailwind stylesheet, `public/assets/css/tailwind.css`, from your templates, the `class` attributes of your Markdown pages and your scripts (`composer css`, which runs `bin/tailwind.sh`), then runs `php bin/build.php`. `php bin/build.php` alone builds the pages with the stylesheet as it stands. The first compile downloads the standalone Tailwind CSS CLI from GitHub, so it needs `sh`, `curl` or `wget`, and `sha256sum` or `shasum`.
+
 ```php
 // bin/build.php
 define('ROOT_DIR', dirname(__DIR__));

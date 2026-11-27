@@ -47,7 +47,7 @@ Environment variables the install script respects:
 | Var | Default | What it does |
 |-----|---------|--------------|
 | `LEAF_PREFIX` | `/usr/local/bin` | Where to install the binary |
-| `LEAF_VERSION` | `latest` | Specific release tag (e.g. `v0.1.11`) |
+| `LEAF_VERSION` | `latest` | Specific release tag (e.g. `v1.0.0`) |
 
 ### Runtime requirement
 
@@ -61,13 +61,14 @@ For PHP developers who want controllers, Composer packages, and full build-scrip
 composer create-project zephyrus-framework/leaf my-docs
 cd my-docs
 composer dev     # dev server with live reload
-composer build   # writes dist/
+composer build   # compiles the Tailwind stylesheet, then writes dist/
 ```
 
 ### Requirements
 
 - **PHP 8.4+** with `intl`, `mbstring`, `pdo`, `fileinfo`, `sodium` and `tokenizer` (required by `zephyrus-framework/core` and Latte; Composer checks them on install)
 - **Composer 2.x**
+- To compile the Tailwind stylesheet (`composer build`, `composer css`): `sh`, `curl` or `wget`, `sha256sum` or `shasum`, and access to GitHub on the first run, which downloads the standalone Tailwind CSS CLI (no Node.js) into `~/.cache/leaf`
 
 ### Adding Leaf to an existing Zephyrus project
 

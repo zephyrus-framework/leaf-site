@@ -18,7 +18,13 @@ The output works with any static host:
 - **DigitalOcean App Platform**: point a Static Site component at the `dist/` directory
 - **Any web server**: upload `dist/` to your document root
 
-The bundled theme loads Tailwind from `cdn.tailwindcss.com`, Prism from `cdnjs.cloudflare.com` and its fonts from Google Fonts when the page opens. A Content-Security-Policy on your host must allow those origins, plus inline scripts and styles, which the theme also uses.
+The bundled theme ships its Tailwind CSS classes compiled, in `assets/css/tailwind.css`, and loads no Tailwind script. When the page opens, it loads Prism from `cdnjs.cloudflare.com` (checked against its Subresource Integrity hash) and its fonts from Google Fonts. A Content Security Policy on your host needs at least the one in the theme's README, [Content Security Policy](https://github.com/zephyrus-framework/leaf/blob/v1.0.0/README.md#content-security-policy):
+
+```text
+default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/ 'unsafe-inline'; style-src 'self' https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/ https://fonts.googleapis.com 'unsafe-inline'; font-src https://fonts.gstatic.com
+```
+
+The README also gives the hashes that can replace the `'unsafe-inline'` of `script-src`, and what to add when a site loads Tailwind from its CDN.
 
 ## Build commands per host
 
@@ -27,7 +33,7 @@ If your host runs the build for you, the command depends on which path you're on
 | Path | Build command | Dependencies your build server needs |
 |------|---------------|---------------------------------------|
 | Binary CLI | `leaf build` | The `leaf` binary (fetch via `curl` step) plus PHP 8.4 with `intl`, `mbstring` and `tokenizer` |
-| Composer | `composer install && composer build` | PHP 8.4 + Composer |
+| Composer | `composer install && composer build` | PHP 8.4 + Composer, plus what `bin/tailwind.sh` needs to compile the Tailwind stylesheet: `sh`, `curl` or `wget`, `sha256sum` or `shasum`, and access to GitHub on the first run, to download the standalone Tailwind CSS CLI (checked against the SHA-256 pinned in `bin/tailwind.sh`) |
 
 Example Netlify build command for the binary path:
 
@@ -41,7 +47,7 @@ Build in CI with a fixed CLI version, so the theme and the pipeline change only 
 
 ```yaml
 env:
-  LEAF_VERSION: v0.1.11
+  LEAF_VERSION: v1.0.0
 
 jobs:
   build:
@@ -56,7 +62,7 @@ jobs:
             "https://github.com/zephyrus-framework/leaf-cli/releases/download/${LEAF_VERSION}/leaf-linux-amd64" \
             --output "$RUNNER_TEMP/leaf"
           printf '%s  %s\n' \
-            '26d3675d47f39a835442a840da437667652628a6e46ab49ee5c2dd374bf3e377' \
+            '06f75047b74bc05f030bc683674d141e95599379a1996a1d55d7ad347b9c5a2b' \
             "$RUNNER_TEMP/leaf" | sha256sum --check --strict
           chmod +x "$RUNNER_TEMP/leaf"
 
@@ -101,4 +107,4 @@ After deploying, configure your DNS to point to your hosting provider. Most prov
 
 The build produces `dist/404.html`. Most static hosts serve it automatically for unmatched routes. If yours doesn't, configure it in the provider's settings.
 
-On a multi-locale site, that file is the default locale's 404, and it is the only one a host serves: the other locales' 404 pages are built at `dist/<locale>/404/index.html` (`/fr/404/`), and a missing `/fr/...` URL still gets `dist/404.html`. See [Multi-Locale Setup](/multi-locale/setup/#404-pages).
+On a multi-locale site, each other locale has its own 404 page too, at `dist/<locale>/404.html`. A host that serves only the root `404.html`, such as GitHub Pages, gets the default locale's page for a missing `/fr/...` URL, and its script sends the visitor to `/fr/404.html`. See [Multi-Locale Setup](/multi-locale/setup/#404-pages).

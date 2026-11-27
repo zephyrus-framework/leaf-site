@@ -24,14 +24,16 @@ That's it. `leaf build` picks up every `.latte` file in that directory, register
 {layout '../layouts/landing.latte'}
 
 {block content}
-<main class="container mx-auto px-6 py-24">
-    <h1 class="text-4xl font-bold">{$pageTitle}</h1>
-    <p class="mt-4 text-muted">
+<main id="main-content" tabindex="-1" class="max-w-4xl mx-auto px-6 py-32">
+    <h1 class="text-5xl font-bold text-bright leading-tight mb-6">{$pageTitle}</h1>
+    <p class="text-muted">
         This is the about page, rendered from <code>templates/pages/about.latte</code>.
     </p>
 </main>
 {/block}
 ```
+
+Give the `<main>` the id `main-content`: it is the target of the theme's "Skip to content" link, which the theme hides on a page without it. Its top padding (`py-32`) clears the fixed navigation bar.
 
 You get the same template globals as any other view: `$leafName`, `$leafVersion`, `$leafAuthor`, `$leafGithubUrl`, `$leafBaseUrl`, `$leafProductionUrl`, and all the locale variables when multi-locale is enabled.
 
@@ -41,12 +43,23 @@ Every page renders with:
 
 | Variable | What |
 |---|---|
-| `$title` | `"<slug in Title Case> · <leafName>"` (useful for `<title>`) |
+| `$title` | `<slug>` humanized, as `$pageTitle`: the theme's `head.latte` writes `<title>` as `About Us · <leafName>` |
 | `$pageTitle` | `<slug>` humanized (`about-us` → `About Us`) |
 | `$pagePath` | `/about`, for hreflang/canonical helpers |
 | `$leaf*` | All standard [Latte globals](/configuration/reference) |
 
 Override any of them yourself in the template if the defaults don't fit.
+
+## Styling a page
+
+The theme ships its Tailwind CSS classes compiled, in `assets/css/tailwind.css`, and loads no Tailwind script. Every class of the example above is in that stylesheet, and none of its classes goes away in 1.x. The list is [`tests/tailwind-classes.txt`](https://github.com/zephyrus-framework/leaf/blob/v1.0.0/tests/tailwind-classes.txt) in the theme's repository.
+
+A class the stylesheet lacks (`py-24`, `text-4xl` or `mt-4`, for instance) has no style. On the binary CLI, which ships the theme's stylesheet as it is:
+
+- write its rule in a stylesheet of your own under `public/`, linked from your copy of `templates/partials/head.latte` after the theme's stylesheets;
+- or load Tailwind in the browser from that same copy of `head.latte`, with the snippet of the theme's [Styling](https://github.com/zephyrus-framework/leaf/blob/v1.0.0/README.md#styling) section. Under a Content Security Policy, that script needs `https://cdn.tailwindcss.com` in `script-src`.
+
+On the Composer tier (a project created from the 1.0 template, or one that took over its compiled stylesheet), `composer build` compiles the stylesheet again from your templates and Markdown pages before it builds the pages, so your classes are in it.
 
 ## Naming rules
 
