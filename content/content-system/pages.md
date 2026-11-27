@@ -23,7 +23,7 @@ Each directory under `content/` is a **section**. Each `.md` file is a **page**.
 
 ## Front matter
 
-Every page needs YAML front matter with at least `title` and `order`:
+Each page starts with YAML front matter:
 
 ```yaml
 ---
@@ -39,9 +39,11 @@ Your content here...
 
 | Field | Required | Description |
 |-------|----------|-------------|
-| `title` | Yes | Page title, shown in sidebar and browser tab |
-| `order` | Yes | Sort order within its section (lower = earlier) |
-| `description` | No | Meta description for SEO, also used in search excerpts |
+| `title` | No | Page title, shown in the sidebar, the browser tab and search results. Without it, the title is made from the file name |
+| `order` | No | Sort order within its section (lower = earlier), `99` when absent; pages with the same order sort by file name |
+| `description` | No | Meta description for SEO. Without it, the theme takes the start of the page text |
+
+Front matter is read as YAML 1.2 (by symfony/yaml) on every host. `yes`, `no`, `on` and `off` are strings, not booleans: write `true` or `false`. Leaf reads `title` and `order` and the theme reads `description`; any other key is yours to read, from a controller of your own on the Composer tier.
 
 ## Markdown features
 
