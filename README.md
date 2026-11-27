@@ -24,8 +24,8 @@ This site is itself a Binary CLI tier Leaf project. It has no `app/`, `bin/`, `v
 ├── content/                         # Markdown docs, organized by section
 ├── templates/                       # Overrides for the bundled theme
 │   ├── landing.latte                # Home page with binary/composer tabs, on layouts/home.latte
-│   ├── layouts/home.latte           # Home wrapper: landing.css + landing.js, no theme nav or footer
-│   └── partials/head.latte          # The <title>, SEO meta, canonical, OG tags, favicons
+│   ├── layouts/home.latte           # Home wrapper: landing.css, landing.js and Prism, no theme nav or footer
+│   └── partials/head.latte          # The theme's head plus favicons, canonical, OG tags, description fallback
 ├── public/
 │   ├── assets/css/                  # landing.css (app.css comes from the theme)
 │   ├── assets/js/                   # landing.js (the docs scripts come from the theme)
@@ -38,7 +38,7 @@ This site is itself a Binary CLI tier Leaf project. It has no `app/`, `bin/`, `v
 └── dist/                            # build output (not committed; GitHub Pages builds it)
 ```
 
-Every other template, `app.css` and the docs scripts (search, sidebar, theme, copy-code, tables, language switcher) come from the theme bundled in the `leaf` release pinned in `.github/workflows/pages.yml`. Besides the home page (`landing.latte`, on the site's own `layouts/home.latte`), `partials/head.latte` is the only theme file the site overrides, for what the theme's head lacks: favicons and the web manifest, a canonical URL and `og:url`, the `og:image` social card with a large Twitter card, and the site description on pages that set none. From the Tailwind script down it is the theme's head as is. The docs header shows the Leaf logo through `leaf.logo` in `config.yml`, with no nav override. When the pinned release moves (`LEAF_VERSION` in `.github/workflows/pages.yml`), compare `partials/head.latte` with `app/Views/partials/head.latte` of [`leaf`](https://github.com/zephyrus-framework/leaf) at the new tag, and set `leaf.version` in `config.yml` (shown in the header badge and the home footer) to the same version, without the `v`.
+Every other template, `app.css`, the compiled Tailwind stylesheet `tailwind.css` and the docs scripts (search, sidebar, theme, copy-code, tables, language switcher) come from the theme bundled in the `leaf` release pinned in `.github/workflows/pages.yml` (v1.0.0). Besides the home page (`landing.latte`, on the site's own `layouts/home.latte`), `partials/head.latte` is the only theme file the site overrides, for what the theme's head lacks: favicons and the web manifest, a canonical URL and `og:url`, the `og:image` social card with a large Twitter card, and the site description on pages that set none. From the font links down it is the theme's head as is, with no Tailwind script: `tailwind.css` follows `app.css`. The docs header shows the Leaf logo through `leaf.logo` in `config.yml`, with no nav override. When the pinned release moves (`LEAF_VERSION` in `.github/workflows/pages.yml`), take over what the theme's `CHANGELOG.md` lists for `partials/head.latte` and `layouts/landing.latte` (whose Prism scripts `layouts/home.latte` repeats), comparing them with `app/Views/` of [`leaf`](https://github.com/zephyrus-framework/leaf) at the new tag, and set `leaf.version` in `config.yml` (shown in the header badge and the home footer) to the same version, without the `v`.
 
 The two docs previews in the hero (`screenshot-light.png` and `screenshot-dark.png`) are captures of `/getting-started/introduction/` at 1440×900 and twice the pixel density, taken with the header version badge hidden so that they do not go stale at the next release.
 
@@ -88,7 +88,7 @@ The YAML order drives the sidebar order.
 
 Drop a `.latte` file under `templates/` at the same relative path as the bundled view to override it, or a file under `public/` at the path of a bundled asset to replace it. The `leaf` binary merges both on top of the bundled theme at build time. An override replaces the whole file and stops following the theme, so keep overrides to what the site really changes (see Layout).
 
-The docs styles (`app.css`: docs shell, sidebar, TOC, page content) come from the theme. `public/assets/css/landing.css` holds the landing-page-only tokens and components (scoped to `.landing`).
+The docs styles (`app.css`: docs shell, sidebar, TOC, page content, and the Tailwind classes compiled in `tailwind.css`) come from the theme. `public/assets/css/landing.css` holds the landing-page-only tokens and components (scoped to `.landing`), and is linked from `layouts/home.latte` only. The site loads no Tailwind script, so a Tailwind class the theme's `tailwind.css` lacks has no style: give it a rule in `landing.css` for the home page, or in a stylesheet linked from `partials/head.latte` for the docs pages.
 
 ## Deployment
 
