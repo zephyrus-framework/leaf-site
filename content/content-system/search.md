@@ -9,16 +9,18 @@ Leaf includes a full-text search system that works entirely client-side. No serv
 
 ## How it works
 
-1. During the build, `SearchIndexBuilder` scans all Markdown files and generates a `search.json` file
-2. The search modal loads this JSON on first open
-3. Searches run locally in the browser with fuzzy matching
+1. During the build, `SearchIndexBuilder` reads every page and writes `search.json` (on a multi-locale site, one per locale, such as `/fr/search.json`)
+2. The search dialog loads it the first time it opens
+3. Queries run in the browser, against the titles, the headings and the full text of the pages
 
 ## Using search
 
-- Click the **Search** button in the nav bar
-- Or press **Ctrl+K** (Cmd+K on Mac)
-- Type your query and results appear instantly
-- Navigate results with arrow keys, press Enter to go
+- Click the **Search** button in the nav bar, or press **Ctrl+K** (**Cmd+K** on Mac)
+- Type two characters or more: results appear as you type
+- The first result is preselected, so Enter opens it. The up and down arrows move the selection, and so does the pointer
+- A page found only in its body text opens at the first matching word, through a text fragment (`#:~:text=static`) that browsers supporting it scroll to and highlight
+
+While the index loads, the dialog says **Loading search...** and runs the query as soon as the index arrives. An index that cannot be loaded, or has not arrived after 10 seconds, makes the dialog say **Search is unavailable. Close it and try again.**, and it is fetched again the next time the dialog opens.
 
 ## Search index
 
@@ -30,23 +32,25 @@ The generated `search.json` contains an entry for each page:
     "title": "Installation",
     "section": "getting-started",
     "url": "/getting-started/installation",
-    "excerpt": "First 300 characters of the page content...",
-    "headings": ["Requirements", "Create a new project", "Dev server"]
+    "excerpt": "First 300 characters of the page text...",
+    "headings": ["Requirements", "Create a new project", "Dev server"],
+    "content": "The full text of the page..."
   }
 ]
 ```
 
-## Scoring
+## Ranking
 
-Results are ranked by relevance:
+Each word of the query is a term. Pages that contain more of the terms come first; among pages that contain as many, the higher score comes first. Each term scores:
 
-| Match type | Score |
-|-----------|-------|
-| Exact title match | 100 |
-| Title substring | 50 |
-| Heading match | 20 |
-| Excerpt match | 10 |
-| Section match | 5 |
+| Where | Points |
+|-------|--------|
+| Title | 100 if the title is the term, otherwise 50 if it contains it |
+| Each heading | 20 × occurrences, up to 1 per heading |
+| Excerpt or page text, whichever scores higher | 10 × occurrences in the excerpt, up to 1, or 3 × occurrences in the page text, up to 10 |
+| Section | 5 × occurrences, up to 1 |
+
+An occurrence counts 1 for a whole word, 0.5 at the start of a word (`build` in `builder`) and 0.25 inside a word (`build` in `rebuild`), so whole words rank above parts of words.
 
 The top 10 results are displayed.
 
@@ -55,6 +59,6 @@ The top 10 results are displayed.
 | Key | Action |
 |-----|--------|
 | Ctrl+K / Cmd+K | Open/close search |
-| Arrow keys | Navigate results |
-| Enter | Go to selected result |
+| Arrow keys | Move the selection |
+| Enter | Open the selected result |
 | Escape | Close search |
