@@ -132,7 +132,7 @@ Resolution rules per build:
 
 The default locale only sees files at the root of `content/`: it will not render locale-only pages (so `/concepts/overview/` is a 404 in English). Non-default locales see the union.
 
-The **search index** is generated per locale. `/search.json` only returns English/fallback entries; `/fr/search.json` returns the translated pages plus English fallbacks. Fuzzy search stays fast and locale-relevant.
+The **search index** is generated per locale. `/search.json` lists the English pages; `/fr/search.json` lists the translated pages plus the English fallbacks, with their `/fr/` URLs. Each page searches the index of its own locale, so results stay on the reader's version of the site.
 
 ## URL structure
 
