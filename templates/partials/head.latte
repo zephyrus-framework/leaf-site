@@ -58,38 +58,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-if (window.tailwind) {
-    tailwind.config = {
-        theme: {
-            extend: {
-                colors: {
-                    deep: 'var(--bg-deep)',
-                    surface: 'var(--bg-surface)',
-                    elevated: 'var(--bg-elevated)',
-                    border: 'var(--border)',
-                    'border-accent': 'var(--border-accent)',
-                    body: 'var(--text)',
-                    bright: 'var(--text-bright)',
-                    muted: 'var(--text-muted)',
-                    accent: 'var(--accent)',
-                    'accent-light': 'var(--accent-light)',
-                    'accent-fill': 'var(--accent-fill)',
-                    'accent-fill-hover': 'var(--accent-fill-hover)',
-                    'accent-glow': 'var(--accent-glow)',
-                },
-                fontFamily: {
-                    body: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-                    mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
-                },
-            },
-        },
-    };
-}
-</script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" integrity="sha512-vswe+cgvic/XBoF1OcM/TeJ2FW0OofqAVdCZiEYkd6dwGXthvkSFWOoGGJgS2CW70VK5dQM5Oh+7ne47s74VTg==" crossorigin="anonymous">
 <link rel="stylesheet" href="{$leafBaseUrl}/assets/css/app.css">
+<link rel="stylesheet" href="{$leafBaseUrl}/assets/css/tailwind.css">
 <script src="{$leafBaseUrl}/assets/js/theme.js"></script>
 {if defined('DEV_SERVER')}
 <script>
