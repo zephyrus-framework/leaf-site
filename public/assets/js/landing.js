@@ -41,7 +41,8 @@
     }
 
     // ── Smooth scroll for anchor links ─────────────────────
-    document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+    // The skip link keeps the native jump, which moves focus to its target
+    document.querySelectorAll('a[href^="#"]:not(.skip-link)').forEach(function (link) {
         link.addEventListener('click', function (e) {
             var target = document.querySelector(this.getAttribute('href'));
             if (target) {

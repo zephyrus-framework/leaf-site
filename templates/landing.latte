@@ -5,7 +5,7 @@
 {/block}
 
 {block content}
-<main class="landing">
+<div class="landing">
     {* ═══════════════════════ NAV (two islands) ═══════════════════════ *}
     <header class="landing-nav" id="landingNav">
         <div class="landing-nav-island landing-nav-island-left">
@@ -31,6 +31,7 @@
         </div>
     </header>
 
+    <main id="main-content" tabindex="-1">
     {* ═══════════════════════ HERO ═══════════════════════ *}
     <section class="hero">
         <div class="hero-image-wrap" aria-hidden="true">
@@ -416,6 +417,8 @@ leaf dev     # live reload on localhost:8080</code></pre>
         </div>
     </section>
 
+    </main>
+
     {* ═══════════════════════ FOOTER ═══════════════════════ *}
     <footer class="landing-footer">
         <div class="section-container">
@@ -493,5 +496,5 @@ leaf dev     # live reload on localhost:8080</code></pre>
             </div>
         </div>
     </footer>
-</main>
+</div>
 {/block}

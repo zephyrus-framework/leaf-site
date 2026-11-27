@@ -127,6 +127,9 @@
 .landing-nav-links a:focus-visible {
     border-radius: 0.375rem;
 }
+.skip-link {
+    z-index: 110;
+}
 .landing-nav-cta svg {
     transition: transform 0.25s var(--ease);
 }
