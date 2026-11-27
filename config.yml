@@ -17,7 +17,7 @@ render:
 
 leaf:
   name: "Zephyrus Leaf"
-  version: "0.1.12"
+  version: "1.0.0"
   logo: "/assets/images/logo.png"
   description: "Build beautiful static sites with PHP. One-command builds, multi-locale, SEO, Markdown-powered docs."
   github_url: "https://github.com/zephyrus-framework/leaf-core"
